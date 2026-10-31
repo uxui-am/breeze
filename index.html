@@ -49,7 +49,7 @@ const load=img=>{const u=img.getAttribute('data-brz-src');if(!u)return;const r=i
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){io.unobserve(e.target);load(e.target);}}),{rootMargin:'600px 600px'});
 const defer=(img,u)=>{if(DONE[u]){d.set.call(img,DONE[u]);return;}sa.call(img,'data-brz-src',u);sa.call(img,'decoding','async');io.observe(img);};
 Element.prototype.setAttribute=function(n,v){
- if(n==='src'&&this.tagName==='IMG'&&isC(v)){defer(this,v);return;}
+ if(n==='src'&&this.tagName==='IMG'&&isC(v)){if(v.indexOf('review-portrait')>=0){if(!DONE[v])DONE[v]=withW(v,160);v=DONE[v];return sa.call(this,n,v);}defer(this,v);return;}
  if(n==='style'&&isC(v))v=withW(v,1200);
  else if(n==='poster'&&isC(v))v=innerHeight>innerWidth?v.split(K).join(K.replace('q_auto/','q_auto,c_fill,ar_9:16,h_1200,g_center/')):withW(v,1600);
  if(n==='src'&&this.tagName==='VIDEO'&&!IOS&&typeof v==='string'&&v.indexOf('res.cloudinary.com')>=0&&!window.__brzVideoGo){sa.call(this,'data-brz-vsrc',v);sa.call(this,'preload','none');return;}
@@ -3810,27 +3810,43 @@ html:not(#z1):not(#z2) body footer .footer-bottom a:hover,html:not(#z1):not(#z2)
 /* 31.10: кнопки внутри скрытых (aria-hidden) блоков не получают фокус с клавиатуры */
 (()=>{const F='a[href],button,input,select,textarea,[tabindex]';const fix=()=>{document.querySelectorAll('[aria-hidden="true"]').forEach(h=>h.querySelectorAll(F).forEach(e=>{if(e.dataset.brzTi===undefined){e.dataset.brzTi=e.getAttribute('tabindex')??'';e.setAttribute('tabindex','-1');}}));document.querySelectorAll('[data-brz-ti]').forEach(e=>{if(!e.closest('[aria-hidden="true"]')){const v=e.dataset.brzTi;if(v==='')e.removeAttribute('tabindex');else e.setAttribute('tabindex',v);delete e.dataset.brzTi;}});};let t=0;new MutationObserver(()=>{cancelAnimationFrame(t);t=requestAnimationFrame(fix);}).observe(document.documentElement,{subtree:true,attributes:true,attributeFilter:['aria-hidden'],childList:true});fix();})();
 </script><style id="brz-mobile-rv-marquee">
-/* 31.10: мобилка главной — отзывы бегущей лентой (как на странице апартамента) */
-@media (max-width:900px) and (prefers-reduced-motion:no-preference){
-html[data-brz-mq]:not(#z1):not(#z2) body #reviews .rv-marquee{overflow:hidden!important;scroll-snap-type:none!important}
-html[data-brz-mq]:not(#z1):not(#z2) body #reviews .rv-marquee .rv-marquee-track{width:max-content!important;animation:brz-rv-mq var(--brz-mq-dur,60s) linear infinite!important;animation-play-state:running!important;will-change:translate}
+/* 31.10: мобилка главной — отзывы: бесконечная лента, едет сама и листается пальцем. Каждый отзыв один раз за круг. */
+@media (max-width:900px){
+html[data-brz-mq]:not(#z1):not(#z2) body #reviews .rv-marquee{overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:none!important;scrollbar-width:none;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;overscroll-behavior-x:contain}
+html[data-brz-mq]:not(#z1):not(#z2) body #reviews .rv-marquee::-webkit-scrollbar{display:none}
+html[data-brz-mq]:not(#z1):not(#z2) body #reviews .rv-marquee .rv-marquee-track{width:max-content!important;animation:none!important;transform:none!important;translate:none!important}
 html[data-brz-mq]:not(#z1):not(#z2) body #reviews .rv-marquee .rv-marquee-track>figure{scroll-snap-align:none!important}
+html[data-brz-mq]:not(#z1):not(#z2) body #reviews .rv-marquee .rv-marquee-track>figure[data-brz-dup]{display:none!important}
 }
-@keyframes brz-rv-mq{from{translate:0 0}to{translate:var(--brz-mq-shift,-50%) 0}}
 </style>
 <script id="brz-mobile-rv-marquee-js">
-(()=>{const mq=matchMedia('(max-width:900px) and (prefers-reduced-motion:no-preference)');
-const sync=()=>{const m=document.querySelector('#reviews .rv-marquee'),t=m&&m.querySelector('.rv-marquee-track');if(!t)return;
+(()=>{const mq=matchMedia('(max-width:900px)');const reduce=matchMedia('(prefers-reduced-motion: reduce)');
+const SPEED=32;/* px/с — как на странице апартамента */
+let m=null,t=null,shift=0,acc=0,last=0,holdUntil=0,touching=false,raf=0,visible=true;
+const key=f=>(f.querySelector('blockquote')?.textContent||'')+'|'+(f.querySelector('figcaption')?.textContent||'');
+const build=()=>{m=document.querySelector('#reviews .rv-marquee');t=m&&m.querySelector('.rv-marquee-track');if(!t)return false;
+ if(!mq.matches){t.querySelectorAll(':scope>[data-brz-clone]').forEach(c=>c.remove());t.querySelectorAll(':scope>[data-brz-dup]').forEach(f=>f.removeAttribute('data-brz-dup'));document.documentElement.removeAttribute('data-brz-mq');return false;}
+ const seen=new Set();const uniq=[];[...t.querySelectorAll(':scope>figure:not([data-brz-clone])')].forEach(f=>{const k=key(f);if(seen.has(k))f.setAttribute('data-brz-dup','');else{seen.add(k);f.removeAttribute('data-brz-dup');uniq.push(f);}});
  const clones=[...t.querySelectorAll(':scope>[data-brz-clone]')];
- if(!mq.matches){clones.forEach(c=>c.remove());document.documentElement.removeAttribute('data-brz-mq');return;}
- const orig=[...t.querySelectorAll(':scope>figure:not([data-brz-clone])')];if(!orig.length)return;
- if(clones.length!==orig.length){clones.forEach(c=>c.remove());orig.forEach(f=>{const c=f.cloneNode(true);c.setAttribute('data-brz-clone','');c.setAttribute('aria-hidden','true');c.removeAttribute('data-review-card');c.querySelectorAll('a,button,[tabindex]').forEach(e=>e.setAttribute('tabindex','-1'));t.appendChild(c);});}
+ if(clones.length!==uniq.length){clones.forEach(c=>c.remove());uniq.forEach(f=>{const c=f.cloneNode(true);c.setAttribute('data-brz-clone','');c.setAttribute('aria-hidden','true');c.removeAttribute('data-review-card');c.querySelectorAll('a,button,[tabindex]').forEach(e=>e.setAttribute('tabindex','-1'));t.appendChild(c);});}
  document.documentElement.setAttribute('data-brz-mq','');
- const first=t.querySelector(':scope>[data-brz-clone]');const shift=first.offsetLeft-orig[0].offsetLeft;
- t.style.setProperty('--brz-mq-shift',(-shift)+'px');t.style.setProperty('--brz-mq-dur',Math.max(20,shift/32)+'s');};
-let raf=0;const later=()=>{cancelAnimationFrame(raf);raf=requestAnimationFrame(sync);};
-const start=()=>{const r=document.getElementById('reviews');if(!r)return setTimeout(start,200);sync();new MutationObserver(ms=>{if(ms.some(x=>[...x.addedNodes,...x.removedNodes].some(n=>n.nodeType===1&&!n.hasAttribute?.('data-brz-clone'))))later();}).observe(r,{childList:true,subtree:true});};
-mq.addEventListener('change',sync);addEventListener('resize',later);start();})();
+ const first=t.querySelector(':scope>[data-brz-clone]');shift=first&&uniq[0]?first.offsetLeft-uniq[0].offsetLeft:0;return shift>0;};
+const wrap=()=>{if(!shift)return;if(m.scrollLeft>=shift)m.scrollLeft-=shift;else if(m.scrollLeft<=0)m.scrollLeft+=shift;};
+const tick=now=>{raf=requestAnimationFrame(tick);if(!m||!shift){last=now;return;}const dt=Math.min(64,now-(last||now));last=now;
+ if(touching||now<holdUntil||!visible||reduce.matches||document.hidden)return;acc+=SPEED*dt/1000;if(acc>=1){const px=Math.floor(acc);acc-=px;m.scrollLeft+=px;wrap();}};
+const hold=ms=>{holdUntil=performance.now()+ms;};
+const init=()=>{if(!build())return;
+ if(!m.__brzSwipe){m.__brzSwipe=1;
+  m.addEventListener('touchstart',()=>{touching=true;},{passive:true});
+  m.addEventListener('touchend',()=>{touching=false;hold(2500);},{passive:true});
+  m.addEventListener('touchcancel',()=>{touching=false;hold(2500);},{passive:true});
+  m.addEventListener('wheel',()=>hold(2500),{passive:true});
+  m.addEventListener('scroll',()=>{if(touching||performance.now()<holdUntil)wrap();},{passive:true});
+  new IntersectionObserver(es=>{visible=es[es.length-1].isIntersecting;}).observe(m);}
+ if(!raf)raf=requestAnimationFrame(tick);};
+let tm=0;const later=()=>{clearTimeout(tm);tm=setTimeout(init,120);};
+const start=()=>{const r=document.getElementById('reviews');if(!r)return setTimeout(start,200);init();new MutationObserver(ms=>{if(ms.some(x=>[...x.addedNodes,...x.removedNodes].some(n=>n.nodeType===1&&!n.hasAttribute?.('data-brz-clone'))))later();}).observe(r,{childList:true,subtree:true});};
+mq.addEventListener('change',later);addEventListener('resize',later);start();})();
 </script><style id="brz-ios-fixes">
 /* 31.10: iPhone — без системной кнопки «play» поверх видео (в режиме энергосбережения виден фон-картинка) и без текстового курсора на некликабельном тексте */
 video.hero-background::-webkit-media-controls,video.hero-background::-webkit-media-controls-start-playback-button,video.hero-background::-webkit-media-controls-overlay-play-button{display:none!important;-webkit-appearance:none!important;opacity:0!important}
@@ -3879,6 +3895,21 @@ let q=new Set(),raf=0;const flush=()=>{raf=0;const list=[...q];q.clear();list.fo
 const push=n=>{q.add(n);if(!raf)raf=requestAnimationFrame(flush);};
 const start=()=>{walk(document.body);new MutationObserver(ms=>ms.forEach(m=>{if(m.type==='characterData')push(m.target);else if(m.type==='attributes')push(document.body);else m.addedNodes.forEach(push);})).observe(document.documentElement,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['lang']});};
 if(document.readyState==='loading')addEventListener('DOMContentLoaded',start);else start();})();
+</script>
+<style id="brz-cmp-mobile">
+/* 31.10: мобилка — «Сравнить апартаменты»: шапка остаётся и при открытой таблице, стрелка просто поворачивается вверх; без отдельной кнопки и подсказки «Свернуть таблицу». «/ ночь» всегда второй строкой. */
+@media(max-width:900px){
+html:not(#z1):not(#z2):not(#z3) body .cmp-card>.acc:first-child{grid-template-rows:1fr!important;opacity:1!important}
+html:not(#z1):not(#z2):not(#z3) body .cmp-up,html:not(#z1):not(#z2):not(#z3) body .cmp-up .tip{display:none!important}
+html:not(#z1):not(#z2):not(#z3) body .cmp-card .cmp-down{transition:transform .35s cubic-bezier(.22,1,.36,1)}
+html:not(#z1):not(#z2):not(#z3) body .cmp-card button[aria-expanded="true"] .cmp-down{transform:rotate(180deg)}
+html:not(#z1):not(#z2):not(#z3) body .cmp-price>span:last-child{display:block!important;margin-top:2px}
+}
+</style>
+<script id="brz-cmp-mobile-js">
+/* шапка видна и при открытой таблице — делаем её доступной для клавиатуры и диктора */
+(()=>{const mq=matchMedia('(max-width:900px)');const fix=()=>{if(!mq.matches)return;const acc=document.querySelector('.cmp-card>.acc:first-child');if(!acc)return;if(acc.getAttribute('aria-hidden')==='true')acc.setAttribute('aria-hidden','false');const b=acc.querySelector('button');if(b&&b.getAttribute('tabindex')==='-1'){b.setAttribute('tabindex','0');delete b.dataset.brzTi;}};
+let t=0;new MutationObserver(()=>{cancelAnimationFrame(t);t=requestAnimationFrame(fix);}).observe(document.documentElement,{subtree:true,attributes:true,attributeFilter:['aria-hidden','tabindex','aria-expanded']});mq.addEventListener('change',fix);fix();})();
 </script>
 </body>
 </html>
