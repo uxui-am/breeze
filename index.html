@@ -3841,18 +3841,29 @@ html body :not(input):not(textarea):not(select):not([contenteditable]){caret-col
 html body #top h1{padding-left:40px!important;padding-right:40px!important;margin-left:-40px!important;margin-right:-40px!important}
 </style>
 <style id="brz-mobile-hero-v2">
-/* 31.10: мобилка главной — рейтинги по центру нижней панели, кнопка WhatsApp появляется после первого экрана, «Забронировать» как «Выбрать даты» в карточках */
+/* 31.10: мобилка главной. На первом экране: WhatsApp справа на нижней панели, рейтинги слева от него.
+   При прокрутке (WhatsApp уже не над панелью) рейтинги плавно встают ровно по центру панели; при возврате — обратно. */
 @media(max-width:900px){
-html:not(#z1):not(#z2):not(#z3) body #top .hero-bar{justify-content:center!important;padding-left:16px!important;padding-right:16px!important;gap:20px!important}
-html:not(#z1):not(#z2):not(#z3) body .wa-fab{transition:opacity .35s ease,transform .35s ease!important}
-html[data-brz-hero-bar]:not(#z1):not(#z2):not(#z3) body .wa-fab{opacity:0!important;transform:translateY(12px) scale(.9)!important;pointer-events:none!important}
+html:not(#z1):not(#z2):not(#z3) body #top .hero-bar{align-items:center!important;padding-top:0!important;padding-bottom:0!important}
+html:not(#z1):not(#z2):not(#z3) body #top .hero-bar>*{transition:transform .5s cubic-bezier(.22,1,.36,1);transform:translate(var(--brz-bar-dx,0px),var(--brz-bar-dy,0px))}
 html:not(#z1):not(#z2):not(#z3) body #top .m-book{width:calc(100vw - 94px)!important;max-width:420px!important;min-width:0!important;justify-content:center!important;height:56px!important;font-size:15px!important}
 }
 </style>
 <script id="brz-mobile-hero-v2-js">
-(()=>{const mq=matchMedia('(max-width:900px)');let io=null;const set=v=>{if(v)document.documentElement.setAttribute('data-brz-hero-bar','');else document.documentElement.removeAttribute('data-brz-hero-bar');};
-const start=()=>{const bar=document.querySelector('#top .hero-bar');if(!bar)return setTimeout(start,200);io=new IntersectionObserver(es=>{const e=es[es.length-1];set(mq.matches&&e.isIntersecting&&e.intersectionRatio>0.2);},{threshold:[0,0.2,0.5,1]});io.observe(bar);};
-mq.addEventListener('change',()=>{if(!mq.matches)set(false);});start();})();
+(()=>{const mq=matchMedia('(max-width:900px)');let raf=0;
+const upd=()=>{raf=0;const bar=document.querySelector('#top .hero-bar'),fab=document.querySelector('.wa-fab');if(!bar)return;
+ if(!mq.matches){bar.style.removeProperty('--brz-bar-dx');return;}
+ const kids=[...bar.children].filter(c=>c.getBoundingClientRect().width>0);if(!kids.length)return;
+ const br=bar.getBoundingClientRect(),fr=fab?fab.getBoundingClientRect():null;
+ const over=fr&&fr.width>0&&getComputedStyle(fab).display!=='none'&&fr.top<br.bottom&&fr.bottom>br.top;
+ /* позиции без учёта сдвига: offsetLeft не зависит от transform */
+ const L=Math.min(...kids.map(k=>k.offsetLeft)),R=Math.max(...kids.map(k=>k.offsetLeft+k.offsetWidth));
+ const dx=over?0:Math.round(bar.clientWidth/2-(L+R)/2);
+ const T=Math.min(...kids.map(k=>k.offsetTop)),B=Math.max(...kids.map(k=>k.offsetTop+k.offsetHeight));
+ bar.style.setProperty('--brz-bar-dx',dx+'px');bar.style.setProperty('--brz-bar-dy',Math.round(bar.clientHeight/2-(T+B)/2)+'px');};
+const later=()=>{if(!raf)raf=requestAnimationFrame(upd);};
+addEventListener('scroll',later,{passive:true});addEventListener('resize',later);mq.addEventListener('change',later);
+const start=()=>{if(!document.querySelector('#top .hero-bar'))return setTimeout(start,200);later();setTimeout(later,800);};start();})();
 </script>
 <script id="brz-nbsp">
 /* 31.10: без висячих предлогов и союзов: короткое слово «приклеивается» к следующему неразрывным пробелом (RU / EN / ES) */
