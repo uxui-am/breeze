@@ -2025,7 +2025,7 @@ html,body{overflow-x:clip}
 </footer>
 
 <!-- плавающая кнопка WhatsApp -->
-<a href="#" aria-label="{{t_s125}}" class="wa-fab" style="position: fixed; right: 28px; bottom: 28px; z-index: 10; width: 62px; height: 62px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #25d366; box-shadow: 0 10px 30px rgba(18,32,43,.22), inset 0 0 0 1px rgba(255,255,255,.25)"><svg width="30" height="30" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"></path></svg></a>
+<a href="https://wa.me/34722578739" target="_blank" rel="noopener" aria-label="{{t_s125}}" class="wa-fab" style="position: fixed; right: 28px; bottom: 28px; z-index: 10; width: 62px; height: 62px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #25d366; box-shadow: 0 10px 30px rgba(18,32,43,.22), inset 0 0 0 1px rgba(255,255,255,.25)"><svg width="30" height="30" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"></path></svg></a>
 </div>
 
 </template></x-dc>
@@ -3840,5 +3840,34 @@ html body :not(input):not(textarea):not(select):not([contenteditable]){caret-col
 /* 31.10: Safari рисовал розовую полосу у логотипа Breeze (тень надписи упиралась в край блока). Даём надписи запас места — вид не меняется. */
 html body #top h1{padding-left:40px!important;padding-right:40px!important;margin-left:-40px!important;margin-right:-40px!important}
 </style>
+<style id="brz-mobile-hero-v2">
+/* 31.10: мобилка главной — рейтинги по центру нижней панели, кнопка WhatsApp появляется после первого экрана, «Забронировать» как «Выбрать даты» в карточках */
+@media(max-width:900px){
+html:not(#z1):not(#z2):not(#z3) body #top .hero-bar{justify-content:center!important;padding-left:16px!important;padding-right:16px!important;gap:20px!important}
+html:not(#z1):not(#z2):not(#z3) body .wa-fab{transition:opacity .35s ease,transform .35s ease!important}
+html[data-brz-hero-bar]:not(#z1):not(#z2):not(#z3) body .wa-fab{opacity:0!important;transform:translateY(12px) scale(.9)!important;pointer-events:none!important}
+html:not(#z1):not(#z2):not(#z3) body #top .m-book{width:calc(100vw - 94px)!important;max-width:420px!important;min-width:0!important;justify-content:center!important;height:56px!important;font-size:15px!important}
+}
+</style>
+<script id="brz-mobile-hero-v2-js">
+(()=>{const mq=matchMedia('(max-width:900px)');let io=null;const set=v=>{if(v)document.documentElement.setAttribute('data-brz-hero-bar','');else document.documentElement.removeAttribute('data-brz-hero-bar');};
+const start=()=>{const bar=document.querySelector('#top .hero-bar');if(!bar)return setTimeout(start,200);io=new IntersectionObserver(es=>{const e=es[es.length-1];set(mq.matches&&e.isIntersecting&&e.intersectionRatio>0.2);},{threshold:[0,0.2,0.5,1]});io.observe(bar);};
+mq.addEventListener('change',()=>{if(!mq.matches)set(false);});start();})();
+</script>
+<script id="brz-nbsp">
+/* 31.10: без висячих предлогов и союзов: короткое слово «приклеивается» к следующему неразрывным пробелом (RU / EN / ES) */
+(()=>{const W={ru:'а|в|во|и|к|ко|о|об|обо|от|ото|по|с|со|у|за|из|изо|на|не|ни|но|до|для|без|под|над|при|про|или|да|же|ли|что|как',
+ en:'a|an|the|of|to|in|on|at|by|for|and|or|as|is|it|with|from',
+ es:'a|y|o|e|u|de|del|el|la|las|los|lo|en|con|por|para|sin|un|una|al|que|se|su|tu|mi'};
+const re={};for(const k in W)re[k]=new RegExp('(^|[\\s\\u00A0(«"“—–-])('+W[k]+')\\s+(?=\\S)','giu');
+const SKIP=/^(SCRIPT|STYLE|TEXTAREA|INPUT|SELECT|OPTION|CODE|PRE|NOSCRIPT|SVG)$/;
+const lang=()=>{const l=(document.documentElement.lang||'ru').slice(0,2);return re[l]?l:'ru';};
+const fixNode=n=>{const t=n.nodeValue;if(!t||t.length<3||!/\s/.test(t))return;const p=n.parentElement;if(!p||SKIP.test(p.tagName)||p.isContentEditable||p.closest('svg,[data-brz-nonbsp]'))return;const r=re[lang()];r.lastIndex=0;let v=t.replace(r,(m,a,w)=>a+w+' ');r.lastIndex=0;v=v.replace(r,(m,a,w)=>a+w+' ');if(v!==t)n.nodeValue=v;};
+const walk=root=>{if(root.nodeType===3)return fixNode(root);if(root.nodeType!==1||SKIP.test(root.tagName))return;const tw=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;while((n=tw.nextNode()))fixNode(n);};
+let q=new Set(),raf=0;const flush=()=>{raf=0;const list=[...q];q.clear();list.forEach(n=>n.isConnected&&walk(n));};
+const push=n=>{q.add(n);if(!raf)raf=requestAnimationFrame(flush);};
+const start=()=>{walk(document.body);new MutationObserver(ms=>ms.forEach(m=>{if(m.type==='characterData')push(m.target);else if(m.type==='attributes')push(document.body);else m.addedNodes.forEach(push);})).observe(document.documentElement,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['lang']});};
+if(document.readyState==='loading')addEventListener('DOMContentLoaded',start);else start();})();
+</script>
 </body>
 </html>
