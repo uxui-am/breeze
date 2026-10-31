@@ -1,0 +1,127 @@
+/* Breeze · Components — только на токенах из tokens.css */
+
+*,*::before,*::after{box-sizing:border-box}
+.brz{margin:0;background:var(--c-bg);color:var(--c-ink);font:var(--w-medium) var(--t-body-m) var(--f-text);-webkit-font-smoothing:antialiased}
+.brz img{display:block;max-width:100%}
+.wrap{max-width:var(--content-max);margin:0 auto;padding:0 var(--page-pad)}
+.section{padding:calc(var(--section-gap) / 2) 0}
+.muted{color:var(--c-muted)}
+
+/* ── Иконки ── */
+.ico{width:16px;height:16px;flex:none;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── Button: Size L/M/S × Style Dark/Light/Ghost/Outline ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--s-8);
+  height:var(--btn-m);padding:0 var(--s-24);border-radius:var(--r-pill);border:1px solid transparent;
+  font:var(--w-medium) var(--t-button) var(--f-text);text-decoration:none;cursor:pointer;white-space:nowrap;
+  transition:transform .2s ease,background-color .2s ease,border-color .2s ease,color .2s ease}
+.btn:active{transform:scale(.98)}
+.btn:focus-visible{outline:2px solid var(--c-accent);outline-offset:3px}
+.btn--l{height:var(--btn-l);padding:0 var(--s-40)}
+.btn--s{height:var(--btn-s);padding:0 var(--s-20)}
+.btn--block{display:flex;width:100%}
+.btn--dark{background:var(--c-ink);color:var(--c-surface)}
+.btn--dark:hover{background:#1d3140}
+.btn--light{background:var(--c-surface);color:var(--c-ink)}
+.btn--light:hover{background:var(--c-surface-soft)}
+.btn--ghost{background:var(--c-glass);color:var(--c-surface);border-color:var(--c-line-glass);backdrop-filter:var(--blur-chip);-webkit-backdrop-filter:var(--blur-chip)}
+.btn--ghost:hover{background:transparent;border-color:var(--c-surface)}   /* ховер: белый контур без заливки */
+.btn--outline{background:transparent;color:var(--c-ink);border-color:var(--c-line)}
+.btn--outline:hover{border-color:var(--c-ink)}
+.btn .ico{transition:transform .2s ease}
+.btn:hover .ico--arrow{transform:translateX(3px)}
+
+/* ── Icon button: Plus / Down / Close ── */
+.ibtn{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:var(--r-pill);
+  border:1px solid var(--c-line);background:transparent;color:var(--c-ink);cursor:pointer;padding:0;transition:border-color .2s,transform .3s}
+.ibtn:hover{border-color:var(--c-ink)}
+.ibtn--filled{background:var(--c-ink);color:var(--c-surface);border-color:var(--c-ink)}
+.ibtn--l{width:44px;height:44px}
+
+/* ── Glass controls: Language / Burger / Photo chip / WhatsApp ── */
+.glass{background:var(--c-glass);border:1px solid var(--c-line-glass);color:var(--c-surface);
+  backdrop-filter:var(--blur-glass);-webkit-backdrop-filter:var(--blur-glass)}
+.g-lang{height:44px;padding:0 var(--s-16);border-radius:var(--r-pill);display:inline-flex;align-items:center;font:var(--w-medium) var(--t-nav) var(--f-text)}
+.g-burger{width:44px;height:44px;border-radius:var(--r-pill);display:inline-grid;place-items:center;border:0}
+.g-chip{height:32px;padding:0 var(--s-12);border-radius:var(--r-pill);display:inline-flex;align-items:center;gap:6px;
+  background:var(--c-overlay);color:var(--c-surface);font:var(--w-medium) var(--t-caption) var(--f-text);backdrop-filter:var(--blur-chip);-webkit-backdrop-filter:var(--blur-chip)}
+.g-wa{width:56px;height:56px;border-radius:var(--r-pill);display:inline-grid;place-items:center;background:var(--c-whatsapp);color:#fff;box-shadow:var(--shadow-float)}
+.g-wa svg{width:26px;height:26px;fill:currentColor}
+
+/* ── Rating: Booking / Airbnb / Google ── */
+.rating{display:inline-flex;align-items:center;gap:var(--s-8);color:var(--c-ink);text-decoration:none;font:var(--w-medium) var(--t-body-m) var(--f-text);white-space:nowrap}
+.rating__badge{width:24px;height:24px;border-radius:var(--r-6);display:grid;place-items:center;color:#fff;font:700 14px/1 Arial,sans-serif}
+.rating--booking .rating__badge{background:var(--c-booking)}
+.rating--airbnb .rating__badge{background:var(--c-airbnb)}
+.rating--google .rating__badge{background:var(--c-google)}
+.rating .muted{font-weight:var(--w-medium)}
+
+/* ── Section header: Left / Center ── */
+.sh{display:flex;flex-direction:column;gap:var(--s-16);margin-bottom:var(--s-48)}
+.sh--center{align-items:center;text-align:center}
+.sh__kicker{color:var(--c-muted)}
+.sh__title{margin:0}
+.sh__lead{margin:0;color:var(--c-muted);max-width:640px}
+
+/* ── Price ── */
+.price{display:inline-flex;align-items:baseline;gap:6px}
+.price__from,.price__unit{color:inherit;opacity:.8}
+
+/* ── Amenity item ── */
+.amenity{display:flex;gap:var(--s-16);align-items:flex-start}
+.amenity__ico{width:36px;height:36px;border-radius:var(--r-pill);background:var(--c-surface-soft);display:grid;place-items:center;flex:none;color:var(--c-ink)}
+.amenity__title{margin:0 0 var(--s-4)}
+.amenity__text{margin:0;color:var(--c-muted)}
+
+/* ── Apartment card ── */
+.apt{position:relative;border-radius:var(--r-22);overflow:hidden;min-height:620px;display:flex;flex-direction:column;justify-content:flex-end;padding:var(--s-16);color:var(--c-surface);isolation:isolate}
+.apt__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.apt::before{content:"";position:absolute;inset:0;background:var(--c-photo-shade);z-index:-1}
+.apt__top{position:absolute;top:var(--s-16);left:var(--s-16);right:var(--s-16);display:flex;justify-content:space-between;align-items:center}
+.apt__panel{border-radius:var(--r-22);padding:var(--s-20);display:flex;flex-direction:column;gap:var(--s-12)}
+.apt__title{margin:0}
+.apt__sub{margin:0;color:var(--c-on-dark-muted)}
+.apt__specs{display:flex;justify-content:space-between;gap:var(--s-8);padding:var(--s-4) 0;color:var(--c-on-dark-muted)}
+.apt__specs span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.apt__specs i{width:1px;align-self:stretch;background:var(--c-line-glass)}
+.apt__actions{display:flex;flex-direction:column;gap:var(--s-8);margin-top:var(--s-4)}
+
+/* ── Review card ── */
+.review{background:var(--c-surface);border-radius:var(--r-22);padding:var(--s-24);display:flex;flex-direction:column;gap:var(--s-20);box-shadow:var(--shadow-card);min-height:340px}
+.review__top{display:flex;justify-content:space-between;align-items:center;gap:var(--s-12)}
+.review__score{color:var(--c-accent)}
+.review__text{margin:0;flex:1}
+.review__author{display:flex;gap:var(--s-12);align-items:center}
+.review__av{width:44px;height:44px;border-radius:var(--r-pill);object-fit:cover}
+
+/* ── Place card ── */
+.place{display:flex;flex-direction:column;gap:var(--s-16)}
+.place__img{border-radius:var(--r-22);aspect-ratio:4/3;width:100%;object-fit:cover}
+.place__title{margin:0}
+.place__text{margin:0;color:var(--c-muted)}
+
+/* ── FAQ item ── */
+.faq{border-top:1px solid var(--c-line)}
+.faq:last-child{border-bottom:1px solid var(--c-line)}
+.faq__q{display:flex;align-items:center;gap:var(--s-16);width:100%;padding:var(--s-20) 0;background:none;border:0;cursor:pointer;color:var(--c-ink);text-align:left}
+.faq__n{color:var(--c-muted);min-width:24px}
+.faq__t{flex:1}
+.faq__q .ibtn{transition:transform .3s ease}
+.faq[open] .ibtn{transform:rotate(45deg)}
+.faq__a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s ease}
+.faq[open] .faq__a{grid-template-rows:1fr}
+.faq__a>div{overflow:hidden}
+.faq__a p{margin:0 0 var(--s-20) 40px;color:var(--c-muted);max-width:720px}
+
+/* ── Booking bar (glass on dark) ── */
+.bbar{display:flex;align-items:center;gap:var(--s-16);padding:var(--s-16) var(--s-16) var(--s-16) var(--s-40);border-radius:var(--r-pill);background:var(--c-glass-dark);color:var(--c-surface)}
+.bbar__f{flex:1;display:flex;flex-direction:column;gap:2px;border:0;background:none;color:inherit;text-align:left;cursor:pointer;padding:0}
+.bbar__f small{color:var(--c-on-dark-muted)}
+@media (max-width:900px){
+  .bbar{flex-direction:column;align-items:stretch;border-radius:var(--r-22);padding:var(--s-16)}
+  .bbar__f{padding:var(--s-8) 0;border-bottom:1px solid var(--c-glass-dark)}
+}
+
+/* ── Dark section ── */
+.dark{background:var(--c-ink);color:var(--c-surface)}
+.dark .muted,.dark .sh__kicker,.dark .sh__lead{color:var(--c-on-dark-muted)}

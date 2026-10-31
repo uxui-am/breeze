@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Breeze · Design System</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<style>
+/* только для страницы-витрины */
+.ds-nav{position:sticky;top:0;z-index:5;background:rgb(244 246 245 / .9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--c-line)}
+.ds-nav .wrap{display:flex;align-items:center;gap:var(--s-24);height:64px;overflow-x:auto}
+.ds-nav a{color:var(--c-ink);text-decoration:none;white-space:nowrap}
+.ds-nav a:hover{color:var(--c-accent)}
+.ds-nav .t-logo{font-size:36px;margin-right:auto}
+.ds-block{padding:var(--s-48) 0;border-bottom:1px solid var(--c-line)}
+.ds-h{margin:0 0 var(--s-24)}
+.ds-sub{margin:var(--s-32) 0 var(--s-16);color:var(--c-muted)}
+.grid-sw{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--s-16)}
+.sw__c{height:72px;border-radius:var(--r-22);border:1px solid var(--c-line);margin-bottom:var(--s-8);background-image:linear-gradient(45deg,#ddd 25%,transparent 25%,transparent 75%,#ddd 75%),linear-gradient(45deg,#ddd 25%,transparent 25%,transparent 75%,#ddd 75%);background-size:12px 12px;background-position:0 0,6px 6px;position:relative;overflow:hidden}
+.sw__c[style]{background-blend-mode:normal}
+.ty{display:grid;grid-template-columns:180px 1fr;gap:var(--s-24);padding:var(--s-16) 0;border-top:1px solid var(--c-line);align-items:baseline}
+.spc{display:flex;align-items:center;gap:var(--s-12);margin-bottom:var(--s-8)}
+.spc__b{height:16px;background:var(--c-accent);border-radius:2px}
+.rad{display:flex;gap:var(--s-24);flex-wrap:wrap}
+.rad div{width:96px;height:96px;background:var(--c-surface);border:1px solid var(--c-line);display:grid;place-items:end center;padding:var(--s-8)}
+.row{display:flex;flex-wrap:wrap;gap:var(--s-16);align-items:center}
+.stage{padding:var(--s-24);border-radius:var(--r-22);background:url('https://res.cloudinary.com/hblm4pzr/image/upload/f_auto,q_auto/v1793408357/hero-bg3-v2') center/cover;display:flex;flex-wrap:wrap;gap:var(--s-16);align-items:center}
+.cols-3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-24)}
+.cols-4{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-24)}
+@media (max-width:900px){
+  .ty{grid-template-columns:1fr;gap:var(--s-4)}
+  .cols-3,.cols-4{grid-template-columns:1fr;gap:var(--s-16)}
+  .reviews{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(var(--page-pad) * -1);padding:0 var(--page-pad)}
+  .reviews .review{flex:0 0 85%;scroll-snap-align:center}
+  .apt{min-height:520px}
+}
+</style>
+</head>
+<body class="brz">
+
+<nav class="ds-nav"><div class="wrap t-nav">
+  <span class="t-logo">Breeze</span>
+  <a href="#colors">Цвета</a><a href="#type">Типографика</a><a href="#space">Отступы</a><a href="#components">Компоненты</a><a href="#sections">Секции</a>
+</div></nav>
+
+<main class="wrap">
+
+<section class="ds-block" id="colors">
+  <h2 class="t-h2 ds-h">Цвета</h2>
+  <div class="grid-sw"><div class="sw"><div class="sw__c" style="box-shadow:inset 0 0 0 200px var(--c-ink)"></div><div class="t-body-s">ink</div><div class="t-caption muted">#12202b<br>Текст, тёмные кнопки</div></div><div class="sw"><div class="sw__c" style="box-shadow:inset 0 0 0 200px var(--c-muted)"></div><div class="t-body-s">muted</div><div class="t-caption muted">#5d6a72<br>Вторичный текст</div></div><div class="sw"><div class="sw__c" style="box-shadow:inset 0 0 0 200px var(--c-accent)"></div><div class="t-body-s">accent</div><div class="t-caption muted">#3d6a80<br>Акцент, оценки</div></div><div class="sw"><div class="sw__c" style="box-shadow:inset 0 0 0 200px var(--c-bg)"></div><div class="t-body-s">bg</div><div class="t-caption muted">#f4f6f5<br>Фон страницы</div></div><div class="sw"><div class="sw__c" style="box-shadow:inset 0 0 0 200px var(--c-surface)"></div><div class="t-body-s">surface</div><div class="t-caption muted">#ffffff<br>Карточки</div></div><div class="sw"><div class="sw__c" style="box-shadow:inset 0 0 0 200px var(--c-surface-soft)"></div><div class="t-body-s">surface-soft</div><div class="t-caption muted">#eef3f4<br>Мягкие плашки</div></div><div class="sw"><div class="sw__c" style="box-shadow:inset 0 0 0 200px var(--c-whatsapp)"></div><div class="t-body-s">whatsapp</div><div class="t-caption muted">#25d366<br>Бренд</div></div><div class="sw"><div class="sw__c" style="box-shadow:inset 0 0 0 200px var(--c-on-dark-muted)"></div><div class="t-body-s">on-dark-muted</div><div class="t-caption muted">70%<br>Текст на тёмном и на фото</div></div><div class="sw"><div class="sw__c" style="box-shadow:inset 0 0 0 200px var(--c-overlay)"></div><div class="t-body-s">overlay</div><div class="t-caption muted">rgb(18 32 43 / .6)<br>Затемнение · 60%</div></div><div class="sw"><div class="sw__c" style="box-shadow:inset 0 0 0 200px var(--c-photo-shade)"></div><div class="t-body-s">photo-shade</div><div class="t-caption muted">rgb(18 32 43 / .25)<br>Тень фото · 25%</div></div><div class="sw"><div class="sw__c" style="box-shadow:inset 0 0 0 200px var(--c-glass)"></div><div class="t-body-s">glass</div><div class="t-caption muted">rgb(255 255 255 / .16)<br>Стекло · 16%</div></div><div class="sw"><div class="sw__c" style="box-shadow:inset 0 0 0 200px var(--c-glass-dark)"></div><div class="t-body-s">glass-dark</div><div class="t-caption muted">rgb(255 255 255 / .1)<br>Стекло и линии на тёмном · 10%</div></div><div class="sw"><div class="sw__c" style="box-shadow:inset 0 0 0 200px var(--c-line)"></div><div class="t-body-s">line</div><div class="t-caption muted">rgb(18 32 43 / .14)<br>Разделители · 14%</div></div><div class="sw"><div class="sw__c" style="box-shadow:inset 0 0 0 200px var(--c-line-glass)"></div><div class="t-body-s">line-glass</div><div class="t-caption muted">rgb(255 255 255 / .5)<br>Белые обводки · 50%</div></div><div class="sw"><div class="sw__c" style="box-shadow:inset 0 0 0 200px var(--c-booking)"></div><div class="t-body-s">booking</div><div class="t-caption muted">#003b95<br>Booking</div></div><div class="sw"><div class="sw__c" style="box-shadow:inset 0 0 0 200px var(--c-airbnb)"></div><div class="t-body-s">airbnb</div><div class="t-caption muted">#ff5a5f<br>Airbnb</div></div><div class="sw"><div class="sw__c" style="box-shadow:inset 0 0 0 200px var(--c-google)"></div><div class="t-body-s">google</div><div class="t-caption muted">#4285f4<br>Google</div></div></div>
+</section>
+
+<section class="ds-block" id="type">
+  <h2 class="t-h2 ds-h">Типографика</h2>
+  <p class="t-body-m muted">Manrope Light и Medium, логотип — Quentin. Размеры: десктоп · мобилка (≤900px). Сузьте окно — стили переключатся сами.</p>
+  <div class="ty"><div class="ty__m"><div class="t-body-s">H2</div><div class="t-caption muted">64/66 · 36/40</div></div><div class="t-h2">Отдых начинается здесь</div></div><div class="ty"><div class="ty__m"><div class="t-body-s">H3</div><div class="t-caption muted">48/53 · 28/32</div></div><div class="t-h3">Анастасия</div></div><div class="ty"><div class="ty__m"><div class="t-body-s">Hero subtitle</div><div class="t-caption muted">30/46 · 22/30</div></div><div class="t-hero-sub">Три апартамента у океана</div></div><div class="ty"><div class="ty__m"><div class="t-body-s">Lead</div><div class="t-caption muted">20/30 · 18/27</div></div><div class="t-lead">В каждом — своя кухня, терраса и бассейны комплекса.</div></div><div class="ty"><div class="ty__m"><div class="t-body-s">Card title L</div><div class="t-caption muted">30/34 · 24/29</div></div><div class="t-card-l">Ocean Breeze</div></div><div class="ty"><div class="ty__m"><div class="t-body-s">Card title M</div><div class="t-caption muted">24/29 · 20/26</div></div><div class="t-card-m">Маска и Тено</div></div><div class="ty"><div class="ty__m"><div class="t-body-s">Card title S</div><div class="t-caption muted">20/28 · 18/24</div></div><div class="t-card-s">2 больших бассейна</div></div><div class="ty"><div class="ty__m"><div class="t-body-s">Body L</div><div class="t-caption muted">18/28 · 16/26</div></div><div class="t-body-l">Солнце весь день, вокруг лежаки и зелень.</div></div><div class="ty"><div class="ty__m"><div class="t-body-s">Body M</div><div class="t-caption muted">16/26</div></div><div class="t-body-m">Солнце весь день, вокруг лежаки и зелень.</div></div><div class="ty"><div class="ty__m"><div class="t-body-s">Body S</div><div class="t-caption muted">14/22</div></div><div class="t-body-s">65 м² · 1 ванная · 1 спальня</div></div><div class="ty"><div class="ty__m"><div class="t-body-s">Caption</div><div class="t-caption muted">13/20</div></div><div class="t-caption">© 2026 Breeze Apartments Tenerife</div></div><div class="ty"><div class="ty__m"><div class="t-body-s">Kicker</div><div class="t-caption muted">13/20 · +16%</div></div><div class="t-kicker">Комплекс Balcón de Los Gigantes</div></div><div class="ty"><div class="ty__m"><div class="t-body-s">Button</div><div class="t-caption muted">15/20</div></div><div class="t-button">Забронировать</div></div><div class="ty"><div class="ty__m"><div class="t-body-s">Nav</div><div class="t-caption muted">15</div></div><div class="t-nav">Апартаменты</div></div>
+  <div class="ty"><div class="ty__m"><div class="t-body-s">Price L / S</div><div class="t-caption muted">36 + 16 · 22 + 14</div></div>
+    <div class="row"><span class="price"><span class="t-price-l-unit price__from">от</span><span class="t-price-l">95 €</span><span class="t-price-l-unit price__unit">/ ночь</span></span>
+    <span class="price"><span class="t-price-s">420 €</span><span class="t-price-s-unit price__unit">итого</span></span></div></div>
+  <div class="ty"><div class="ty__m"><div class="t-body-s">Logo</div><div class="t-caption muted">240 · 114 · footer 80</div></div><div class="t-logo" style="font-size:var(--logo-footer)">Breeze</div></div>
+</section>
+
+<section class="ds-block" id="space">
+  <h2 class="t-h2 ds-h">Отступы и скругления</h2>
+  <p class="t-body-m muted">Шаг сетки отступов. Между секциями: 120 на десктопе, 40 на мобилке. Поля страницы: 32 / 16, контент до 1440.</p>
+  <div class="spc"><div class="spc__b" style="width:var(--s-4)"></div><span class="t-caption muted">4</span></div><div class="spc"><div class="spc__b" style="width:var(--s-8)"></div><span class="t-caption muted">8</span></div><div class="spc"><div class="spc__b" style="width:var(--s-12)"></div><span class="t-caption muted">12</span></div><div class="spc"><div class="spc__b" style="width:var(--s-16)"></div><span class="t-caption muted">16</span></div><div class="spc"><div class="spc__b" style="width:var(--s-20)"></div><span class="t-caption muted">20</span></div><div class="spc"><div class="spc__b" style="width:var(--s-24)"></div><span class="t-caption muted">24</span></div><div class="spc"><div class="spc__b" style="width:var(--s-32)"></div><span class="t-caption muted">32</span></div><div class="spc"><div class="spc__b" style="width:var(--s-40)"></div><span class="t-caption muted">40</span></div><div class="spc"><div class="spc__b" style="width:var(--s-48)"></div><span class="t-caption muted">48</span></div><div class="spc"><div class="spc__b" style="width:var(--s-64)"></div><span class="t-caption muted">64</span></div><div class="spc"><div class="spc__b" style="width:var(--s-80)"></div><span class="t-caption muted">80</span></div><div class="spc"><div class="spc__b" style="width:var(--s-120)"></div><span class="t-caption muted">120</span></div>
+  <h3 class="t-card-s ds-sub">Скругления</h3>
+  <div class="rad">
+    <div style="border-radius:var(--r-6)"><span class="t-caption">6 · бренды</span></div>
+    <div style="border-radius:var(--r-22)"><span class="t-caption">22 · карточки</span></div>
+    <div style="border-radius:var(--r-32)"><span class="t-caption">32 · hero</span></div>
+    <div style="border-radius:var(--r-pill)"><span class="t-caption">pill</span></div>
+  </div>
+</section>
+
+<section class="ds-block" id="components">
+  <h2 class="t-h2 ds-h">Компоненты</h2>
+
+  <h3 class="t-card-s ds-sub">Button · L 64 / M 56 / S 44</h3>
+  <div class="row">
+    <a class="btn btn--l btn--dark" href="#">Забронировать <svg class="ico ico--arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+    <a class="btn btn--dark" href="#">Забронировать <svg class="ico ico--arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+    <a class="btn btn--s btn--dark" href="#">Подробнее <svg class="ico ico--arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+    <a class="btn btn--outline" href="#">Обсудить особые условия</a>
+    <a class="btn btn--s btn--outline" href="#">Подробнее <svg class="ico ico--arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+  </div>
+  <div class="stage" style="margin-top:var(--s-16)">
+    <a class="btn btn--l btn--light" href="#">Забронировать <svg class="ico ico--arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+    <a class="btn btn--ghost" href="#">Подробнее <svg class="ico ico--arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+    <a class="btn btn--s btn--light" href="#">Выбрать даты <svg class="ico ico--arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+  </div>
+
+  <h3 class="t-card-s ds-sub">Icon button · Plus / Down / Close</h3>
+  <div class="row">
+    <button class="ibtn" aria-label="Открыть"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg></button>
+    <button class="ibtn ibtn--filled" aria-label="Вниз"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M4 9l4 4 4-4"/></svg></button>
+    <button class="ibtn ibtn--filled ibtn--l" aria-label="Закрыть"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>
+  </div>
+
+  <h3 class="t-card-s ds-sub">Glass controls · Language / Burger / Photo chip / WhatsApp</h3>
+  <div class="stage">
+    <span class="g-lang glass">RU</span>
+    <button class="g-burger glass" aria-label="Меню"><svg class="ico" viewBox="0 0 16 16" style="width:20px;height:20px"><path d="M2 5h12M2 11h12"/></svg></button>
+    <span class="g-chip">Все фото · 5</span>
+    <a class="g-wa" href="#" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.4-.3z"/></svg></a>
+  </div>
+
+  <h3 class="t-card-s ds-sub">Rating</h3>
+  <div class="row">
+    <a class="rating rating--booking" href="#"><span class="rating__badge">B</span>Booking <span class="muted">9,4/10</span></a>
+    <a class="rating rating--airbnb" href="#"><span class="rating__badge">A</span>Airbnb <span class="muted">★ 4,9</span></a>
+    <a class="rating rating--google" href="#"><span class="rating__badge">G</span>Google <span class="muted">★ 4,8</span></a>
+  </div>
+
+  <h3 class="t-card-s ds-sub">Section header · Left / Center</h3>
+  <div class="cols-3" style="grid-template-columns:1fr 1fr">
+    <div class="sh"><span class="t-kicker sh__kicker">Отзывы</span><h2 class="t-h2 sh__title">Что говорят гости</h2></div>
+    <div class="sh sh--center"><span class="t-kicker sh__kicker">Puerto de Santiago · Tenerife</span><h2 class="t-h2 sh__title">Три апартамента</h2><p class="t-lead sh__lead">В каждом — своя кухня, терраса и бассейны комплекса.</p></div>
+  </div>
+
+  <h3 class="t-card-s ds-sub">Amenity item</h3>
+  <div class="cols-3">
+    <div class="amenity"><span class="amenity__ico"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 12c1.5 0 1.5 1 3 1s1.5-1 3-1 1.5 1 3 1 1.5-1 3-1M5 10V3.5a1.5 1.5 0 0 1 3 0M11 10V3.5a1.5 1.5 0 0 0-3 0M5 6h6"/></svg></span><div><p class="t-card-s amenity__title">2 больших бассейна</p><p class="t-body-m amenity__text">Солнце весь день, вокруг лежаки и зелень.</p></div></div>
+    <div class="amenity"><span class="amenity__ico"><svg class="ico" viewBox="0 0 16 16"><rect x="2.5" y="2.5" width="11" height="11" rx="2"/><path d="M6.5 11V5h2a1.8 1.8 0 0 1 0 3.6h-2"/></svg></span><div><p class="t-card-s amenity__title">Подземная парковка</p><p class="t-body-m amenity__text">Прямо в комплексе, 12 € в день — по запросу.</p></div></div>
+  </div>
+</section>
+
+<section class="ds-block" id="sections">
+  <h2 class="t-h2 ds-h">Секции из компонентов</h2>
+
+  <div class="section">
+    <div class="sh sh--center"><span class="t-kicker sh__kicker">Puerto de Santiago · Tenerife</span><h2 class="t-h2 sh__title">Три апартамента<br>Три характера</h2><p class="t-lead sh__lead">В каждом — своя кухня, терраса и бассейны комплекса Balcón de Los Gigantes. До 6 гостей.</p></div>
+    <div class="cols-3"><article class="apt"><img class="apt__img" src="https://res.cloudinary.com/hblm4pzr/image/upload/f_auto,q_auto/v1793407810/ocean-6c6748dc02fd6f03cbc8e92f512ca34b" alt="Ocean Breeze" loading="lazy">
+<div class="apt__top"><span></span><span class="g-chip">Все фото · 5</span></div>
+<div class="apt__panel glass"><h3 class="t-card-m apt__title">Ocean Breeze</h3><p class="t-body-s apt__sub">Солнце весь день · вид на бассейн</p>
+<span class="price"><span class="t-price-l-unit price__from">от</span><span class="t-price-l">95 €</span><span class="t-price-l-unit price__unit">/ ночь</span></span>
+<div class="apt__specs t-body-s"><span><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><rect x=2.5 y=2.5 width=11 height=11 rx=1.5 stroke-dasharray=3 2/></svg>65 м²</span><i></i><span><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d='M2 9h12v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zM4 9V4a1.5 1.5 0 0 1 3 0'/></svg>1 ванная</span><i></i><span><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d='M2 12V5M2 9h12v3M14 9a2 2 0 0 0-2-2H7v2'/></svg>1 спальня</span></div>
+<div class="apt__actions"><a class="btn btn--ghost btn--block" href="#">Подробнее <svg class="ico ico--arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a><a class="btn btn--light btn--block" href="#">Выбрать даты <svg class="ico ico--arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></div></div></article><article class="apt"><img class="apt__img" src="https://res.cloudinary.com/hblm4pzr/image/upload/f_auto,q_auto/v1793407753/d18fd1a36eb0dbf869071696fbbdb6b0" alt="Atlantic Breeze" loading="lazy">
+<div class="apt__top"><span></span><span class="g-chip">Все фото · 5</span></div>
+<div class="apt__panel glass"><h3 class="t-card-m apt__title">Atlantic Breeze</h3><p class="t-body-s apt__sub">Свежесть и тень · вид на бассейн</p>
+<span class="price"><span class="t-price-l-unit price__from">от</span><span class="t-price-l">105 €</span><span class="t-price-l-unit price__unit">/ ночь</span></span>
+<div class="apt__specs t-body-s"><span><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><rect x=2.5 y=2.5 width=11 height=11 rx=1.5 stroke-dasharray=3 2/></svg>82 м²</span><i></i><span><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d='M2 9h12v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zM4 9V4a1.5 1.5 0 0 1 3 0'/></svg>1 ванная</span><i></i><span><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d='M2 12V5M2 9h12v3M14 9a2 2 0 0 0-2-2H7v2'/></svg>1 спальня</span></div>
+<div class="apt__actions"><a class="btn btn--ghost btn--block" href="#">Подробнее <svg class="ico ico--arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a><a class="btn btn--light btn--block" href="#">Выбрать даты <svg class="ico ico--arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></div></div></article><article class="apt"><img class="apt__img" src="https://res.cloudinary.com/hblm4pzr/image/upload/f_auto,q_auto/v1793407740/84ff5a4a3061766bb4d2f1642f233434" alt="Summer Breeze" loading="lazy">
+<div class="apt__top"><span></span><span class="g-chip">Все фото · 5</span></div>
+<div class="apt__panel glass"><h3 class="t-card-m apt__title">Summer Breeze</h3><p class="t-body-s apt__sub">Солнце и закаты · вид на бассейн</p>
+<span class="price"><span class="t-price-l-unit price__from">от</span><span class="t-price-l">140 €</span><span class="t-price-l-unit price__unit">/ ночь</span></span>
+<div class="apt__specs t-body-s"><span><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><rect x=2.5 y=2.5 width=11 height=11 rx=1.5 stroke-dasharray=3 2/></svg>98 м²</span><i></i><span><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d='M2 9h12v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zM4 9V4a1.5 1.5 0 0 1 3 0'/></svg>2 ванные</span><i></i><span><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d='M2 12V5M2 9h12v3M14 9a2 2 0 0 0-2-2H7v2'/></svg>2 спальни</span></div>
+<div class="apt__actions"><a class="btn btn--ghost btn--block" href="#">Подробнее <svg class="ico ico--arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a><a class="btn btn--light btn--block" href="#">Выбрать даты <svg class="ico ico--arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></div></div></article></div>
+  </div>
+
+  <div class="section">
+    <div class="sh"><span class="t-kicker sh__kicker">Окрестности</span><h2 class="t-h2 sh__title">Не только здесь</h2></div>
+    <div class="cols-4"><article class="place"><img class="place__img" src="https://res.cloudinary.com/hblm4pzr/image/upload/f_auto,q_auto/v1793407773/location-cliffs-v2" alt="Лос-Гигантес" loading="lazy"><h3 class="t-card-m place__title">Лос-Гигантес</h3><p class="t-body-m place__text">Впечатляющие утёсы и виды на Атлантический океан.</p></article><article class="place"><img class="place__img" src="https://res.cloudinary.com/hblm4pzr/image/upload/f_auto,q_auto/v1793407773/location-beach-v2" alt="Пляж" loading="lazy"><h3 class="t-card-m place__title">Пляж</h3><p class="t-body-m place__text">Знаменитый пляж с тёмным вулканическим песком.</p></article><article class="place"><img class="place__img" src="https://res.cloudinary.com/hblm4pzr/image/upload/f_auto,q_auto/v1793407771/location-sea-v2" alt="Морские прогулки" loading="lazy"><h3 class="t-card-m place__title">Морские прогулки</h3><p class="t-body-m place__text">Экскурсии из порта Los Gigantes с наблюдением за китами.</p></article><article class="place"><img class="place__img" src="https://res.cloudinary.com/hblm4pzr/image/upload/f_auto,q_auto/v1793407772/location-masca-v2" alt="Маска и Тено" loading="lazy"><h3 class="t-card-m place__title">Маска и Тено</h3><p class="t-body-m place__text">Горные пейзажи; маршруты требуют планирования заранее.</p></article></div>
+  </div>
+
+  <div class="section">
+    <div class="sh sh--center"><span class="t-kicker sh__kicker">Отзывы</span><h2 class="t-h2 sh__title">Что говорят гости</h2></div>
+    <div class="cols-3 reviews"><figure class="review" style="margin:0"><div class="review__top"><span class="rating rating--booking"><span class="rating__badge">B</span>Booking.com</span><span class="t-card-s review__score">10/10</span></div><blockquote class="t-body-l review__text" style="margin:0">«Вид с террасы на закат — ради этого стоит приехать. Анастасия встретила и всё показала.»</blockquote><figcaption class="review__author"><img class="review__av" src="https://res.cloudinary.com/hblm4pzr/image/upload/f_auto,q_auto/v1793407834/review-portrait-4e0d5" alt=""><div><div class="t-body-m">Марина</div><div class="t-body-s muted">Германия · Summer Breeze</div></div></figcaption></figure><figure class="review" style="margin:0"><div class="review__top"><span class="rating rating--airbnb"><span class="rating__badge">A</span>Airbnb</span><span class="t-card-s review__score">★ 5/5</span></div><blockquote class="t-body-l review__text" style="margin:0">«Очень чисто, всё есть для жизни. Бассейны отличные, дети были в восторге.»</blockquote><figcaption class="review__author"><img class="review__av" src="https://res.cloudinary.com/hblm4pzr/image/upload/f_auto,q_auto/v1793407834/review-portrait-58a05" alt=""><div><div class="t-body-m">Джеймс</div><div class="t-body-s muted">Великобритания · Ocean Breeze</div></div></figcaption></figure><figure class="review" style="margin:0"><div class="review__top"><span class="rating rating--google"><span class="rating__badge">G</span>Google</span><span class="t-card-s review__score">★ 5/5</span></div><blockquote class="t-body-l review__text" style="margin:0">«Тихий комплекс, удобная парковка, до океана пешком. Обязательно вернёмся.»</blockquote><figcaption class="review__author"><img class="review__av" src="https://res.cloudinary.com/hblm4pzr/image/upload/f_auto,q_auto/v1793407835/review-portrait-81f24" alt=""><div><div class="t-body-m">Лука</div><div class="t-body-s muted">Италия · Atlantic Breeze</div></div></figcaption></figure></div>
+  </div>
+
+  <div class="section">
+    <div class="sh sh--center"><h2 class="t-h2 sh__title">Частые вопросы</h2><p class="t-body-l sh__lead">Не нашли ответ? Напишите Анастасии в WhatsApp.</p></div>
+    <div style="max-width:960px;margin:0 auto"><div class="faq"><button class="faq__q" aria-expanded="false"><span class="t-caption faq__n">01</span><span class="t-card-s faq__t">Во сколько заезд и выезд?</span><span class="ibtn"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg></span></button><div class="faq__a"><div><p class="t-body-m">Ответ уточнит Анастасия — напишите в WhatsApp, отвечаем быстро.</p></div></div></div><div class="faq"><button class="faq__q" aria-expanded="false"><span class="t-caption faq__n">02</span><span class="t-card-s faq__t">Как добраться из аэропорта?</span><span class="ibtn"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg></span></button><div class="faq__a"><div><p class="t-body-m">Ответ уточнит Анастасия — напишите в WhatsApp, отвечаем быстро.</p></div></div></div><div class="faq"><button class="faq__q" aria-expanded="false"><span class="t-caption faq__n">03</span><span class="t-card-s faq__t">Можно ли отменить бронь?</span><span class="ibtn"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg></span></button><div class="faq__a"><div><p class="t-body-m">Ответ уточнит Анастасия — напишите в WhatsApp, отвечаем быстро.</p></div></div></div><div class="faq"><button class="faq__q" aria-expanded="false"><span class="t-caption faq__n">04</span><span class="t-card-s faq__t">Нужен ли депозит?</span><span class="ibtn"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg></span></button><div class="faq__a"><div><p class="t-body-m">Ответ уточнит Анастасия — напишите в WhatsApp, отвечаем быстро.</p></div></div></div><div class="faq"><button class="faq__q" aria-expanded="false"><span class="t-caption faq__n">05</span><span class="t-card-s faq__t">Есть ли парковка?</span><span class="ibtn"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg></span></button><div class="faq__a"><div><p class="t-body-m">Ответ уточнит Анастасия — напишите в WhatsApp, отвечаем быстро.</p></div></div></div><div class="faq"><button class="faq__q" aria-expanded="false"><span class="t-caption faq__n">06</span><span class="t-card-s faq__t">Можно ли с детьми и животными?</span><span class="ibtn"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg></span></button><div class="faq__a"><div><p class="t-body-m">Ответ уточнит Анастасия — напишите в WhatsApp, отвечаем быстро.</p></div></div></div></div>
+  </div>
+</section>
+</main>
+
+<footer class="dark" style="padding:var(--section-gap) 0 var(--s-40)">
+  <div class="wrap">
+    <div class="bbar">
+      <button class="bbar__f"><small class="t-caption">Заезд</small><span class="t-body-l">Дата заезда</span></button>
+      <button class="bbar__f"><small class="t-caption">Выезд</small><span class="t-body-l">Дата выезда</span></button>
+      <button class="bbar__f"><small class="t-caption">Гости</small><span class="t-body-l">Количество гостей</span></button>
+      <a class="btn btn--l btn--light" href="#">Забронировать <svg class="ico ico--arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+    </div>
+    <div style="margin-top:var(--s-64);display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--s-16);border-top:1px solid var(--c-glass-dark);padding-top:var(--s-24)">
+      <span class="t-logo" style="font-size:var(--logo-footer)">Breeze</span>
+      <span class="t-caption muted" style="align-self:end">© 2026 Breeze Apartments Tenerife</span>
+    </div>
+  </div>
+</footer>
+
+<a class="g-wa" href="#" aria-label="WhatsApp" style="position:fixed;right:var(--s-16);bottom:var(--s-16)"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.4-.3z"/></svg></a>
+
+<script>
+document.querySelectorAll('.faq__q').forEach(b=>b.addEventListener('click',()=>{const f=b.closest('.faq');f.toggleAttribute('open');b.setAttribute('aria-expanded',f.hasAttribute('open'))}));
+</script>
+</body>
+</html>

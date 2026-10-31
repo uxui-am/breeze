@@ -1,0 +1,113 @@
+/* Breeze · Design tokens
+   Источник: Figma «Breeze / Colors», «Breeze / Space & Radius», «Breeze / Responsive».
+   Desktop — по умолчанию, Mobile — ≤900px. Меняется только размер, не стиль. */
+
+@font-face{font-family:'Manrope DS';font-weight:300;src:url('../assets/manrope-light.ttf') format('truetype');font-display:swap}
+@font-face{font-family:'Manrope DS';font-weight:500;src:url('../assets/manrope-medium.ttf') format('truetype');font-display:swap}
+@font-face{font-family:'Quentin';src:url('../assets/4646cd14a0a5d9e37ba70e42caecf4cb.otf') format('opentype');font-display:swap}
+
+:root{
+  /* ── Цвета ── */
+  --c-ink:#12202b;
+  --c-muted:#5d6a72;
+  --c-accent:#3d6a80;
+  --c-bg:#f4f6f5;
+  --c-surface:#fff;
+  --c-surface-soft:#eef3f4;
+  --c-on-dark-muted:rgb(255 255 255 / .7); /* текст на тёмном и на фото */
+  --c-overlay:rgb(18 32 43 / .6);
+  --c-photo-shade:rgb(18 32 43 / .25);
+  --c-glass:rgb(255 255 255 / .16);
+  --c-glass-dark:rgb(255 255 255 / .1);      /* стекло и линии на тёмном */
+  --c-line:rgb(18 32 43 / .14);
+  --c-line-glass:rgb(255 255 255 / .5);
+
+  /* ── Бренды (не для интерфейса) ── */
+  --c-booking:#003b95;
+  --c-airbnb:#ff5a5f;
+  --c-google:#4285f4;
+  --c-whatsapp:#25d366;
+
+  /* ── Отступы ── */
+  --s-4:4px; --s-8:8px; --s-12:12px; --s-16:16px; --s-20:20px; --s-24:24px;
+  --s-32:32px; --s-40:40px; --s-48:48px; --s-64:64px; --s-80:80px; --s-120:120px;
+
+  /* ── Скругления ── */
+  --r-6:6px;     /* иконки брендов */
+  --r-22:22px;   /* карточки, фото, панели, таблица */
+  --r-32:32px;   /* только hero */
+  --r-pill:999px;
+
+  /* ── Тени и стекло ── */
+  --shadow-card:0 8px 30px rgb(18 32 43 / .06);
+  --shadow-float:0 10px 30px rgb(18 32 43 / .22);
+  --blur-glass:blur(18px);
+  --blur-chip:blur(12px);
+
+  /* ── Шрифты ── */
+  --f-text:'Manrope DS','Manrope',system-ui,sans-serif;
+  --f-logo:'Quentin',cursive;
+  --w-light:300; --w-medium:500;
+
+  /* ── Адаптивные размеры: Desktop ── */
+  --t-h2:64px/66px;           --t-h2-size:64px;
+  --t-h3:48px/53px;
+  --t-hero-sub:30px/46px;
+  --t-lead:20px/30px;
+  --t-body-l:18px/28px;
+  --t-body-m:16px/26px;
+  --t-body-s:14px/22px;
+  --t-caption:13px/20px;
+  --t-kicker:13px/20px;
+  --t-card-l:30px/34px;
+  --t-card-m:24px/29px;
+  --t-card-s:20px/28px;
+  --t-price-l:36px/40px;  --t-price-l-unit:16px/24px;
+  --t-price-s:22px/26px;  --t-price-s-unit:14px/20px;
+  --t-button:15px/20px;
+  --t-nav:15px/23px;
+  --logo-hero:240px; --logo-footer:80px;
+
+  --btn-l:64px; --btn-m:56px; --btn-s:44px;
+
+  --section-gap:120px;
+  --page-pad:32px;
+  --content-max:1440px;
+}
+
+@media (max-width:900px){
+  :root{
+    --t-h2:36px/40px;
+    --t-h3:28px/32px;
+    --t-hero-sub:22px/30px;
+    --t-lead:18px/27px;
+    --t-body-l:16px/26px;
+    --t-card-l:24px/29px;
+    --t-card-m:20px/26px;
+    --t-card-s:18px/24px;
+    --logo-hero:114px;
+    --section-gap:40px;
+    --page-pad:16px;
+  }
+}
+
+/* ── Текстовые стили (те же имена, что в Figma: Breeze/…) ── */
+.t-h2{font:var(--w-light) var(--t-h2) var(--f-text);letter-spacing:-.03em}
+.t-h3{font:var(--w-light) var(--t-h3) var(--f-text);letter-spacing:-.03em}
+.t-hero-sub{font:var(--w-light) var(--t-hero-sub) var(--f-text);letter-spacing:-.01em}
+.t-lead{font:var(--w-light) var(--t-lead) var(--f-text)}
+.t-body-l{font:var(--w-medium) var(--t-body-l) var(--f-text)}
+.t-body-m{font:var(--w-medium) var(--t-body-m) var(--f-text)}
+.t-body-s{font:var(--w-medium) var(--t-body-s) var(--f-text)}
+.t-caption{font:var(--w-medium) var(--t-caption) var(--f-text)}
+.t-kicker{font:var(--w-medium) var(--t-kicker) var(--f-text);letter-spacing:.16em;text-transform:uppercase}
+.t-card-l{font:var(--w-medium) var(--t-card-l) var(--f-text);letter-spacing:-.01em}
+.t-card-m{font:var(--w-medium) var(--t-card-m) var(--f-text);letter-spacing:-.01em}
+.t-card-s{font:var(--w-medium) var(--t-card-s) var(--f-text)}
+.t-price-l{font:var(--w-medium) var(--t-price-l) var(--f-text);letter-spacing:-.02em}
+.t-price-l-unit{font:var(--w-medium) var(--t-price-l-unit) var(--f-text)}
+.t-price-s{font:var(--w-medium) var(--t-price-s) var(--f-text);letter-spacing:-.02em}
+.t-price-s-unit{font:var(--w-medium) var(--t-price-s-unit) var(--f-text)}
+.t-button{font:var(--w-medium) var(--t-button) var(--f-text)}
+.t-nav{font:var(--w-medium) var(--t-nav) var(--f-text)}
+.t-logo{font-family:var(--f-logo);font-weight:400;line-height:.95}
