@@ -4078,11 +4078,11 @@ const hook=()=>{const app=window.__breezeApp;if(!app||!app._goScreen||app._goScr
   if(index===15){const r=photo.getBoundingClientRect();const o=make(r,rad,src);hide();
    /* тексты экрана гаснут, фото раскрывается; прокрутка к вопросам — только когда фото закрыло экран */
    const sec=document.getElementById('long');const others=[...sec.querySelectorAll('.special-stays-heading,.special-stays-body,.special-stays-cta')];
-   others.forEach(el=>el.animate([{opacity:1},{opacity:0}],{duration:280,easing:'ease',fill:'forwards'}));
+   others.forEach(el=>el.animate([{opacity:1},{opacity:0}],{duration:240,easing:'ease',fill:'forwards'}));
    const Fr={...F,borderRadius:rad};
-   o.animate([box(r,rad),{...Fr,offset:.8},F],{duration:900,easing:E,fill:'forwards'});
-   lock=true;setTimeout(()=>{lock=false;orig.call(app,index,skip);const faq=document.getElementById('faq');const t=faq.getBoundingClientRect().top+scrollY+(faq.offsetHeight-innerHeight)/2;if(app._smoothScroll)app._smoothScroll.scrollTo(t,{immediate:true,force:true});else scrollTo({top:t,behavior:'instant'});requestAnimationFrame(()=>others.forEach(el=>el.getAnimations().forEach(a=>a.cancel())));},900);
-   o.animate([{opacity:1},{opacity:0}],{delay:960,duration:650,easing:'ease',fill:'forwards'}).finished.then(()=>{o.remove();show();},()=>{o.remove();show();});
+   o.animate([box(r,rad),{...Fr,offset:.85},F],{duration:1100,easing:'cubic-bezier(.33,0,.2,1)',fill:'forwards'});
+   lock=true;setTimeout(()=>{lock=false;orig.call(app,index,skip);const faq=document.getElementById('faq');const t=faq.getBoundingClientRect().top+scrollY+(faq.offsetHeight-innerHeight)/2;if(app._smoothScroll)app._smoothScroll.scrollTo(t,{immediate:true,force:true});else scrollTo({top:t,behavior:'instant'});requestAnimationFrame(()=>others.forEach(el=>el.getAnimations().forEach(a=>a.cancel())));},420);
+   o.animate([{opacity:1},{opacity:1,offset:.25},{opacity:0}],{duration:1100,easing:'linear',fill:'forwards'}).finished.then(()=>{o.remove();show();},()=>{o.remove();show();});
    return;}
   /* назад: экран затягивается фото, затем оно сжимается на своё место */
   const sec=document.getElementById('long');const target=sec.getBoundingClientRect().top+scrollY+(sec.offsetHeight-innerHeight)/2;
