@@ -4023,7 +4023,9 @@ html body #top #search>.field:is(:hover,:focus-visible)>span:not(.field-clear):n
 html body #top #search>.field:is(:hover,:focus-visible)::after,html body #top #search>.field:has(+ .field:is(:hover,:focus-visible))::after,html body #reviews .rv-field:is(:hover,:focus-visible)::after,html body #reviews .rv-field:has(+ .rv-field:is(:hover,:focus-visible))::after,html body footer .footer-field:is(:hover,:focus-visible)::after,html body footer .footer-field:has(+ .footer-field:is(:hover,:focus-visible))::after{opacity:0}
 }
 /* кнопка «Забронировать»: при наведении без обводки */
-html:not(#z1):not(#z2):not(#z3) body #reviews .rv-check,html:not(#z1):not(#z2):not(#z3) body #reviews .rv-check:is(:hover,:focus-visible){border:1px solid #12202b!important;background:#fff!important;color:#12202b!important}
+html:not(#z1):not(#z2):not(#z3) body #reviews .rv-check,html:not(#z1):not(#z2):not(#z3) body #reviews .rv-check{border:1px solid #12202b!important;background:#12202b!important;color:#fff!important;transition:background-color .3s ease,color .3s ease}
+html:not(#z1):not(#z2):not(#z3) body #reviews .rv-check::before{display:none!important}
+@media(hover:hover){html:not(#z1):not(#z2):not(#z3) body #reviews .rv-check:is(:hover,:focus-visible){background:transparent!important;color:#12202b!important}}
 html:not(#z1):not(#z2):not(#z3) body footer .footer-check:is(:hover,:focus-visible){border-color:transparent!important;background:rgba(255,255,255,.16)!important;color:#fff!important}
 </style>
 <script id="brz-field-pill-w">
