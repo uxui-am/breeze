@@ -4173,10 +4173,14 @@ const run=()=>{if(innerWidth<=900)return;document.querySelectorAll(SEL).forEach(
 new MutationObserver(run).observe(document.documentElement,{childList:true,subtree:true,characterData:true});addEventListener('resize',run);document.fonts?.ready.then(run);})();
 </script>
 <style id="brz-footer-book">
-/* подвал: «Забронировать» всегда белая (без приглушения), при наведении — белый контур и белый текст */
+/* подвал: «Забронировать» всегда белая; при наведении — стандартная анимация (кружок цвета фона разъезжается от курсора) → белый контур и белый текст */
 html:not(#z1):not(#z2):not(#z3) body .breeze-footer .footer-check[aria-disabled=true]{opacity:1!important;cursor:pointer!important}
-html:not(#z1):not(#z2):not(#z3) body .breeze-footer .footer-check.fx[aria-disabled=true]:is(:hover,:focus-visible){--fx:transparent;background:transparent!important;border-color:#fff!important;color:#fff!important}
-html:not(#z1):not(#z2):not(#z3) body .breeze-footer .footer-check.fx[aria-disabled=true]:is(:hover,:focus-visible)::before{display:none}
+html:not(#z1):not(#z2):not(#z3) body .breeze-footer .footer-check.fx{--fx:#12202b!important;background:#fff!important;border:1px solid #fff!important;isolation:isolate;overflow:hidden;transition:color .3s cubic-bezier(.16,1,.3,1)!important}
+html:not(#z1):not(#z2):not(#z3) body .breeze-footer .footer-check.fx:is(:hover,:focus-visible){background:#fff!important;border-color:#fff!important;color:#fff!important}
+html:not(#z1):not(#z2):not(#z3) body .breeze-footer .footer-check.fx::before{display:block!important;background:#12202b!important;opacity:1!important;transform:translate(-50%,-50%) scale(0);transition:transform .55s cubic-bezier(.16,1,.3,1)!important}
+html:not(#z1):not(#z2):not(#z3) body .breeze-footer .footer-check.fx:is(:hover,:focus-visible)::before{display:block!important;transform:translate(-50%,-50%) scale(1)!important;opacity:1!important}
+html:not(#z1):not(#z2):not(#z3) body .breeze-footer .footer-check.fx img{transition:filter .3s}
+html:not(#z1):not(#z2):not(#z3) body .breeze-footer .footer-check.fx:is(:hover,:focus-visible) img{filter:brightness(0) invert(1)}
 </style>
 <style id="brz-m-menu-v2">
 /* бургер: выбор языка внутри меню; «Забронировать» во всю ширину, WhatsApp под ней по центру */
