@@ -4033,5 +4033,17 @@ const set=()=>pairs.forEach(([f,b,k])=>{const btn=document.querySelector(f+' '+b
 const ro=new ResizeObserver(set);const hook=()=>{pairs.forEach(([f,b])=>{const btn=document.querySelector(f+' '+b);if(btn&&!btn.__brzPw){btn.__brzPw=1;ro.observe(btn);}});set();};
 hook();setInterval(hook,1500);addEventListener('resize',set,{passive:true});document.fonts?.ready.then(set);})();
 </script>
+<style id="brz-smooth-popups">
+/* Плавное появление всплывающих окон: календари, гости, окно выдачи, окна на странице апартаментов */
+@keyframes brzPopIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes brzFadeIn{from{opacity:0}to{opacity:1}}
+@media(min-width:901px) and (prefers-reduced-motion:no-preference){
+html:not(#z1):not(#z2):not(#z3) body .pop-up{animation:brzPopIn .45s cubic-bezier(.22,1,.36,1) both!important;transform-origin:50% 50%}
+}
+@media(prefers-reduced-motion:no-preference){
+html:not(#z1):not(#z2):not(#z3) body dialog.ocean-dialog:not(.ocean-lightbox)[open]{animation:brzPopIn .45s cubic-bezier(.22,1,.36,1) both!important}
+html body dialog.ocean-dialog:not(.ocean-lightbox)[open]::backdrop{animation:brzFadeIn .35s ease both}
+}
+</style>
 </body>
 </html>
