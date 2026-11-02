@@ -4142,5 +4142,12 @@ if(!hook()){let n=0;const t=setInterval(()=>{if(hook()||++n>60)clearInterval(t);
 html:not(#z1):not(#z2):not(#z3) body :is(#top #search>.field,#reviews .rv-field,footer .footer-field)>.field-clear{position:absolute!important;right:auto!important;left:calc(50% + var(--brz-pw,200px)/2 - 34px)!important;top:50%!important;translate:0 -50%!important;margin:0!important;animation:brzFadeIn .25s ease both}
 }
 </style>
+<script id="brz-field-clear-pos">
+/* крестик стоит сразу за текстом поля (8px), но текст при его появлении не сдвигается */
+(()=>{const SEL='#top #search>.field>.field-clear,#reviews .rv-field>.field-clear,footer .footer-field>.field-clear';
+const run=()=>{if(innerWidth<=900)return;document.querySelectorAll(SEL).forEach(x=>{const f=x.parentElement,t=f.querySelector('.brz-fl')||f.querySelector('span:not(.field-clear)');if(!t)return;
+ const v=Math.round(t.getBoundingClientRect().right-f.getBoundingClientRect().left+8)+'px';if(x.style.getPropertyValue('left')!==v)x.style.setProperty('left',v,'important');});};
+new MutationObserver(run).observe(document.documentElement,{childList:true,subtree:true,characterData:true});addEventListener('resize',run);document.fonts?.ready.then(run);})();
+</script>
 </body>
 </html>
