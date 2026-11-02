@@ -2098,9 +2098,11 @@ class Component extends DCLogic {
       if(next<0){
         hold(card,{opacity:0,pointerEvents:'none'});
         hold(intro.querySelector('h2'),{opacity:1});
-        animate(intro.querySelector('.kicker'),[{opacity:0,transform:'translateY(24px)'},{opacity:1,transform:'translateY(0)'}],{duration:instant?1:350,delay:0,easing:'ease-in-out'});
+        /* 2.11: после прихода экрана: надпись, затем строки всплывают по очереди, буквы — слева направо (время ×1.5 из-за playbackRate) */
+        animate(intro.querySelector('.kicker'),[{opacity:0,transform:'translateY(24px)'},{opacity:1,transform:'translateY(0)'}],{duration:instant?1:840,delay:instant?0:630,easing:'cubic-bezier(.22,1,.36,1)'});
+        [...intro.querySelectorAll('.ar-intro-line')].forEach((ln,li)=>animate(ln,[{opacity:0,translate:'0 30px'},{opacity:1,translate:'0 0'}],{duration:instant?1:960,delay:instant?0:780+li*600,easing:'cubic-bezier(.22,1,.36,1)'}));
         animate(intro,[{opacity:previous<0?1:0,right:previous<0?'16px':introEnd},{opacity:1,right:'16px'}],{duration:instant?1:900});
-        letters.forEach((letter,i)=>animate(letter,[{opacity:0},{opacity:1}],{duration:instant?1:260,delay:instant?0:350+i*Math.min(18,400/Math.max(1,letters.length)),easing:'ease-in-out'}));
+        {const lns=[...intro.querySelectorAll('.ar-intro-line')];letters.forEach((letter,i)=>{const li=Math.max(0,lns.indexOf(letter.closest('.ar-intro-line')));const k=letters.filter(l=>l.closest('.ar-intro-line')===lns[li]).indexOf(letter);animate(letter,[{opacity:0},{opacity:1}],{duration:instant?1:390,delay:instant?0:780+li*600+k*27,easing:'ease-in-out'});});}
         animate(picture,[{clipPath:full,opacity:previous<0?0:1},{clipPath:full,opacity:0}],{duration:instant?1:700});
       } else {
         hold(intro,{opacity:0});
@@ -2423,6 +2425,7 @@ class Component extends DCLogic {
       add(title,[{offset:0,transform:from,textAlign:'center'},{offset:.66,transform:from,textAlign:'center'},{offset:1,transform:'none',textAlign:'left'}],0,2500);
       const lines = title.querySelectorAll('.apt-title-line');
       lines.forEach((line,lineIndex)=>{
+        add(line,[{opacity:0,translate:'0 30px'},{opacity:1,translate:'0 0'}],lineIndex*550,640);
         const letters=line.querySelectorAll('.apt-title-letter');
         letters.forEach((letter,i)=>add(letter,[{opacity:0},{opacity:1}],lineIndex*550+i*Math.min(18,280/Math.max(1,letters.length)),260));
       });
@@ -2439,14 +2442,15 @@ class Component extends DCLogic {
     let busy = false, phase = 0, lastGesture = -Infinity, raf = 0, reversing = false;
     const bounds = () => { const top=scene.getBoundingClientRect().top+scrollY; return {top,end:top+scene.offsetHeight-innerHeight}; };
     const move = (to, time, duration, revealDelay = 0) => {
-      duration=Math.min(duration,650);revealDelay=0;
+      const intro=time===1650&&timeline===0;/* 2.11: вводный экран — текст после прихода экрана, в реальном темпе */
+      const animDur=intro?1650:Math.min(duration,650);duration=Math.min(duration,650);revealDelay=0;const delay=intro?420:0;
       busy=true;
       const from=timeline, started=performance.now();
       if(this._smoothScroll) this._smoothScroll.scrollTo(to,{duration:revealDelay ? .7 : duration/1000,lerp:undefined,force:true});
       else window.scrollTo({top:to,behavior:'smooth'});
       cancelAnimationFrame(raf);
       const tick = now => {
-        const p=Math.max(0,Math.min(1,(now-started-revealDelay)/duration)), eased=p*p*(3-2*p);
+        const p=Math.max(0,Math.min(1,(now-started-delay)/animDur)), eased=intro?p:p*p*(3-2*p);
         setTime(from+(time-from)*eased);
         if(p<1) raf=requestAnimationFrame(tick);
         else {setTime(time);busy=false;reversing=false;}
@@ -2486,7 +2490,7 @@ class Component extends DCLogic {
     this._screenActions.apt=(mode,previous)=>{
       cancelAnimationFrame(raf);busy=false;reversing=false;
       if(mode==='reset'){phase=0;resetIntroduction();return 850;}
-      if(mode==='intro'){playIntroduction();return 1650;}
+      if(mode==='intro'){playIntroduction();return 2000;}
       if(mode==='cards'&&previous===1){playApartmentBlock();return 1600;}
       if(previous>2){phase=2;distributing=true;setTime(3230);}else{resetIntroduction();phase=2;distributing=true;setTime(3230);}
       scene.querySelector('.apt-intro-icons').animate([{opacity:0},{opacity:0}],{duration:1,fill:'both'});
@@ -2785,13 +2789,14 @@ class Component extends DCLogic {
       const bounds=()=>{const top=scene.getBoundingClientRect().top+scrollY;return {top,end:innerWidth<=900?top:top+scene.offsetHeight-innerHeight};};
       const play=(target,duration,to)=>{
         /* 31.10: карточки «Отдых начинается здесь» играют в реальном темпе, прокрутка остаётся 0.65 с */
-        const animDur=target===2170?Math.abs(target-time):Math.min(duration,650);duration=Math.min(duration,650);
+        const intro=target===800&&time===0;/* 2.11: вводный экран — текст после прихода экрана, в реальном темпе */
+        const delay=intro?420:0;const animDur=target===2170?Math.abs(target-time):intro?800:Math.min(duration,650);duration=Math.min(duration,650);
         busy=true;reversing=target<time;
         const from=time,started=performance.now();
         if(this._smoothScroll)this._smoothScroll.scrollTo(to,{duration:duration/1000,lerp:undefined,force:true});
         else scrollTo({top:to,behavior:'smooth'});
         const tick=now=>{
-          const p=Math.min(1,(now-started)/animDur),ease=p*p*(3-2*p);
+          const p=Math.max(0,Math.min(1,(now-started-delay)/animDur)),ease=intro?p:p*p*(3-2*p);
           time=from+(target-from)*ease;tracks.forEach(a=>a.currentTime=time);
           if(p<1)frame=requestAnimationFrame(tick);
           else{time=target;tracks.forEach(a=>a.currentTime=target);busy=false;reversing=false;if(queued){queued=false;requestAnimationFrame(advance);}}
@@ -2813,13 +2818,14 @@ class Component extends DCLogic {
         tracks.forEach(a=>{const el=a.effect.target;if(el!==title&&el!==subtitle)return;const frames=a.effect.getKeyframes();if(!frames.some(f=>f.transform&&f.transform!=='none'))return;a.effect.setKeyframes(frames.map(f=>({...f,...(f.transform&&f.transform!=='none'?{transform:el===title?tf:sf+(f.transform.includes('translateY(24px)')?' translateY(24px)':'')}:{})})));});
         for(let i=tracks.length-1;i>=0;i--)if(tracks[i].effect.target.classList?.contains('cx-title-letter')){tracks[i].cancel();tracks.splice(i,1);}
         const live=[...title.querySelectorAll('.cx-title-letter')];live.forEach((letter,i)=>{const a=animate(letter,[{opacity:0},{opacity:1}],{delay:i*Math.min(18,400/Math.max(1,live.length)),duration:260,easing:'ease-in-out'});a.pause();tracks.push(a);});
+        [...title.querySelectorAll('.cx-title-word')].forEach((w,i)=>{const a=animate(w,[{opacity:0,translate:'0 26px'},{opacity:1,translate:'0 0'}],{delay:i*140,duration:560,easing:'cubic-bezier(.22,1,.36,1)'});a.pause();tracks.push(a);});
         phase=1;time=0;tracks.forEach(a=>a.currentTime=0);play(800,1300,bounds().top);
       };
       this._screenActions.complex=(expanded,previous)=>{
         if(expanded)section.classList.remove("complex-intro-active");
         cancelAnimationFrame(frame);queued=false;busy=false;reversing=false;
         if(expanded){phase=2;time=800;tracks.forEach(a=>a.currentTime=time);play(2170,1300,bounds().end);return 1350;}
-        enter();return 1350;
+        enter();return 1450;
       };
       const onScroll=()=>{
         if(this._screenMode)return;
