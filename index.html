@@ -3193,6 +3193,19 @@ class Component extends DCLogic {
       apts: data.map((a, i) => ({ ...a, count: a.gal.length, dates: () => this.setState({ aptCal: i, calFrom: null, calOpen: false, guestsOpen: false }), gallery: () => { if ((mob || ((this.state || {}).open ?? 0) === i)) this.setState({ lb: i, lbI: 0 }); }, factList: a.facts.split(' · ').map(t => ({ t })), f1: a.fx[0], f2: a.fx[1], f3: a.fx[2], sub: a.chip.replace(/^\S+\s+/, '') + ' · ' + tx('вид на бассейн', 'pool view', 'vistas a la piscina'), priceTxt: LG === 1 ? '€' + a.price : a.price + ' €', note: a.chip.replace(/^\S+\s+/, ''), open: mob || i === open, closed: !mob && i !== open, flex: i === open ? '5 1 0' : '1.3 1 0', page: '?apartment='+['ocean','atlantic','summer'][i], pick: (e) => { clearTimeout(this._hv); if (e && e.target.closest && e.target.closest('a,button')) return; if (mob || ((this.state || {}).open ?? 0) === i) { location.href='?apartment='+['ocean','atlantic','summer'][i]; return; } this.setState({ open: i }); }, hover: () => { clearTimeout(this._hv); this._hv = setTimeout(() => { if ((this.state || {}).open !== i) this.setState({ open: i }); }, 70); }, leave: () => { clearTimeout(this._hv); } })),
       compare, cmpClosed: !compare, cmpSwLbl: tx('Сравнить', 'Compare', 'Comparar'), cmpTrack: compare ? '#12202b' : 'rgba(18,32,43,.18)', cmpKnob: compare ? 'translateX(20px)' : 'none', cmpHideLbl: tx('Свернуть таблицу', 'Collapse table', 'Ocultar tabla'), compareLabel: tx('Сравнить апартаменты', 'Compare apartments', 'Comparar apartamentos'), compareIcon: compare ? '↑' : '↓', cmpIconD: CMPD['Список ✓'], cmpVariants: Object.keys(CMPD).map((n,i)=>({ n: i+1, name: n, d: CMPD[n], bg: n === (this.props.cmpIcon ?? 'Весы') ? '#e6eef1' : 'transparent' })), compareSub: tx('Площадь, кровати, сторона света, терраса и цены — в одной таблице', 'Size, beds, orientation, terrace and prices — side by side', 'Superficie, camas, orientación, terraza y precios, lado a lado'),
       toggleCompare: () => {
+        /* свернуть таблицу на десктопе: мягкий переход-наплыв на экран «Отдых начинается здесь» */
+        if(compare&&this._goScreen&&innerWidth>900&&document.startViewTransition&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+          const H=document.documentElement;H.classList.add('cmp-collapse-transition');
+          const vt=document.startViewTransition(()=>{
+            this._comparisonVisited=true;(this._comparisonTweens||[]).forEach(a=>a.cancel());this._comparisonTweens=[];
+            this.setState({compare:false});
+            const scene=document.getElementById('complex');const t=scene.getBoundingClientRect().top+scrollY;
+            if(this._smoothScroll)this._smoothScroll.scrollTo(t,{immediate:true,force:true});else window.scrollTo({top:t,behavior:'instant'});
+            this._goScreen(4);
+          });
+          vt.finished.finally(()=>H.classList.remove('cmp-collapse-transition'));
+          return;
+        }
         this.toggleComparison(!compare);
         if(!compare){requestAnimationFrame(()=>{if(this._goScreen)this._goScreen(3);});}
         if(compare)requestAnimationFrame(()=>{
@@ -4026,7 +4039,6 @@ html body #top #search>.field:is(:hover,:focus-visible)::after,html body #top #s
 html:not(#z1):not(#z2):not(#z3) body #reviews .rv-check,html:not(#z1):not(#z2):not(#z3) body #reviews .rv-check{border:1px solid #12202b!important;background:#12202b!important;color:#fff!important;transition:background-color .3s ease,color .3s ease}
 html:not(#z1):not(#z2):not(#z3) body #reviews .rv-check::before{display:none!important}
 @media(hover:hover){html:not(#z1):not(#z2):not(#z3) body #reviews .rv-check:is(:hover,:focus-visible){background:transparent!important;color:#12202b!important}}
-html:not(#z1):not(#z2):not(#z3) body footer .footer-check:is(:hover,:focus-visible){border-color:transparent!important;background:rgba(255,255,255,.16)!important;color:#fff!important}
 </style>
 <script id="brz-field-pill-w">
 /* ширина плашки ховера = ширина кнопки «Забронировать» в той же форме */
@@ -4086,5 +4098,11 @@ const hook=()=>{const app=window.__breezeApp;if(!app||!app._goScreen||app._goScr
 if(!hook()){let n=0;const t=setInterval(()=>{if(hook()||++n>60)clearInterval(t);},250);}
 })();
 </script>
+<style id="brz-cmp-collapse-vt">
+@keyframes brzVtOut{to{opacity:0;transform:translateY(-48px)}}
+@keyframes brzVtIn{from{opacity:0;transform:translateY(72px)}}
+html.cmp-collapse-transition::view-transition-old(root){animation:brzVtOut .6s cubic-bezier(.4,0,.2,1) both}
+html.cmp-collapse-transition::view-transition-new(root){animation:brzVtIn .9s cubic-bezier(.22,1,.36,1) .12s both}
+</style>
 </body>
 </html>
