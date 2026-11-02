@@ -4154,5 +4154,11 @@ const run=()=>{if(innerWidth<=900)return;document.querySelectorAll(SEL).forEach(
  const v=Math.round(t.getBoundingClientRect().right-f.getBoundingClientRect().left+8)+'px';if(x.style.getPropertyValue('left')!==v)x.style.setProperty('left',v,'important');});};
 new MutationObserver(run).observe(document.documentElement,{childList:true,subtree:true,characterData:true});addEventListener('resize',run);document.fonts?.ready.then(run);})();
 </script>
+<style id="brz-footer-book">
+/* подвал: «Забронировать» всегда белая (без приглушения), при наведении — белый контур и белый текст */
+html:not(#z1):not(#z2):not(#z3) body .breeze-footer .footer-check[aria-disabled=true]{opacity:1!important;cursor:pointer!important}
+html:not(#z1):not(#z2):not(#z3) body .breeze-footer .footer-check.fx[aria-disabled=true]:is(:hover,:focus-visible){--fx:transparent;background:transparent!important;border-color:#fff!important;color:#fff!important}
+html:not(#z1):not(#z2):not(#z3) body .breeze-footer .footer-check.fx[aria-disabled=true]:is(:hover,:focus-visible)::before{display:none}
+</style>
 </body>
 </html>
