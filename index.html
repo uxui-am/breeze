@@ -3931,5 +3931,33 @@ html:not(#z1):not(#z2):not(#z3) body #apartments .apt>div.fade-late:not(.apt-pan
 html:not(#z1):not(#z2):not(#z3) body .host-profile-photo img{inset:auto!important;left:-77.6%!important;top:-27.5%!important;width:216.4%!important;height:auto!important;max-width:none!important;object-fit:fill!important;transform:none!important}
 }
 </style>
+<script id="brz-apt-snap">
+/* 2.11: страница апартамента (десктоп): «экраны» при прокрутке колесом/клавишами, как на главной:
+   1) заголовок + галерея + удобства, 2) описание + условия + бронь, 3) отзывы, 4) другие апартаменты + начало подвала; дальше — обычная прокрутка. */
+(()=>{if(!new URLSearchParams(location.search).get('apartment'))return;
+const ok=()=>matchMedia('(min-width:901px) and (hover:hover) and (pointer:fine)').matches&&!matchMedia('(prefers-reduced-motion: reduce)').matches;
+const Y=sel=>{const e=document.querySelector(sel);return e?e.getBoundingClientRect().top+scrollY:null;};
+const stops=()=>{const vh=innerHeight,max=document.documentElement.scrollHeight-vh,out=[0];
+ const grid=Y('.ocean-content-grid'),rev=Y('.ocean-reviews'),oth=Y('.ocean-others');
+ if(grid!=null)out.push(grid-72);if(rev!=null)out.push(rev-72);if(oth!=null)out.push(oth-8);
+ return out.map(v=>Math.max(0,Math.min(max,Math.round(v)))).filter((v,i,a)=>i===0||v-a[i-1]>40);};
+let busy=false,until=0,raf=0;
+const go=to=>{const from=scrollY,d=to-from;if(Math.abs(d)<2)return;busy=true;const T=650,t0=performance.now();cancelAnimationFrame(raf);
+ const step=now=>{const p=Math.min(1,(now-t0)/T),e=p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;window.scrollTo({top:from+d*e,behavior:'instant'});if(p<1)raf=requestAnimationFrame(step);else{busy=false;until=performance.now()+260;}};raf=requestAnimationFrame(step);};
+const blocked=t=>{if(document.querySelector('dialog[open]'))return true;if(t&&t.closest&&t.closest('[role=dialog],dialog,input,textarea,select,.ocean-lightbox,#ocean-lightbox'))return true;
+ for(let n=t;n&&n!==document.body;n=n.parentElement){const s=getComputedStyle(n);if(/(auto|scroll)/.test(s.overflowY)&&n.scrollHeight>n.clientHeight+2)return true;}return getComputedStyle(document.body).overflow==='hidden';};
+const decide=dir=>{const st=stops(),last=st[st.length-1],y=scrollY;
+ if(dir>0){if(y>=last-2)return null;return st.find(v=>v>y+4)??null;}
+ if(y>last+4)return null;const prev=[...st].reverse().find(v=>v<y-4);return prev??null;};
+let lastWheel=0;
+addEventListener('wheel',e=>{if(!ok()||e.ctrlKey||blocked(e.target))return;const dir=Math.sign(e.deltaY);if(!dir)return;
+ const target=decide(dir);if(target==null)return;
+ e.preventDefault();e.stopImmediatePropagation();const now=performance.now(),gap=now-lastWheel;lastWheel=now;
+ if(busy||now<until)return;if(gap<140&&Math.abs(e.deltaY)<40)return;go(target);},{passive:false,capture:true});
+addEventListener('keydown',e=>{if(!ok()||e.altKey||e.ctrlKey||e.metaKey||blocked(e.target))return;
+ const dir=['ArrowDown','PageDown',' '].includes(e.key)&&!e.shiftKey?1:['ArrowUp','PageUp'].includes(e.key)||(e.key===' '&&e.shiftKey)?-1:0;if(!dir)return;
+ const target=decide(dir);if(target==null)return;e.preventDefault();if(busy)return;go(target);},{capture:true});
+})();
+</script>
 </body>
 </html>
