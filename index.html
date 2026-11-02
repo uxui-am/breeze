@@ -3340,7 +3340,7 @@ class Component extends DCLogic {
           resOpen: !!st.res&&!st.footerForm, footerResOpen:!!st.res&&!!st.footerForm,
           resTitle: free ? tx('Свободно на ваши даты', 'Available for your dates', 'Disponible en tus fechas') : tx('На эти даты мест нет', 'Nothing available', 'Sin disponibilidad'),
           resSummary: (ci && co ? fd(ci) + ' — ' + fd(co) + ' · ' + nw(nights) : '') + ' · ' + gw(g),
-          resList: ((list)=>{const fit=list.filter(r=>r.ok);return fit.length?fit:list;})(data.map((a, i) => {const __st=(ci&&co&&window.__brzStay)?window.__brzStay(ci,co):{avg:a.price,sum:a.price*(nights||1)}; const ok = g <= cap[i];const iso=t=>{const d=new Date(t);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};const query=new URLSearchParams({apartment:['ocean','atlantic','summer'][i],ci:ci?iso(ci):'',co:co?iso(co):'',guests:String(g),lang:['ru','en','es'][LG]});query.set('avail','1');return {href:'?'+query.toString(), name: a.name, img: a.img, facts: a.facts, price: eur(__st.avg), per: tx('/ ночь', '/ night', '/ noche'), total: nights ? tx('итого ', 'total ', 'total ') + eur(__st.sum + 50) : '', ok, no: !ok, op: ok ? 1 : .55,
+          resList: ((list)=>{if(st.resApt!=null&&list[st.resApt])list=[list[st.resApt]];const fit=list.filter(r=>r.ok);return fit.length?fit:list;})(data.map((a, i) => {const __st=(ci&&co&&window.__brzStay)?window.__brzStay(ci,co):{avg:a.price,sum:a.price*(nights||1)}; const ok = g <= cap[i];const iso=t=>{const d=new Date(t);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};const query=new URLSearchParams({apartment:['ocean','atlantic','summer'][i],ci:ci?iso(ci):'',co:co?iso(co):'',guests:String(g),lang:['ru','en','es'][LG]});query.set('avail','1');return {href:'?'+query.toString(), name: a.name, img: a.img, facts: a.facts, price: eur(__st.avg), per: tx('/ ночь', '/ night', '/ noche'), total: nights ? tx('итого ', 'total ', 'total ') + eur(__st.sum + 50) : '', ok, no: !ok, op: ok ? 1 : .55,
             status: ok ? tx('Свободно', 'Available', 'Libre') : tx('До ' + cap[i] + ' гостей', 'Up to ' + cap[i] + ' guests', 'Hasta ' + cap[i]),
             chipBg: '#eef3f4', chipCol: ok ? '#3d6a80' : '#5d6a72' }; })),
           footerDates:()=>this.setState({footerForm:true,calOpen:true,guestsOpen:false,res:false,aptCal:-1}),
@@ -3558,6 +3558,8 @@ if(new URLSearchParams(location.search).has('figma-native-host'))(async()=>{cons
 })();
 </script>
 <script>
+/* макс. гостей в шторке: из карточки апартамента — вместимость этого апартамента, иначе 6 */
+window.__brzSheetMax=function(){var a=window.__breezeApp,i=a&&a.state?a.state.resApt:null;return i==null?6:([4,4,6][i]||6);};
 /* Мобильная шторка бронирования (первый экран главной) */
 (function(){
   const app=()=>window.__breezeApp;
@@ -3566,7 +3568,7 @@ if(new URLSearchParams(location.search).has('figma-native-host'))(async()=>{cons
   const DAY=864e5;let ci=null,co=null,n=2,off=0,sheet,dim;
   const today=()=>{const d=new Date();d.setHours(0,0,0,0);return d.getTime();};
   const fmt=t=>t?new Date(t).toLocaleDateString(['ru-RU','en-GB','es-ES'][L()],{day:'numeric',month:'short'}):'—';
-  function render(){
+  function render(){if(n>window.__brzSheetMax())n=window.__brzSheetMax();
     const first=new Date(new Date().getFullYear(),new Date().getMonth()+off,1);const y=first.getFullYear(),m=first.getMonth(),lead=(first.getDay()+6)%7,days=new Date(y,m+1,0).getDate();
     const wd=[['пн','вт','ср','чт','пт','сб','вс'],['mo','tu','we','th','fr','sa','su'],['lu','ma','mi','ju','vi','sá','do']][L()];
     let cells=wd.map(d=>'<span class="w">'+d+'</span>').join('')+'<span></span>'.repeat(lead);
@@ -3579,7 +3581,7 @@ if(new URLSearchParams(location.search).has('figma-native-host'))(async()=>{cons
     sheet.innerHTML='<div class="mb-grab"></div><button type="button" class="mb-x" aria-label="'+T('Закрыть','Close','Cerrar')+'">×</button>'+
       '<div class="mb-cal-nav"><button type="button" class="mb-prev" '+(off<=0?'disabled':'')+' aria-label="'+T('Предыдущий месяц','Previous month','Mes anterior')+'">‹</button><b>'+month.charAt(0).toUpperCase()+month.slice(1).replace(/\s*г\.$/,'')+'</b><button type="button" class="mb-next" aria-label="'+T('Следующий месяц','Next month','Mes siguiente')+'">›</button></div><div class="mb-cal">'+cells+'</div>'+
       '<div class="mb-sum"><span>'+summary+'</span>'+(ci?'<button type="button" class="mb-reset">'+T('Сбросить','Clear','Borrar')+'</button>':'')+'</div>'+
-      '<div class="mb-guests"><span>'+T('Количество гостей','Number of guests','Número de huéspedes')+'</span><span class="mb-cnt"><button type="button" class="mb-dec" '+(n<=1?'disabled':'')+' aria-label="−">−</button><b>'+n+'</b><button type="button" class="mb-inc" '+(n>=6?'disabled':'')+' aria-label="+">+</button></span></div>'+
+      '<div class="mb-guests"><span>'+T('Количество гостей','Number of guests','Número de huéspedes')+'</span><span class="mb-cnt"><button type="button" class="mb-dec" '+(n<=1?'disabled':'')+' aria-label="−">−</button><b>'+n+'</b><button type="button" class="mb-inc" '+(n>=window.__brzSheetMax()?'disabled':'')+' aria-label="+">+</button></span></div>'+
       '<button type="button" class="mb-go" '+(ready?'':'aria-disabled="true"')+'>'+T('Забронировать','Book','Reservar')+' <svg class="ar" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.667 8c0-.368.298-.667.666-.667h9.334a.667.667 0 0 1 0 1.334H3.333A.667.667 0 0 1 2.667 8Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M7.529 2.862a.667.667 0 0 1 .942 0l4.667 4.667a.667.667 0 0 1 0 .942L8.471 13.138a.667.667 0 1 1-.942-.943L11.724 8 7.529 3.805a.667.667 0 0 1 0-.943Z"></path></svg></button>';
   }
   function open(){
@@ -3595,7 +3597,7 @@ if(new URLSearchParams(location.search).has('figma-native-host'))(async()=>{cons
         if(b.classList.contains('mb-prev')){off=Math.max(0,off-1);return render();}
         if(b.classList.contains('mb-next')){off++;return render();}
         if(b.classList.contains('mb-dec')){n=Math.max(1,n-1);return render();}
-        if(b.classList.contains('mb-inc')){n=Math.min(6,n+1);return render();}
+        if(b.classList.contains('mb-inc')){n=Math.min(window.__brzSheetMax(),n+1);return render();}
         if(b.classList.contains('mb-go')){
           if(!(ci&&co)){const d=sheet.querySelector('.mb-sum');d.animate([{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:350});return;}
           const a=app();close();if(a){a.setState({ci,co,adults:n,kids:0,guestsSet:true,guestsConfirmed:true,bookingStarted:true,res:false,calOpen:false,guestsOpen:false,footerForm:false});setTimeout(()=>a.bookingSearch(false),60);}
@@ -4358,6 +4360,15 @@ const ensure=()=>{const brand=document.querySelector('footer.breeze-footer .foot
  const h=T()+' '+AR;if(b.dataset.l!==T()){b.dataset.l=T();b.innerHTML=h;}};
 new MutationObserver(()=>ensure()).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['lang']});
 if(document.readyState!=='loading')ensure();else addEventListener('DOMContentLoaded',ensure);})();
+</script>
+<script id="brz-apt-card-sheet">
+/* 2.11: мобильный — «Выбрать даты» в карточке апартамента открывает ту же шторку брони (даты + гости), что на первом экране и в подвале; в выдаче — только этот апартамент */
+(()=>{const mq=matchMedia('(max-width:900px)');
+document.addEventListener('click',e=>{const a=window.__breezeApp;if(!a||!e.target.closest)return;
+ const btn=mq.matches&&e.target.closest('#apartments .card.apt button.pill.light[aria-haspopup]');
+ if(btn){e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();const cards=[...document.querySelectorAll('#apartments .card.apt')];const i=cards.indexOf(btn.closest('.card.apt'));try{a.setState({resApt:i>=0?i:null,aptCal:null});}catch(_){}document.querySelector('#top .m-book')?.click();return;}
+ if(e.isTrusted&&e.target.closest('#top .m-book, footer .brz-ft-book, .m-menu-book')){try{if(a.state&&a.state.resApt!=null)a.setState({resApt:null});}catch(_){}}
+},true);})();
 </script>
 </body>
 </html>
