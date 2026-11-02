@@ -3297,7 +3297,7 @@ class Component extends DCLogic {
           aptCalOpen: (st.aptCal ?? -1) >= 0 && st.calFrom !== 'cmp', cmpCalOpen: (st.aptCal ?? -1) >= 0 && st.calFrom === 'cmp', aptCalName: (st.aptCal ?? -1) >= 0 ? data[st.aptCal].name : '', closeAptCal: () => this.setState({ aptCal: -1 }),
           openCal: () => this.setState({ footerForm:false,bookingStarted:true,guestHint:false, calOpen: true, guestsOpen: false, aptCal: -1, res: false }),
           closeCal: (event) => {event?.preventDefault();event?.stopPropagation();this.setState({ calOpen: false });},
-          calIncomplete:!(ci&&co),calApply:()=>{if(ci&&co){this.setState({calOpen:false,guestHint:false});clearTimeout(this._guestHintTimer);this._guestHintTimer=setTimeout(()=>{const current=this.state||{};if(current.ci&&current.co&&!current.guestsConfirmed&&!current.calOpen&&!current.guestsOpen)this.setState({guestHint:true,guestNudge:(current.guestNudge||0)+1});},1000);}},
+          calIncomplete:!ci,calApply:()=>{if(ci&&!co){this.setState({calOpen:false});return;}if(ci&&co){this.setState({calOpen:false,guestHint:false});clearTimeout(this._guestHintTimer);this._guestHintTimer=setTimeout(()=>{const current=this.state||{};if(current.ci&&current.co&&!current.guestsConfirmed&&!current.calOpen&&!current.guestsOpen)this.setState({guestHint:true,guestNudge:(current.guestNudge||0)+1});},1000);}},
           calReset: () => this.setState({ ci: null, co: null,bookingStarted:false,guestHint:false,res:false }),
           calPrev: () => { if (off > 0) this.setState({ calOff: off - 1 }); },
           calNext: () => this.setState({ calOff: off + 1 })
