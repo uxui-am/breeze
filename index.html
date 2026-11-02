@@ -2955,9 +2955,9 @@ class Component extends DCLogic {
     /* Заголовок → рейтинги по очереди → карточки по очереди, потом карусель плывёт */
     add(section.querySelector(':scope > .kicker'),reveal,0,600);
     add(section.querySelector('.rv-g-head h2'),reveal,110,650);
-    section.querySelectorAll('.rv-src > *').forEach((el,i)=>add(el,reveal,820+(i%3)*110,600));
-    add(section.querySelector('.rv-search'),[{opacity:0,translate:'0 24px'},{opacity:1,translate:'0 0'}],560,600);
-    let cardTracks=[];const prepCards=()=>{cardTracks.forEach(a=>a.cancel());cardTracks=[...section.querySelectorAll('.rv-marquee-track > figure')].sort((a,b)=>a.offsetLeft-b.offsetLeft).map((el,i)=>{const a=el.animate([{opacity:0,transform:'translateY(28px)',filter:'blur(3px)'},{opacity:1,transform:'translateY(0)',filter:'blur(0px)'}],{delay:260+Math.min(i,5)*110,duration:650,fill:'both',easing:'cubic-bezier(.22,1,.36,1)'});a.pause();a.currentTime=0;return a;});};
+    section.querySelectorAll('.rv-src > *').forEach((el,i)=>add(el,reveal,200+(i%3)*80,600));
+    add(section.querySelector('.rv-search'),[{opacity:0,translate:'0 24px'},{opacity:1,translate:'0 0'}],700,600);
+    let cardTracks=[];const prepCards=()=>{cardTracks.forEach(a=>a.cancel());cardTracks=[...section.querySelectorAll('.rv-marquee-track > figure')].sort((a,b)=>a.offsetLeft-b.offsetLeft).map((el,i)=>{const a=el.animate([{opacity:0,transform:'translateY(28px)',filter:'blur(3px)'},{opacity:1,transform:'translateY(0)',filter:'blur(0px)'}],{delay:320+Math.min(i,5)*80,duration:650,fill:'both',easing:'cubic-bezier(.22,1,.36,1)'});a.pause();a.currentTime=0;return a;});};
     const fit=()=>{if(innerWidth>900){const grid=section.querySelector('.rv-marquee'),kicker=section.querySelector(':scope > .kicker');const headSpace=grid.offsetTop-kicker.offsetTop;const rf=section.querySelector('.rv-search');const formSpace=rf&&rf.offsetParent?rf.offsetHeight+48:0;document.documentElement.style.setProperty('--reviews-grid-height',Math.max(340,Math.min(640,innerHeight-headSpace-formSpace-96))+'px');}};fit();
     let played=false,frame=0,locked=false,revealTimer=0;
     const start=(settled=false)=>{
@@ -2970,7 +2970,7 @@ class Component extends DCLogic {
       clearTimeout(revealTimer);
       if(settled)tracks.forEach(a=>{a.pause();a.currentTime=a.effect.getComputedTiming().endTime;});
       const reveal=()=>{if(settled){this._reviewsHold=false;return;}if(this._screenMode&&this._screenIndex!==12)return;this._reviewsHold=true;if(!cardTracks.length||!cardTracks[0].effect.target.isConnected)prepCards();tracks.forEach(a=>a.play());cardTracks.forEach(a=>a.play());const go=()=>{locked=false;this._reviewsHold=false;cardTracks.forEach(a=>a.finish());this._reviewCarouselStep?.();};Promise.all([...tracks,...cardTracks].map(a=>a.finished)).then(go,go);};
-      if(this._smoothScroll)this._smoothScroll.scrollTo(target,{lerp:undefined,force:true});else scrollTo({top:target,behavior:'smooth'});const t0=performance.now();const revealWhenVisible=()=>{if(this._screenIndex!==12)return;const r=section.getBoundingClientRect();if((Math.abs(r.top)<60||performance.now()-t0>650)&&r.top<innerHeight*.7&&r.bottom>0)reveal();else requestAnimationFrame(revealWhenVisible);};requestAnimationFrame(revealWhenVisible);
+      if(this._smoothScroll)this._smoothScroll.scrollTo(target,{lerp:undefined,force:true});else scrollTo({top:target,behavior:'smooth'});const t0=performance.now();const revealWhenVisible=()=>{if(this._screenIndex!==12)return;const r=section.getBoundingClientRect();if((r.top<innerHeight*.3||performance.now()-t0>650)&&r.top<innerHeight*.7&&r.bottom>0)reveal();else requestAnimationFrame(revealWhenVisible);};requestAnimationFrame(revealWhenVisible);
     };
     this._screenActions.reviews=previous=>{this._reviewsHold=true;prepCards();tracks.forEach(a=>{a.pause();a.currentTime=0;});played=false;start();return 2000;};
     const update=()=>{frame=0;if(this._screenMode)return;const r=section.getBoundingClientRect();if(!played&&r.top<innerHeight*.65&&r.bottom>0){start();}else if(played&&r.top>innerHeight){played=false;tracks.forEach(a=>{a.pause();a.currentTime=0;});}};
