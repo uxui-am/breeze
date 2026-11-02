@@ -4266,6 +4266,10 @@ html:not(#z1):not(#z2):not(#z3) body .ocean-site-footer .footer-brand .footer-mu
 .brz-reset-all[data-t=glass]{background:rgba(255,255,255,.18);color:#fff}.brz-reset-all[data-t=glass]:hover{background:rgba(255,255,255,.3)}
 .brz-reset-all[data-t=light]{background:rgba(18,32,43,.06);color:#12202b}.brz-reset-all[data-t=light]:hover{background:rgba(18,32,43,.12)}
 .brz-reset-all[data-t=dark]{background:rgba(255,255,255,.12);color:#fff}.brz-reset-all[data-t=dark]:hover{background:rgba(255,255,255,.22)}
+/* десктоп: крестики в полях не нужны (есть «Сбросить всё»); место под иконку перед «Забронировать», отступы ровные */
+@media(min-width:901px){
+html:not(#z1):not(#z2):not(#z3) body :is(#top #search>.field,#reviews .rv-field,footer .footer-field)>.field-clear{display:none!important}
+}
 </style>
 <script id="brz-reset-all">
 /* 2.11: «Сбросить всё» — круглая иконка ↺ перед «Забронировать» в трёх формах брони (десктоп); видна, только когда что-то выбрано */
@@ -4274,14 +4278,32 @@ const L=()=>['Сбросить всё','Clear all','Borrar todo'][Math.max(0,['r
 const btns=F.map(([f,b,t])=>{const el=document.createElement('button');el.type='button';el.className='brz-reset-all';el.dataset.t=t;el.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 2.64-6.36"/><path d="M3 4v4.5h4.5"/></svg>';
  el.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const form=document.querySelector(f);let n=0;const step=()=>{const x=form&&form.querySelector('.field-clear');if(x&&n++<6){x.click();requestAnimationFrame(step);}else{const a=window.__breezeApp;try{a&&a.setState({calOpen:false,guestsOpen:false,res:null});}catch(_){}}};step();});
  document.body.appendChild(el);return {el,f,b};});
-const tick=()=>{requestAnimationFrame(tick);const desk=innerWidth>900;
+const KEYS=['top','rv','ft'];const tick=()=>{requestAnimationFrame(tick);const desk=innerWidth>900;
+ if(desk)F.forEach(([f,b],i)=>{const form=document.querySelector(f),bk=form&&form.querySelector(b);if(!bk||!form.offsetWidth)return;const cs=getComputedStyle(form);const inner=form.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);const W=bk.offsetWidth;const fs=[...form.querySelectorAll(':scope>.field,:scope>.rv-field,:scope>.footer-field')];const T=fs.reduce((t,fl)=>{const x=fl.querySelector('.brz-fl')||fl.querySelector('span:not(.field-clear)');return t+(x?x.getBoundingClientRect().width:0);},0);const any=!!form.querySelector('.field-clear');const G=any?Math.max(12,Math.floor((inner-T-26-W)/7)):Math.max(12,Math.floor((inner-T-W)/6));const v=G+'px',ic=any?(26+G)+'px':'0px';const R=document.documentElement;if(R.style.getPropertyValue('--brz-g-'+KEYS[i])!==v)R.style.setProperty('--brz-g-'+KEYS[i],v);if(R.style.getPropertyValue('--brz-ic-'+KEYS[i])!==ic)R.style.setProperty('--brz-ic-'+KEYS[i],ic);});
  btns.forEach(({el,f,b})=>{const form=document.querySelector(f),bk=form&&form.querySelector(b);const any=!!(form&&form.querySelector('.field-clear'));
   if(!desk||!bk||!any){if(el.classList.contains('on'))el.classList.remove('on');return;}
   const r=bk.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight){el.classList.remove('on');return;}
-  const x=Math.round(r.left-8-36),y=Math.round(r.top+r.height/2-18);const v=x+','+y;if(el.dataset.p!==v){el.dataset.p=v;el.style.left=x+'px';el.style.top=y+'px';}
+  const g=[...form.querySelectorAll(':scope>.field,:scope>.rv-field,:scope>.footer-field')].pop();const gr=g?g.getBoundingClientRect():{right:r.left-52};const x=Math.round(gr.right),y=Math.round(r.top+r.height/2-13);const v=x+','+y;if(el.dataset.p!==v){el.dataset.p=v;el.style.left=x+'px';el.style.top=y+'px';}
   const fo=getComputedStyle(form).opacity;el.style.filter=fo<1?'opacity('+fo+')':'';
   if(!el.classList.contains('on'))el.classList.add('on');const l=L();if(el.getAttribute('aria-label')!==l){el.setAttribute('aria-label',l);el.title=l;}});};
 requestAnimationFrame(tick);})();
 </script>
+<style id="brz-form-even">
+/* 2.11: формы брони (десктоп): поля шириной с «Забронировать», между полями, иконкой ↺ и кнопкой — одинаковый отступ G (считается скриптом);
+   перегородки ровно посередине промежутков; иконка ↺ без подложки, крупнее */
+@media(min-width:901px){
+html:not(#z1):not(#z2):not(#z3) body #top #search{--g:var(--brz-g-top,24px);--ic:var(--brz-ic-top,26px);justify-content:flex-start!important;gap:0!important}
+html:not(#z1):not(#z2):not(#z3) body #reviews .rv-search{--g:var(--brz-g-rv,24px);--ic:var(--brz-ic-rv,26px);justify-content:flex-start!important;gap:0!important}
+html:not(#z1):not(#z2):not(#z3) body footer .footer-search{--g:var(--brz-g-ft,24px);--ic:var(--brz-ic-ft,26px);justify-content:flex-start!important;gap:0!important}
+html:not(#z1):not(#z2):not(#z3) body :is(#top #search>.field,#reviews .rv-search>.rv-field,footer .footer-search>.footer-field){flex:0 0 auto!important;width:auto!important;max-width:none!important;min-width:0!important;padding-left:var(--g)!important;padding-right:var(--g)!important;margin-left:0!important;margin-right:0!important;justify-content:center!important}
+html:not(#z1):not(#z2):not(#z3) body :is(#top #search>.hero-search-action,#reviews .rv-search>.rv-check,footer .footer-search>.footer-check){margin-left:var(--ic)!important;margin-right:0!important;flex:none!important}
+html:not(#z1):not(#z2):not(#z3) body :is(#top #search>.field,#reviews .rv-field,footer .footer-field):not(.search-guests-field):not(.rv-guests):not(.footer-guests)::after{right:-.5px!important}
+html:not(#z1):not(#z2):not(#z3) body .brz-reset-all{width:26px!important;height:26px!important;background:transparent!important;border-radius:6px}
+html:not(#z1):not(#z2):not(#z3) body .brz-reset-all svg{width:24px!important;height:24px!important}
+html:not(#z1):not(#z2):not(#z3) body .brz-reset-all[data-t=glass],html:not(#z1):not(#z2):not(#z3) body .brz-reset-all[data-t=dark]{color:rgba(255,255,255,.9)}
+html:not(#z1):not(#z2):not(#z3) body .brz-reset-all[data-t=light]{color:#12202b}
+html:not(#z1):not(#z2):not(#z3) body .brz-reset-all:hover{background:transparent!important;opacity:.75}
+}
+</style>
 </body>
 </html>
