@@ -4335,12 +4335,29 @@ const prep=()=>{document.querySelectorAll('#apartments .card.apt').forEach(card=
  const mk=(el,frames,o)=>{if(!el)return null;const a=el.animate(frames,Object.assign({fill:'both',easing:E},o));a.pause();a.currentTime=0;return a;};
  const aImg=mk(img,[{opacity:0,transform:'scale(1.06)'},{opacity:1,transform:'scale(1)'}],{duration:800});
  const aChip=mk(chip,[{'--brz-po':0},{'--brz-po':1}],{duration:600,delay:300});
- const aPanel=mk(panel,[{'--brz-po':0,translate:'0 36px'},{'--brz-po':1,translate:'0 0'}],{duration:1000});
+ const aPanel=mk(panel,[{'--brz-po':0,translate:'0 28px'},{'--brz-po':1,translate:'0 0'}],{duration:850});
  const done=a=>a&&a.finished.then(()=>a.cancel(),()=>{});
- const io1=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io1.disconnect();[aImg,aChip].forEach(a=>{if(a){a.play();done(a);}});}},{threshold:.12});io1.observe(card);
- if(panel){const io2=new IntersectionObserver(es=>{if(es.some(e=>e.intersectionRatio>=.55)){io2.disconnect();setTimeout(()=>{if(aPanel){aPanel.play();done(aPanel);}},aImg&&aImg.playState==='running'?380:120);}},{threshold:[.55]});io2.observe(panel);}
+ const io1=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io1.disconnect();[aImg,aChip].forEach(a=>{if(a){a.play();done(a);}});setTimeout(()=>{if(aPanel){aPanel.play();done(aPanel);}},220);}},{threshold:.08});io1.observe(card);
+
 });};
 if(document.readyState==='complete')setTimeout(prep,600);else addEventListener('load',()=>setTimeout(prep,600));})();
+</script>
+<style id="brz-m-footer-book">
+/* 2.11: мобильный подвал — вместо формы с датами большая кнопка «Забронировать» сразу после адреса; открывает шторку брони */
+.brz-ft-book{display:none}
+@media(max-width:900px){
+html:not(#z1):not(#z2):not(#z3) body footer .footer-search{display:none!important}
+html body footer .brz-ft-book{display:flex;align-items:center;justify-content:center;gap:10px;width:calc(100vw - 32px);max-width:none;height:56px;margin:28px auto 8px;border:0;border-radius:999px;background:#fff;color:#12202b;font:inherit;font-family:Manrope,"Breeze Special",sans-serif;font-size:16px;font-weight:500;cursor:pointer;touch-action:manipulation}
+html body footer .brz-ft-book svg{width:16px;height:16px}
+}
+</style>
+<script id="brz-m-footer-book-js">
+(()=>{const T=()=>['Забронировать','Book','Reservar'][Math.max(0,['ru','en','es'].indexOf(document.documentElement.lang))];
+const AR='<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M2.667 8c0-.368.298-.667.666-.667h9.334a.667.667 0 0 1 0 1.334H3.333A.667.667 0 0 1 2.667 8Z"/><path fill-rule="evenodd" d="M7.529 2.862a.667.667 0 0 1 .942 0l4.667 4.667a.667.667 0 0 1 0 .942L8.471 13.138a.667.667 0 1 1-.942-.943L11.724 8 7.529 3.805a.667.667 0 0 1 0-.943Z"/></svg>';
+const ensure=()=>{const brand=document.querySelector('footer.breeze-footer .footer-brand');if(!brand)return;let b=brand.querySelector('.brz-ft-book');if(!b){b=document.createElement('button');b.type='button';b.className='brz-ft-book';b.addEventListener('click',e=>{e.preventDefault();document.querySelector('#top .m-book')?.click();});brand.appendChild(b);}
+ const h=T()+' '+AR;if(b.dataset.l!==T()){b.dataset.l=T();b.innerHTML=h;}};
+new MutationObserver(()=>ensure()).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['lang']});
+if(document.readyState!=='loading')ensure();else addEventListener('DOMContentLoaded',ensure);})();
 </script>
 </body>
 </html>
