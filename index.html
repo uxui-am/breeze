@@ -4198,5 +4198,19 @@ html:not(#z1):not(#z2):not(#z3) body .mb-sheet .mb-x{top:18px!important}
 /* мобильный: быстрые нажатия на кнопки (счётчик гостей, даты) не увеличивают экран двойным тапом */
 button,a,[role=button],.mb-sheet,.mb-sheet *,.pop-up,.pop-up *,.m-menu,.m-menu *{touch-action:manipulation}
 </style>
+<style id="brz-apt-cal-mobile">
+/* 2.11: мобильный календарь «Выбрать даты» у апартаментов — один месяц, влезает в экран, крестик отдельно сверху, низ по центру */
+@media(max-width:900px){
+html:not(#z1):not(#z2):not(#z3) body .cal-pop.apt-calendar-centered{left:12px!important;right:12px!important;width:auto!important;top:50%!important;bottom:auto!important;translate:0 -50%!important;max-height:calc(100dvh - 24px)!important;overflow-y:auto!important;padding:56px 16px 16px!important;box-shadow:0 0 0 100vmax rgba(8,24,35,.45),0 10px 30px rgba(18,32,43,.22)!important}
+html:not(#z1):not(#z2):not(#z3) body .cal-pop.apt-calendar-centered>.x-close{top:12px!important;right:12px!important}
+html body .cal-pop.apt-calendar-centered>div[style*="gap: 48px"]>div+div{display:none!important}
+html body .cal-pop.apt-calendar-centered>div[style*="gap: 48px"]{margin-top:12px!important}
+html body .cal-pop.apt-calendar-centered>div:first-of-type>span{text-align:center;line-height:20px}
+html body .cal-pop.apt-calendar-centered>div:last-of-type{flex-direction:column!important;align-items:stretch!important;text-align:center;gap:12px!important}
+html body .cal-pop.apt-calendar-centered>div:last-of-type>div{justify-content:center!important;width:100%!important;margin:0!important}
+html body .cal-pop.apt-calendar-centered>div:last-of-type>div>button{flex:1 1 0!important;min-width:0!important;width:auto!important;margin:0!important;justify-content:center}
+}
+@media(max-width:900px) and (max-height:700px){html body .cal-pop.apt-calendar-centered>div[style*="gap: 48px"] button{height:36px!important}}
+</style>
 </body>
 </html>
