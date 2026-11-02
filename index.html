@@ -4128,6 +4128,10 @@ html body .breeze-footer .footer-bottom{display:flex;justify-content:space-betwe
 html body .breeze-footer .footer-reg{font-size:16px;line-height:26px;color:#A9B6BF}
 html body .breeze-footer .footer-bottom-r{display:inline-flex;align-items:center;gap:16px;font-size:13px;line-height:20px;color:#A9B6BF}
 html body .breeze-footer .footer-bottom-r .footer-privacy{font-size:13px}
+/* нижняя строка подвала — еле заметная */
+html:not(#z1):not(#z2):not(#z3) body .breeze-footer .footer-bottom{border-top-color:rgba(255,255,255,.05)!important}
+html:not(#z1):not(#z2):not(#z3) body .breeze-footer .footer-bottom,html:not(#z1):not(#z2):not(#z3) body .breeze-footer .footer-bottom *{color:rgba(169,182,191,.38)!important}
+html:not(#z1):not(#z2):not(#z3) body .breeze-footer .footer-bottom a:hover{color:rgba(169,182,191,.8)!important}
 html[data-brz-rv]:not(#z1):not(#z2) .footer-dialog{position:fixed!important;right:auto!important;bottom:auto!important;translate:none!important;margin:0!important}
 html[data-brz-rv]:not(#z1):not(#z2) .footer-dialog.cal-pop{left:var(--brz-rv-cal-l,50%)!important;top:var(--brz-rv-cal-t,10vh)!important}
 html[data-brz-rv]:not(#z1):not(#z2) .footer-dialog.res{left:var(--brz-rv-res-l,50%)!important;top:var(--brz-rv-res-t,10vh)!important}
