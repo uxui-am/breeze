@@ -382,7 +382,7 @@ html body .mb-cnt button{width:32px!important;height:32px!important;border-color
 </style>
 <script>
 /* desktop: календарь над строкой поиска с зазором 40px (как в Figma), но не выше 80px от верха */
-(function(){const place=()=>{if(innerWidth<=900)return;document.querySelectorAll('.cal-pop:not(.apt-calendar-centered)').forEach(el=>{if(!el.matches(':popover-open'))return;const a=el.parentElement.getBoundingClientRect();const top=Math.max(80,Math.round(a.top-40-el.offsetHeight));el.style.setProperty('--brz-cal-top',top+'px');});const sr=document.querySelector('#search');document.querySelectorAll('.pop-up.res:not(.footer-dialog)').forEach(el=>{if(!sr||el.matches(':popover-open'))return;const want=sr.getBoundingClientRect().top-40;const hd=document.querySelector('#top header');const lim=(hd?hd.getBoundingClientRect().bottom:0)+16;el.style.setProperty('translate','none','important');el.style.setProperty('top','auto','important');let r=el.getBoundingClientRect();if(!r.height)return;const sc=r.width/el.offsetWidth||1;el.style.setProperty('max-height',Math.round((innerHeight-16-lim)/sc)+'px','important');const need=el.scrollHeight*sc;const tgt=Math.min(innerHeight-16,Math.max(want,lim+need));r=el.getBoundingClientRect();const d=(tgt-r.bottom)/sc;if(Math.abs(d)<1)return;const cb=parseFloat(getComputedStyle(el).bottom)||0;el.style.setProperty('bottom',Math.round(cb-d)+'px','important');});};
+(function(){const place=()=>{if(innerWidth<=900)return;document.querySelectorAll('.cal-pop:not(.apt-calendar-centered)').forEach(el=>{if(!el.matches(':popover-open'))return;const a=el.parentElement.getBoundingClientRect();const hd=document.querySelector('#top header');const hb=hd?hd.getBoundingClientRect().bottom:72;const room=a.top-hb-24,h=el.offsetHeight,sc=h>room?Math.max(.82,room/h):1;const top=Math.round(hb+Math.max(8,(a.top-hb-h*sc)/2));el.style.setProperty('--brz-cal-top',top+'px');if(sc<1){el.style.setProperty('scale',String(sc.toFixed(3)));el.style.setProperty('transform-origin','50% 0');}else el.style.removeProperty('scale');});const sr=document.querySelector('#search');document.querySelectorAll('.pop-up.res:not(.footer-dialog)').forEach(el=>{if(!sr||el.matches(':popover-open'))return;const want=sr.getBoundingClientRect().top-40;const hd=document.querySelector('#top header');const lim=(hd?hd.getBoundingClientRect().bottom:0)+16;el.style.setProperty('translate','none','important');el.style.setProperty('top','auto','important');let r=el.getBoundingClientRect();if(!r.height)return;const sc=r.width/el.offsetWidth||1;el.style.setProperty('max-height',Math.round((innerHeight-16-lim)/sc)+'px','important');const need=el.scrollHeight*sc;const tgt=Math.min(innerHeight-16,Math.max(want,lim+need));r=el.getBoundingClientRect();const d=(tgt-r.bottom)/sc;if(Math.abs(d)<1)return;const cb=parseFloat(getComputedStyle(el).bottom)||0;el.style.setProperty('bottom',Math.round(cb-d)+'px','important');});};
 new MutationObserver(()=>requestAnimationFrame(place)).observe(document.documentElement,{childList:true,subtree:true});addEventListener('resize',place);})();
 </script>
 <style id="brz-mobile-hero-fig">
@@ -2018,12 +2018,12 @@ html,body{overflow-x:clip}
    </sc-if>
 
   <div class="footer-grid">
-   <div class="footer-brand"><a href="#top" class="footer-logo" style="font-family:{{scriptFont}},cursive">Breeze</a><p>Calle La Hondura 22, Portal 2<br>Puerto de Santiago · Tenerife</p><p class="footer-muted">{{t_s103}}</p></div>
+   <div class="footer-brand"><a href="#top" class="footer-logo" style="font-family:{{scriptFont}},cursive">Breeze</a><p>Calle La Hondura 22, Portal 2<br>Puerto de Santiago · Tenerife</p></div>
    <nav class="footer-column" aria-label="{{t_s123}}"><h3>{{t_footerSite}}</h3><a href="#apartments">{{t_s1}}</a><a href="#area">{{t_s2}}</a><a href="#long">{{t_s104}}</a><a href="#faq">{{t_s3}}</a></nav>
    <div class="footer-column"><h3>{{t_footerContacts}}</h3><a href="tel:+34722578739"><img src="assets/footer-phone.svg" width="16" height="16" alt="">+34 722 578 739</a><a href="https://wa.me/34722578739" target="_blank" rel="noopener"><img src="assets/footer-whatsapp.svg" width="16" height="16" alt="">WhatsApp</a><a href="mailto:hello@breeze-tenerife.com"><img src="assets/footer-email.svg" width="16" height="16" alt="">hello@breeze-tenerife.com</a></div>
    <nav class="footer-column" aria-label="{{t_s1}}"><h3>{{t_s1}}</h3><a href="?apartment=ocean"><svg class="footer-apt-ic" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7c2-2 4-2 6 0s4 2 6 0 4-2 6 0M3 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0M3 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0"></path></svg>Ocean&nbsp;Breeze</a><a href="?apartment=atlantic"><svg class="footer-apt-ic" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5h10.5a2.5 2.5 0 1 0-2.5-2.5M3 12.5h15.5a2.5 2.5 0 1 1-2.5 2.5M3 16.5h8a2 2 0 1 1-2 2"></path></svg>Atlantic&nbsp;Breeze</a><a href="?apartment=summer"><svg class="footer-apt-ic" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17.5h18M6 20.5h12M12 3.5v3M5.6 8.1l1.4 1.4M18.4 8.1 17 9.5M17 17.5a5 5 0 0 0-10 0"></path></svg>Summer&nbsp;Breeze</a></nav>
   </div>
-  <div class="footer-bottom"><span>© 2026 Breeze Apartments Tenerife</span><a href="#" class="footer-privacy">{{t_footerPrivacy}}</a></div>
+  <div class="footer-bottom"><span class="footer-reg">{{t_s103}}</span><span class="footer-bottom-r"><a href="#" class="footer-privacy">{{t_footerPrivacy}}</a><span class="footer-copy">© 2026 Breeze Apartments Tenerife</span></span></div>
  </div>
 </footer>
 
@@ -2995,8 +2995,9 @@ class Component extends DCLogic {
     const add=(el,delay,from)=>{if(!el)return;const a=el.animate([{opacity:0,translate:from,filter:'blur(3px)'},{opacity:1,translate:'0 0',filter:'blur(0px)'}],{duration:550,delay,fill:'both',easing:'cubic-bezier(.22,1,.36,1)'});a.pause();a.currentTime=0;tracks.push(a);};
     add(section.querySelector('.footer-search'),0,'0 24px');
     add(section.querySelector('.footer-brand'),130,'0 22px');
-    section.querySelectorAll('.footer-column').forEach((el,i)=>add(el,240+i*110,'0 22px'));
-    add(section.querySelector('.footer-bottom'),700,'0 16px');
+    section.querySelectorAll('.footer-brand>*').forEach((el,j)=>{if(j)add(el,130+j*90,'0 18px');});
+    section.querySelectorAll('.footer-column').forEach((col,i)=>[...col.children].forEach((el,j)=>add(el,260+i*120+j*55,'0 16px')));
+    section.querySelectorAll('.footer-bottom>*').forEach((el,j)=>add(el,820+j*90,'0 12px'));
     let pending=true;
     const reveal=()=>{if(!pending)return;const r=section.getBoundingClientRect();if(r.top<innerHeight*.65&&r.bottom>innerHeight*.2){pending=false;tracks.forEach(a=>a.play());}};
     let landTimer=0;this._screenActions.footer=()=>{clearTimeout(landTimer);tracks.forEach(a=>{a.pause();a.currentTime=0;});pending=false;landTimer=setTimeout(()=>tracks.forEach(a=>a.play()),420);};
@@ -3998,18 +3999,23 @@ html:not(#z1):not(#z2):not(#z3) body #reviews .rv-m-book{display:flex!important;
 }
 </style>
 <script id="brz-reviews-form-js">
-/* Форма под отзывами использует окна (календарь, гости, «Свободно») формы из подвала; пока она активна — окна показываются у неё. */
-(()=>{let at='footer',raf=0;
+/* Форма под отзывами использует окна (календарь, гости, «Свободно») формы из подвала; пока она активна — окна показываются у неё.
+   Сдвиг пишем в переменные на <html>: dc-lite перерисовывает style самих окон, иначе они «скачут». */
+(()=>{let at='footer';const H=document.documentElement;
 document.addEventListener('click',e=>{const t=e.target;if(!t.closest)return;
  if(t.closest('#reviews .rv-m-book')){e.preventDefault();const b=document.querySelector('#top .m-book');if(b)b.click();return;}
  if(t.closest('#reviews .rv-search')){at='reviews';window.__brzRvField=t.closest('.rv-field,.rv-check');}else if(t.closest('footer .footer-search'))at='footer';},true);
-const place=()=>{raf=requestAnimationFrame(place);const dlg=[...document.querySelectorAll('.footer-dialog')].filter(d=>d.matches(':popover-open')||d.getBoundingClientRect().width>0);
- const rf=document.querySelector('#reviews .rv-search'),ff=document.querySelector('footer .footer-search');
- dlg.forEach(d=>{if(at!=='reviews'||!rf||!ff){if(d.style.translate)d.style.translate='';return;}
-  const cur=parseFloat((d.style.translate||'0px 0px').split(' ')[1])||0,curx=parseFloat((d.style.translate||'0px').split(' ')[0])||0;
-  const a=rf.getBoundingClientRect(),b=ff.getBoundingClientRect();const r=d.getBoundingClientRect(),w=r.width>400,l0=r.left-curx,t0=r.top-cur;let dx,dy;if(w){dx=Math.round(innerWidth/2-(l0+r.width/2));dy=Math.round(Math.max(16,Math.min(a.top-16-r.height,(innerHeight-r.height)/2))-t0);}else{const f=(window.__brzRvField||rf).getBoundingClientRect();dx=Math.round(Math.min(innerWidth-r.width-16,Math.max(16,f.left+f.width/2-r.width/2))-l0);dy=Math.round(Math.max(16,a.top-r.height-12)-t0);}
-  if(dx!==curx||dy!==cur)d.style.translate=dx+'px '+dy+'px';});};
-raf=requestAnimationFrame(place);})();
+const kind=d=>d.classList.contains('cal-pop')?'cal':d.classList.contains('res')?'res':'gu';
+const place=()=>{requestAnimationFrame(place);
+ if(at!=='reviews'||innerWidth<=900){if(H.hasAttribute('data-brz-rv'))H.removeAttribute('data-brz-rv');return;}
+ if(!H.hasAttribute('data-brz-rv'))H.setAttribute('data-brz-rv','');
+ const rf=document.querySelector('#reviews .rv-search');if(!rf)return;const a=rf.getBoundingClientRect();
+ document.querySelectorAll('.footer-dialog').forEach(d=>{const r=d.getBoundingClientRect();if(!r.width)return;const k=kind(d);
+  const cs=getComputedStyle(d).translate.split(' ');const cx=parseFloat(cs[0])||0,cy=parseFloat(cs[1]||'0')||0;const l0=r.left-cx,t0=r.top-cy;let x,y;
+  if(k!=='gu'){x=innerWidth/2-r.width/2;y=Math.max(16,Math.min(a.top-16-r.height,(innerHeight-r.height)/2));}
+  else{const f=(window.__brzRvField||rf).getBoundingClientRect();x=Math.min(innerWidth-r.width-16,Math.max(16,f.left+f.width/2-r.width/2));y=Math.max(16,a.top-r.height-12);}
+  const dx=Math.round(x-l0),dy=Math.round(y-t0);const v=dx+'px '+dy+'px';if(H.style.getPropertyValue('--brz-rv-'+k)!==v)H.style.setProperty('--brz-rv-'+k,v);});};
+requestAnimationFrame(place);})();
 </script>
 <style id="brz-field-hover">
 /* Единый ховер полей брони (главная, отзывы, подвал): плашка размером с кнопку «Забронировать» (та же высота, по ширине — текст + 32px с боков), текст не двигается; перегородки рядом скрываются */
@@ -4104,5 +4110,29 @@ if(!hook()){let n=0;const t=setInterval(()=>{if(hook()||++n>60)clearInterval(t);
 html.cmp-collapse-transition::view-transition-old(root){animation:brzVtOut .6s cubic-bezier(.4,0,.2,1) both}
 html.cmp-collapse-transition::view-transition-new(root){animation:brzVtIn .9s cubic-bezier(.22,1,.36,1) .12s both}
 </style>
+<style id="brz-footer-fig">
+/* Подвал по Figma (425:3558): лого и адрес с отступом 40, колонки 787/1099/1447 (при ширине 1376), нижняя строка с отступом 49 */
+@media(min-width:1101px){
+html:not(#z1):not(#z2):not(#z3) body .breeze-footer .footer-grid{grid-template-columns:515px 312px 348px minmax(0,1fr)!important;column-gap:0!important}
+html:not(#z1):not(#z2):not(#z3) body .breeze-footer .footer-brand{padding-left:40px;box-sizing:border-box}
+html:not(#z1):not(#z2):not(#z3) body .breeze-footer .footer-grid>.footer-column{justify-self:start!important;margin-left:0!important}
+html:not(#z1):not(#z2):not(#z3) body .breeze-footer .footer-bottom{margin-left:49px;margin-right:49px}
+}
+html body .breeze-footer .footer-bottom{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+html body .breeze-footer .footer-reg{font-size:16px;line-height:26px;color:#A9B6BF}
+html body .breeze-footer .footer-bottom-r{display:inline-flex;align-items:center;gap:16px;font-size:13px;line-height:20px;color:#A9B6BF}
+html body .breeze-footer .footer-bottom-r .footer-privacy{font-size:13px}
+html[data-brz-rv] .footer-dialog.cal-pop{translate:var(--brz-rv-cal,0 0)!important}
+html[data-brz-rv] .footer-dialog.res{translate:var(--brz-rv-res,0 0)!important}
+html[data-brz-rv] .footer-dialog:not(.cal-pop):not(.res){translate:var(--brz-rv-gu,0 0)!important}
+</style>
+<script id="brz-hero-pop-close">
+/* уход с первого экрана закрывает окна брони первого экрана (календарь, гости, выдачу) */
+(()=>{const hook=()=>{const app=window.__breezeApp;if(!app||!app._goScreen||app._goScreen.__brzHc)return false;const orig=app._goScreen;
+ const w=function(index,skip){try{const st=app.state||{};if(index!==app._screenIndex&&(st.calOpen||st.guestsOpen||st.res))app.setState({calOpen:false,guestsOpen:false,res:null});}catch(e){}return orig.call(this,index,skip);};
+ Object.assign(w,orig);w.__brzHc=1;app._goScreen=w;return true;};
+if(!hook()){let n=0;const t=setInterval(()=>{if(hook()||++n>60)clearInterval(t);},250);}
+addEventListener('scroll',()=>{const app=window.__breezeApp;if(!app||app._screenMode)return;const st=app.state||{};if(st.footerForm||!(st.calOpen||st.guestsOpen||st.res))return;const s=document.querySelector('#search');if(s&&s.getBoundingClientRect().bottom<0)app.setState({calOpen:false,guestsOpen:false,res:null});},{passive:true});})();
+</script>
 </body>
 </html>
