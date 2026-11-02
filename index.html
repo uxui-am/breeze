@@ -4026,7 +4026,13 @@ document.addEventListener('click',e=>{const t=e.target;if(!t.closest)return;
  if(t.closest('#reviews .rv-search')){at='reviews';window.__brzRvField=t.closest('.rv-field,.rv-check');}else if(t.closest('footer .footer-search'))at='footer';},true);
 const kind=d=>d.classList.contains('cal-pop')?'cal':d.classList.contains('res')?'res':'gu';
 const place=()=>{requestAnimationFrame(place);
- if(at!=='reviews'||innerWidth<=900){if(H.hasAttribute('data-brz-rv'))H.removeAttribute('data-brz-rv');return;}
+ if(at!=='reviews'||innerWidth<=900){if(H.hasAttribute('data-brz-rv'))H.removeAttribute('data-brz-rv');
+  /* подвал: окно гостей — над полем «Количество гостей» */
+  document.querySelectorAll('.footer-dialog').forEach(d=>{if(!d.offsetWidth)d.__ftg=0;});
+  const gd=innerWidth>900&&[...document.querySelectorAll('.footer-dialog')].find(d=>d.offsetWidth&&!d.classList.contains('cal-pop')&&!d.classList.contains('res'));const gf=document.querySelector('footer .footer-guests');
+  if(gd&&gf&&gd.__ftg){}else if(gd&&gf){gd.__ftg=1;const r=gf.getBoundingClientRect(),W=gd.offsetWidth,Hh=gd.offsetHeight;const L=Math.round(Math.min(innerWidth-W-16,Math.max(16,r.left+r.width/2-W/2)))+'px',T=Math.round(Math.max(16,r.top-Hh-12))+'px';if(H.style.getPropertyValue('--brz-ftg-l')!==L)H.style.setProperty('--brz-ftg-l',L);if(H.style.getPropertyValue('--brz-ftg-t')!==T)H.style.setProperty('--brz-ftg-t',T);if(!H.hasAttribute('data-brz-ftg'))H.setAttribute('data-brz-ftg','');}
+  else if(!gd&&H.hasAttribute('data-brz-ftg'))H.removeAttribute('data-brz-ftg');
+  return;}
  if(!H.hasAttribute('data-brz-rv'))H.setAttribute('data-brz-rv','');
  const rf=document.querySelector('#reviews .rv-search');if(!rf)return;const a=rf.getBoundingClientRect();
  document.querySelectorAll('.footer-dialog').forEach(d=>{if(!d.offsetWidth){d.__brzXY=null;return;}const k=kind(d);if(d.__brzXY&&d.__brzXY.w===d.offsetWidth&&d.__brzXY.h===d.offsetHeight)return;d.__brzXY={w:d.offsetWidth,h:d.offsetHeight};
@@ -4371,5 +4377,6 @@ document.addEventListener('click',e=>{const a=window.__breezeApp;if(!a||!e.targe
 },true);})();
 </script>
 <style id="brz-quote-noline">/* страница апартамента: без линии между полями брони и расчётом */html:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6) body #ocean-quote{border-top:0!important}</style>
+<style id="brz-ftg">html[data-brz-ftg]:not(#z1):not(#z2):not(#z3):not(#z4) .footer-dialog:not(.cal-pop):not(.res){position:fixed!important;left:var(--brz-ftg-l)!important;top:var(--brz-ftg-t)!important;right:auto!important;bottom:auto!important;translate:none!important;margin:0!important}</style>
 </body>
 </html>
