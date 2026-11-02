@@ -1726,7 +1726,7 @@ html,body{overflow-x:clip}
    </sc-if>
    <button type="button" data-busy="{{bookingBusy}}" onClick="{{checkAvail}}" aria-disabled="{{bookingActionDisabled}}" aria-describedby="booking-guests-hint" aria-haspopup="dialog" class="pill hero-search-action fx fx-l" style="min-width: 230px; cursor: pointer"><sc-if value="{{searchingNow}}"><span class="brz-spin" aria-hidden="true"></span></sc-if>{{bookingActionLabel}} <svg class="ar" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.667 8c0-.368.298-.667.666-.667h9.334a.667.667 0 0 1 0 1.334H3.333A.667.667 0 0 1 2.667 8Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M7.529 2.862a.667.667 0 0 1 .942 0l4.667 4.667a.667.667 0 0 1 0 .942L8.471 13.138a.667.667 0 1 1-.942-.943L11.724 8 7.529 3.805a.667.667 0 0 1 0-.943Z"></path></svg></button>
   </form>
-  <button type="button" class="m-book" aria-haspopup="dialog">{{bookingActionLabel}} <svg class="ar" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.667 8c0-.368.298-.667.666-.667h9.334a.667.667 0 0 1 0 1.334H3.333A.667.667 0 0 1 2.667 8Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M7.529 2.862a.667.667 0 0 1 .942 0l4.667 4.667a.667.667 0 0 1 0 .942L8.471 13.138a.667.667 0 1 1-.942-.943L11.724 8 7.529 3.805a.667.667 0 0 1 0-.943Z"></path></svg></button>
+  <button type="button" class="m-book" aria-haspopup="dialog">{{bookingActionLabel}}<sc-if value="{{searchingNow}}"><span class="brz-spin" aria-hidden="true"></span></sc-if> <svg class="ar" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.667 8c0-.368.298-.667.666-.667h9.334a.667.667 0 0 1 0 1.334H3.333A.667.667 0 0 1 2.667 8Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M7.529 2.862a.667.667 0 0 1 .942 0l4.667 4.667a.667.667 0 0 1 0 .942L8.471 13.138a.667.667 0 1 1-.942-.943L11.724 8 7.529 3.805a.667.667 0 0 1 0-.943Z"></path></svg></button>
  </div>
 
  <!-- тёмная плашка с рейтингами внизу видео -->
@@ -4177,6 +4177,15 @@ html:not(#z1):not(#z2):not(#z3) body .breeze-footer .footer-bottom-r{flex-direct
 html body .breeze-footer .footer-reg{font-size:14px;line-height:22px}
 /* WhatsApp: прижата к низу видимой области — при свёрнутой панели Safari встаёт в правый нижний угол рядом с адресной строкой */
 @supports (height:100dvh){html:not(#z1):not(#z2):not(#z3) body .wa-fab{top:calc(100dvh - 48px - max(16px, env(safe-area-inset-bottom) - 12px))!important;bottom:auto!important}}
+}
+</style>
+<style id="brz-mobile-res">
+@media(max-width:900px){
+/* мобильный: выдача по центру экрана; при поиске в «Забронировать» крутится спиннер вместо стрелки; в шторке больше места над месяцами */
+html:not(#z1):not(#z2):not(#z3) body .pop-up.res:not(.footer-dialog):popover-open,html:not(#z1):not(#z2):not(#z3) body .pop-up.res:not(.footer-dialog){top:50%!important;bottom:auto!important;translate:0 -50%!important;max-height:calc(100dvh - 32px)!important;overflow-y:auto!important}
+html body .m-book:has(.brz-spin) .ar{display:none}
+html:not(#z1):not(#z2):not(#z3) body .mb-sheet .mb-cal-nav{margin-top:56px!important}
+html:not(#z1):not(#z2):not(#z3) body .mb-sheet .mb-x{top:18px!important}
 }
 </style>
 </body>
