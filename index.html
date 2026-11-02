@@ -3999,21 +3999,28 @@ const place=()=>{raf=requestAnimationFrame(place);const dlg=[...document.querySe
 raf=requestAnimationFrame(place);})();
 </script>
 <style id="brz-field-hover">
-/* Единый ховер полей брони (главная, отзывы, подвал): лёгкая плашка + текст чуть вверх */
+/* Единый ховер полей брони (главная, отзывы, подвал): плашка размером с кнопку «Забронировать» (та же высота, по ширине — текст + 32px с боков), текст не двигается; перегородки рядом скрываются */
 .brz-fl{display:inline-flex;align-items:center;white-space:nowrap}
 html body footer .footer-guests .brz-fl{font-size:inherit}
-html body #top #search>.field,html body #reviews .rv-field,html body footer .footer-field{position:relative;isolation:isolate}
-html body #top #search>.field::before,html body #reviews .rv-field::before,html body footer .footer-field::before{content:"";position:absolute;left:0;right:0;top:50%;height:min(100%,56px);translate:0 -50%;border-radius:999px;background:var(--brz-fh,rgba(255,255,255,.14));opacity:0;transition:opacity .25s ease;z-index:-1;pointer-events:none}
-html body #reviews .rv-field::before{--brz-fh:rgba(18,32,43,.06)}
-html:not(#z1):not(#z2):not(#z3) body #reviews .rv-field:hover,html:not(#z1):not(#z2):not(#z3) body footer .footer-field:hover{background:none!important;color:inherit}
+html body #top #search{--brz-ph:56px;--brz-fh:rgba(255,255,255,.14)}
+html body #reviews .rv-search{--brz-ph:64px;--brz-fh:rgba(18,32,43,.06)}
+html body footer .footer-search{--brz-ph:64px;--brz-fh:rgba(255,255,255,.12)}
+html:not(#z1):not(#z2):not(#z3) body #reviews .rv-field:hover,html:not(#z1):not(#z2):not(#z3) body footer .footer-field:hover{background:none!important}
 html body footer .footer-field:hover{color:#fff}
-html body #top #search>.field>span:not(.field-clear),html body #reviews .rv-field .brz-fl,html body footer .footer-field .brz-fl{transition:translate .3s cubic-bezier(.22,1,.36,1)}
 html body .search .field>span{text-decoration:none!important}
+html body #top #search>.field>span:not(.field-clear):not(.booking-guests-hint),html body #reviews .rv-field .brz-fl,html body footer .footer-field .brz-fl{position:relative;isolation:isolate;translate:0 0!important}
+html body #top #search>.field>span:not(.field-clear):not(.booking-guests-hint)::before,html body #reviews .rv-field .brz-fl::before,html body footer .footer-field .brz-fl::before{content:"";position:absolute;left:-32px;right:-32px;top:50%;height:var(--brz-ph);translate:0 -50%;border-radius:999px;background:var(--brz-fh);opacity:0;transition:opacity .25s ease;z-index:-1;pointer-events:none}
+/* перегородки: одинаковые во всех формах — 40px по центру, прячутся рядом с наведённым полем */
+html:not(#z1):not(#z2):not(#z3) body #top #search>.field,html:not(#z1):not(#z2):not(#z3) body footer .footer-field{border-right-color:transparent!important}
+html body footer .footer-field{position:relative}
+html body #top #search>.field:not(.search-guests-field)::after,html body #reviews .rv-field:not(.rv-guests)::after,html body footer .footer-field:not(.footer-guests)::after{content:"";position:absolute;top:50%;height:40px;translate:0 -50%;right:-1px;width:1px;background:var(--brz-dv);transition:opacity .25s ease;pointer-events:none}
+html body #reviews .rv-field:not(.rv-guests)::after{right:-12px}
+html body #top #search{--brz-dv:rgba(255,255,255,.35)}
+html body #reviews .rv-search{--brz-dv:#A9B6BF}
+html body footer .footer-search{--brz-dv:rgba(255,255,255,.25)}
 @media(hover:hover){
-html body #top #search>.field:hover::before,html body #top #search>.field:focus-visible::before,html body #reviews .rv-field:hover::before,html body #reviews .rv-field:focus-visible::before,html body footer .footer-field:hover::before,html body footer .footer-field:focus-visible::before{opacity:1}
-}
-@media(hover:hover) and (prefers-reduced-motion:no-preference){
-html body #top #search>.field:hover>span:not(.field-clear),html body #reviews .rv-field:hover .brz-fl,html body footer .footer-field:hover .brz-fl{translate:0 -3px}
+html body #top #search>.field:is(:hover,:focus-visible)>span:not(.field-clear):not(.booking-guests-hint)::before,html body #reviews .rv-field:is(:hover,:focus-visible) .brz-fl::before,html body footer .footer-field:is(:hover,:focus-visible) .brz-fl::before{opacity:1}
+html body #top #search>.field:is(:hover,:focus-visible)::after,html body #top #search>.field:has(+ .field:is(:hover,:focus-visible))::after,html body #reviews .rv-field:is(:hover,:focus-visible)::after,html body #reviews .rv-field:has(+ .rv-field:is(:hover,:focus-visible))::after,html body footer .footer-field:is(:hover,:focus-visible)::after,html body footer .footer-field:has(+ .footer-field:is(:hover,:focus-visible))::after{opacity:0}
 }
 </style>
 </body>
