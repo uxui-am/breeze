@@ -1914,6 +1914,9 @@ html,body{overflow-x:clip}
   </div>
  </sc-if>
  <div class="rv-marquee" ref="{{reviewCarouselRef}}"><div class="rv-g rv-marquee-track"><sc-for list="{{reviewSlides}}" as="r"><figure class="w" data-review-card="true" data-review-slot="{{r.slot}}" aria-hidden="{{r.hidden}}"><div class="rv-card-top"><span class="rv-platform"><span class="rv-brand {{r.brand}}" aria-hidden="true">{{r.initial}}</span>{{r.platform}}</span><span class="rv-score">{{r.score}}</span></div><blockquote>{{r.quote}}</blockquote><figcaption><span class="av"><img src="{{r.portrait}}" alt="" width="44" height="44"></span><span class="rv-author"><b>{{r.name}}</b><span class="muted">{{r.country}} · {{r.apt}}</span></span></figcaption></figure></sc-for></div></div>
+<!-- 2.11: форма брони под отзывами (Figma 425:3374) — те же поля и логика, что в подвале -->
+<form class="rv-search" onsubmit="return false" data-brz-form="reviews"><button type="button" class="rv-field" onClick="{{footerDates}}">{{ciLabel}}<sc-if value="{{ciSet}}"><span class="field-clear" role="button" tabindex="0" aria-label="{{clearDatesLabel}}" onClick="{{clearCi}}"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 5l6 6M11 5l-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></sc-if></button><button type="button" class="rv-field" onClick="{{footerDates}}">{{coLabel}}<sc-if value="{{coSet}}"><span class="field-clear" role="button" tabindex="0" aria-label="{{clearOutLabel}}" onClick="{{clearCo}}"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 5l6 6M11 5l-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></sc-if></button><button type="button" class="rv-field rv-guests" onClick="{{footerGuests}}">{{guestsShort}} <svg aria-hidden="true" width="12" height="12" viewBox="0 0 16 16" fill="none" style="vertical-align:middle;margin-left:4px"><path d="m4 6 4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><sc-if value="{{guestsSetFlag}}"><span class="field-clear" role="button" tabindex="0" aria-label="{{clearGuestsLabel}}" onClick="{{clearGuests}}"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 5l6 6M11 5l-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span></sc-if></button><button type="button" class="pill dark fx fx-l rv-check" data-busy="{{bookingBusy}}" aria-disabled="{{bookingActionDisabled}}" onClick="{{footerCheck}}"><sc-if value="{{searchingNow}}"><span class="brz-spin" aria-hidden="true"></span></sc-if>{{bookingActionLabel}} <svg class="ar" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.667 8c0-.368.298-.667.666-.667h9.334a.667.667 0 0 1 0 1.334H3.333A.667.667 0 0 1 2.667 8Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M7.529 2.862a.667.667 0 0 1 .942 0l4.667 4.667a.667.667 0 0 1 0 .942L8.471 13.138a.667.667 0 1 1-.942-.943L11.724 8 7.529 3.805a.667.667 0 0 1 0-.943Z"></path></svg></button></form>
+<button type="button" class="pill dark fx fx-l rv-m-book">{{bookingActionLabel}} <svg class="ar" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.667 8c0-.368.298-.667.666-.667h9.334a.667.667 0 0 1 0 1.334H3.333A.667.667 0 0 1 2.667 8Z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M7.529 2.862a.667.667 0 0 1 .942 0l4.667 4.667a.667.667 0 0 1 0 .942L8.471 13.138a.667.667 0 1 1-.942-.943L11.724 8 7.529 3.805a.667.667 0 0 1 0-.943Z"></path></svg></button>
 
 
 </section>
@@ -2953,8 +2956,9 @@ class Component extends DCLogic {
     add(section.querySelector(':scope > .kicker'),reveal,0,600);
     add(section.querySelector('.rv-g-head h2'),reveal,110,650);
     section.querySelectorAll('.rv-src > *').forEach((el,i)=>add(el,reveal,820+(i%3)*110,600));
+    add(section.querySelector('.rv-search'),[{opacity:0,translate:'0 24px'},{opacity:1,translate:'0 0'}],980,650);
     let cardTracks=[];const prepCards=()=>{cardTracks.forEach(a=>a.cancel());cardTracks=[...section.querySelectorAll('.rv-marquee-track > figure')].sort((a,b)=>a.offsetLeft-b.offsetLeft).map((el,i)=>{const a=el.animate([{opacity:0,transform:'translateY(28px)',filter:'blur(3px)'},{opacity:1,transform:'translateY(0)',filter:'blur(0px)'}],{delay:260+Math.min(i,5)*110,duration:650,fill:'both',easing:'cubic-bezier(.22,1,.36,1)'});a.pause();a.currentTime=0;return a;});};
-    const fit=()=>{if(innerWidth>900){const grid=section.querySelector('.rv-marquee'),kicker=section.querySelector(':scope > .kicker');const headSpace=grid.offsetTop-kicker.offsetTop;document.documentElement.style.setProperty('--reviews-grid-height',Math.max(460,Math.min(640,innerHeight-headSpace-96))+'px');}};fit();
+    const fit=()=>{if(innerWidth>900){const grid=section.querySelector('.rv-marquee'),kicker=section.querySelector(':scope > .kicker');const headSpace=grid.offsetTop-kicker.offsetTop;const rf=section.querySelector('.rv-search');const formSpace=rf&&rf.offsetParent?rf.offsetHeight+48:0;document.documentElement.style.setProperty('--reviews-grid-height',Math.max(340,Math.min(640,innerHeight-headSpace-formSpace-96))+'px');}};fit();
     let played=false,frame=0,locked=false,revealTimer=0;
     const start=(settled=false)=>{
       played=true;locked=false;
@@ -3958,6 +3962,41 @@ addEventListener('keydown',e=>{if(!ok()||e.altKey||e.ctrlKey||e.metaKey||blocked
  const dir=['ArrowDown','PageDown',' '].includes(e.key)&&!e.shiftKey?1:['ArrowUp','PageUp'].includes(e.key)||(e.key===' '&&e.shiftKey)?-1:0;if(!dir)return;
  const target=decide(dir);if(target==null)return;e.preventDefault();if(busy)return;go(target);},{capture:true});
 })();
+</script>
+<style id="brz-reviews-form">
+/* 2.11: блок «Что говорят гости» по Figma 425:3374 — заголовок и форма в колонке 1140, карусель на всю ширину, форма брони под отзывами; на телефоне — кнопка «Забронировать» во всю ширину (открывает шторку) */
+html body #reviews .rv-m-book{display:none}
+@media(min-width:901px){
+html:not(#z1):not(#z2):not(#z3) body #reviews.rv-gsec{display:flex;flex-direction:column;justify-content:center;padding-top:0!important;padding-bottom:0!important;min-height:100vh;box-sizing:border-box}
+html:not(#z1):not(#z2):not(#z3) body #reviews>.kicker,html:not(#z1):not(#z2):not(#z3) body #reviews>.rv-g-head{width:100%;max-width:1140px;margin-left:auto;margin-right:auto;box-sizing:border-box}
+html:not(#z1):not(#z2):not(#z3) body #reviews>.kicker{margin-bottom:24px!important}
+html:not(#z1):not(#z2):not(#z3) body #reviews>.rv-marquee{margin-top:clamp(40px,9vh,99px)!important}
+html:not(#z1):not(#z2):not(#z3) body #reviews .rv-g-head{margin-bottom:0!important}
+html body #reviews .rv-search{display:flex;align-items:center;gap:24px;width:100%;max-width:1140px;margin:clamp(40px,9vh,99px) auto 0;padding:24px;box-sizing:border-box;border:1px solid #A9B6BF;border-radius:999px;background:rgba(255,255,255,.35);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+html body #reviews .rv-field{flex:1 1 0;min-width:0;position:relative;height:64px;border:0;background:none;color:#12202b;font:inherit;font-size:18px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;border-radius:999px;transition:background-color .25s ease}
+html body #reviews .rv-field:hover{background:rgba(18,32,43,.05)}
+html body #reviews .rv-field .field-clear{position:static;margin-left:8px;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#eef3f4;color:#12202b}
+html body #reviews .rv-field .field-clear svg{width:12px;height:12px}
+html body #reviews .rv-check{flex:none;height:64px!important;min-height:64px!important;min-width:217px;padding:0 32px!important;font-size:16px!important;font-weight:500!important;gap:10px;justify-content:center}
+}
+@media(max-width:900px){
+html body #reviews .rv-search{display:none!important}
+html:not(#z1):not(#z2):not(#z3) body #reviews .rv-m-book{display:flex!important;order:99;width:100%;height:56px;margin:24px 0 0;justify-content:center;align-items:center;gap:8px;font-size:15px!important;font-weight:500!important;box-sizing:border-box}
+}
+</style>
+<script id="brz-reviews-form-js">
+/* Форма под отзывами использует окна (календарь, гости, «Свободно») формы из подвала; пока она активна — окна показываются у неё. */
+(()=>{let at='footer',raf=0;
+document.addEventListener('click',e=>{const t=e.target;if(!t.closest)return;
+ if(t.closest('#reviews .rv-m-book')){e.preventDefault();const b=document.querySelector('#top .m-book');if(b)b.click();return;}
+ if(t.closest('#reviews .rv-search'))at='reviews';else if(t.closest('footer .footer-search'))at='footer';},true);
+const place=()=>{raf=requestAnimationFrame(place);const dlg=[...document.querySelectorAll('.footer-dialog')].filter(d=>d.matches(':popover-open')||d.getBoundingClientRect().width>0);
+ const rf=document.querySelector('#reviews .rv-search'),ff=document.querySelector('footer .footer-search');
+ dlg.forEach(d=>{if(at!=='reviews'||!rf||!ff){if(d.style.translate)d.style.translate='';return;}
+  const cur=parseFloat((d.style.translate||'0px 0px').split(' ')[1])||0,curx=parseFloat((d.style.translate||'0px').split(' ')[0])||0;
+  const a=rf.getBoundingClientRect(),b=ff.getBoundingClientRect();const dx=Math.round(a.left+a.width/2-(b.left+b.width/2)),dy=Math.round(a.top-b.top);
+  if(dx!==curx||dy!==cur)d.style.translate=dx+'px '+dy+'px';});};
+raf=requestAnimationFrame(place);})();
 </script>
 </body>
 </html>
