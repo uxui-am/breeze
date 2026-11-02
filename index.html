@@ -2956,7 +2956,7 @@ class Component extends DCLogic {
     add(section.querySelector(':scope > .kicker'),reveal,0,600);
     add(section.querySelector('.rv-g-head h2'),reveal,110,650);
     section.querySelectorAll('.rv-src > *').forEach((el,i)=>add(el,reveal,820+(i%3)*110,600));
-    add(section.querySelector('.rv-search'),[{opacity:0,translate:'0 24px'},{opacity:1,translate:'0 0'}],980,650);
+    add(section.querySelector('.rv-search'),[{opacity:0,translate:'0 24px'},{opacity:1,translate:'0 0'}],560,600);
     let cardTracks=[];const prepCards=()=>{cardTracks.forEach(a=>a.cancel());cardTracks=[...section.querySelectorAll('.rv-marquee-track > figure')].sort((a,b)=>a.offsetLeft-b.offsetLeft).map((el,i)=>{const a=el.animate([{opacity:0,transform:'translateY(28px)',filter:'blur(3px)'},{opacity:1,transform:'translateY(0)',filter:'blur(0px)'}],{delay:260+Math.min(i,5)*110,duration:650,fill:'both',easing:'cubic-bezier(.22,1,.36,1)'});a.pause();a.currentTime=0;return a;});};
     const fit=()=>{if(innerWidth>900){const grid=section.querySelector('.rv-marquee'),kicker=section.querySelector(':scope > .kicker');const headSpace=grid.offsetTop-kicker.offsetTop;const rf=section.querySelector('.rv-search');const formSpace=rf&&rf.offsetParent?rf.offsetHeight+48:0;document.documentElement.style.setProperty('--reviews-grid-height',Math.max(340,Math.min(640,innerHeight-headSpace-formSpace-96))+'px');}};fit();
     let played=false,frame=0,locked=false,revealTimer=0;
@@ -4010,11 +4010,12 @@ const place=()=>{requestAnimationFrame(place);
  if(at!=='reviews'||innerWidth<=900){if(H.hasAttribute('data-brz-rv'))H.removeAttribute('data-brz-rv');return;}
  if(!H.hasAttribute('data-brz-rv'))H.setAttribute('data-brz-rv','');
  const rf=document.querySelector('#reviews .rv-search');if(!rf)return;const a=rf.getBoundingClientRect();
- document.querySelectorAll('.footer-dialog').forEach(d=>{const r=d.getBoundingClientRect();if(!r.width)return;const k=kind(d);
-  const cs=getComputedStyle(d).translate.split(' ');const cx=parseFloat(cs[0])||0,cy=parseFloat(cs[1]||'0')||0;const l0=r.left-cx,t0=r.top-cy;let x,y;
-  if(k!=='gu'){x=innerWidth/2-r.width/2;y=Math.max(16,Math.min(a.top-16-r.height,(innerHeight-r.height)/2));}
-  else{const f=(window.__brzRvField||rf).getBoundingClientRect();x=Math.min(innerWidth-r.width-16,Math.max(16,f.left+f.width/2-r.width/2));y=Math.max(16,a.top-r.height-12);}
-  const dx=Math.round(x-l0),dy=Math.round(y-t0);const v=dx+'px '+dy+'px';if(H.style.getPropertyValue('--brz-rv-'+k)!==v)H.style.setProperty('--brz-rv-'+k,v);});};
+ document.querySelectorAll('.footer-dialog').forEach(d=>{if(!d.offsetWidth)return;const k=kind(d);
+  /* позиция без учёта transform/translate (offset*), чтобы не было обратной связи и дрожания на 1px */
+  const W=d.offsetWidth,Hh=d.offsetHeight;let x,y;
+  if(k!=='gu'){x=innerWidth/2-W/2;y=Math.max(16,Math.min(a.top-16-Hh,(innerHeight-Hh)/2));}
+  else{const f=(window.__brzRvField||rf).getBoundingClientRect();x=Math.min(innerWidth-W-16,Math.max(16,f.left+f.width/2-W/2));y=Math.max(16,a.top-Hh-12);}
+  const L=Math.round(x)+'px',T=Math.round(y)+'px';if(H.style.getPropertyValue('--brz-rv-'+k+'-l')!==L)H.style.setProperty('--brz-rv-'+k+'-l',L);if(H.style.getPropertyValue('--brz-rv-'+k+'-t')!==T)H.style.setProperty('--brz-rv-'+k+'-t',T);});};
 requestAnimationFrame(place);})();
 </script>
 <style id="brz-field-hover">
@@ -4122,9 +4123,10 @@ html body .breeze-footer .footer-bottom{display:flex;justify-content:space-betwe
 html body .breeze-footer .footer-reg{font-size:16px;line-height:26px;color:#A9B6BF}
 html body .breeze-footer .footer-bottom-r{display:inline-flex;align-items:center;gap:16px;font-size:13px;line-height:20px;color:#A9B6BF}
 html body .breeze-footer .footer-bottom-r .footer-privacy{font-size:13px}
-html[data-brz-rv] .footer-dialog.cal-pop{translate:var(--brz-rv-cal,0 0)!important}
-html[data-brz-rv] .footer-dialog.res{translate:var(--brz-rv-res,0 0)!important}
-html[data-brz-rv] .footer-dialog:not(.cal-pop):not(.res){translate:var(--brz-rv-gu,0 0)!important}
+html[data-brz-rv]:not(#z1):not(#z2) .footer-dialog{position:fixed!important;right:auto!important;bottom:auto!important;translate:none!important;margin:0!important}
+html[data-brz-rv]:not(#z1):not(#z2) .footer-dialog.cal-pop{left:var(--brz-rv-cal-l,50%)!important;top:var(--brz-rv-cal-t,10vh)!important}
+html[data-brz-rv]:not(#z1):not(#z2) .footer-dialog.res{left:var(--brz-rv-res-l,50%)!important;top:var(--brz-rv-res-t,10vh)!important}
+html[data-brz-rv]:not(#z1):not(#z2) .footer-dialog:not(.cal-pop):not(.res){left:var(--brz-rv-gu-l,50%)!important;top:var(--brz-rv-gu-t,40vh)!important}
 </style>
 <script id="brz-hero-pop-close">
 /* уход с первого экрана закрывает окна брони первого экрана (календарь, гости, выдачу) */
@@ -4134,5 +4136,11 @@ html[data-brz-rv] .footer-dialog:not(.cal-pop):not(.res){translate:var(--brz-rv-
 if(!hook()){let n=0;const t=setInterval(()=>{if(hook()||++n>60)clearInterval(t);},250);}
 })();
 </script>
+<style id="brz-field-clear-fixed">
+/* крестик «сбросить» не сдвигает текст поля: стоит у правого края поля, появляется плавно */
+@media(min-width:901px){
+html:not(#z1):not(#z2):not(#z3) body :is(#top #search>.field,#reviews .rv-field,footer .footer-field)>.field-clear{position:absolute!important;right:14px!important;left:auto!important;top:50%!important;translate:0 -50%!important;margin:0!important;animation:brzFadeIn .25s ease both}
+}
+</style>
 </body>
 </html>
