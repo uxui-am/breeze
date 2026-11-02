@@ -2803,7 +2803,7 @@ class Component extends DCLogic {
         if(this._smoothScroll)this._smoothScroll.scrollTo(to,{duration:duration/1000,lerp:undefined,force:true});
         else scrollTo({top:to,behavior:'smooth'});
         const tick=now=>{
-          const p=Math.max(0,Math.min(1,(now-started-delay)/animDur)),ease=intro?p:p*p*(3-2*p);
+          const p=Math.max(0,Math.min(1,(now-started-delay)/animDur)),ease=(intro||(target===2170&&!reversing))?p:p*p*(3-2*p);/* 2.11: карточки — в реальном темпе, без ускорения в середине */
           time=from+(target-from)*ease;tracks.forEach(a=>a.currentTime=time);
           if(p<1)frame=requestAnimationFrame(tick);
           else{time=target;tracks.forEach(a=>a.currentTime=target);busy=false;reversing=false;if(queued){queued=false;requestAnimationFrame(advance);}}
