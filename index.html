@@ -4258,5 +4258,30 @@ html:not(#z1):not(#z2):not(#z3) body .ocean-site-footer .footer-brand .footer-mu
 </style>
 <style id="brz-ft-pre">footer.brz-ft-pre .footer-search,footer.brz-ft-pre .footer-brand,footer.brz-ft-pre .footer-brand>*,footer.brz-ft-pre .footer-grid>.footer-column>*,footer.brz-ft-pre .footer-bottom>*{opacity:0}</style>
 <style id="brz-price-weight">html:not(#z1):not(#z2):not(#z3) body .apt-price-num{font-weight:300!important}</style>
+<style id="brz-reset-all-css">
+.brz-reset-all{position:fixed;z-index:6;width:36px;height:36px;border-radius:50%;border:0;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;visibility:hidden;transform:scale(.8);transition:opacity .25s ease,transform .3s cubic-bezier(.22,1,.36,1),visibility 0s .25s,background-color .2s}
+.brz-reset-all.on{opacity:1;visibility:visible;transform:none;transition:opacity .25s ease,transform .3s cubic-bezier(.22,1,.36,1),background-color .2s}
+.brz-reset-all svg{width:18px;height:18px;transition:transform .4s cubic-bezier(.22,1,.36,1)}
+.brz-reset-all:hover svg{transform:rotate(-180deg)}
+.brz-reset-all[data-t=glass]{background:rgba(255,255,255,.18);color:#fff}.brz-reset-all[data-t=glass]:hover{background:rgba(255,255,255,.3)}
+.brz-reset-all[data-t=light]{background:rgba(18,32,43,.06);color:#12202b}.brz-reset-all[data-t=light]:hover{background:rgba(18,32,43,.12)}
+.brz-reset-all[data-t=dark]{background:rgba(255,255,255,.12);color:#fff}.brz-reset-all[data-t=dark]:hover{background:rgba(255,255,255,.22)}
+</style>
+<script id="brz-reset-all">
+/* 2.11: «Сбросить всё» — круглая иконка ↺ перед «Забронировать» в трёх формах брони (десктоп); видна, только когда что-то выбрано */
+(()=>{const F=[['#top #search','.hero-search-action','glass'],['#reviews .rv-search','.rv-check','light'],['footer .footer-search','.footer-check','dark']];
+const L=()=>['Сбросить всё','Clear all','Borrar todo'][Math.max(0,['ru','en','es'].indexOf(document.documentElement.lang))];
+const btns=F.map(([f,b,t])=>{const el=document.createElement('button');el.type='button';el.className='brz-reset-all';el.dataset.t=t;el.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 2.64-6.36"/><path d="M3 4v4.5h4.5"/></svg>';
+ el.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();const form=document.querySelector(f);let n=0;const step=()=>{const x=form&&form.querySelector('.field-clear');if(x&&n++<6){x.click();requestAnimationFrame(step);}else{const a=window.__breezeApp;try{a&&a.setState({calOpen:false,guestsOpen:false,res:null});}catch(_){}}};step();});
+ document.body.appendChild(el);return {el,f,b};});
+const tick=()=>{requestAnimationFrame(tick);const desk=innerWidth>900;
+ btns.forEach(({el,f,b})=>{const form=document.querySelector(f),bk=form&&form.querySelector(b);const any=!!(form&&form.querySelector('.field-clear'));
+  if(!desk||!bk||!any){if(el.classList.contains('on'))el.classList.remove('on');return;}
+  const r=bk.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight){el.classList.remove('on');return;}
+  const x=Math.round(r.left-8-36),y=Math.round(r.top+r.height/2-18);const v=x+','+y;if(el.dataset.p!==v){el.dataset.p=v;el.style.left=x+'px';el.style.top=y+'px';}
+  const fo=getComputedStyle(form).opacity;el.style.filter=fo<1?'opacity('+fo+')':'';
+  if(!el.classList.contains('on'))el.classList.add('on');const l=L();if(el.getAttribute('aria-label')!==l){el.setAttribute('aria-label',l);el.title=l;}});};
+requestAnimationFrame(tick);})();
+</script>
 </body>
 </html>
