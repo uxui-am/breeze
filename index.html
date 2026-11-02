@@ -4045,5 +4045,41 @@ html:not(#z1):not(#z2):not(#z3) body dialog.ocean-dialog:not(.ocean-lightbox)[op
 html body dialog.ocean-dialog:not(.ocean-lightbox)[open]::backdrop{animation:brzFadeIn .35s ease both}
 }
 </style>
+<style>html[data-brz-sp-hide] #long .special-stays-photo{visibility:hidden}</style>
+<script id="brz-special-expand">
+/* «Особые условия» → «Вопросы»: фото раскрывается на весь экран и растворяется; назад — в обратную сторону (только десктоп) */
+(()=>{const ok=()=>innerWidth>900&&!matchMedia('(prefers-reduced-motion: reduce)').matches;
+const E='cubic-bezier(.65,0,.35,1)';
+const make=(r,rad,src)=>{const o=document.createElement('div');o.className='brz-special-overlay';o.setAttribute('aria-hidden','true');
+ Object.assign(o.style,{position:'fixed',left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',borderRadius:rad,overflow:'hidden',zIndex:9990,pointerEvents:'none',willChange:'left,top,width,height,border-radius,opacity'});
+ const i=new Image();i.src=src;i.alt='';Object.assign(i.style,{width:'100%',height:'100%',objectFit:'cover',display:'block'});o.appendChild(i);document.body.appendChild(o);return o;};
+const full={left:'0px',top:'0px',width:innerWidth+'px',height:innerHeight+'px',borderRadius:'0px'};
+const box=(r,rad)=>({left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',borderRadius:rad});
+const hook=()=>{const app=window.__breezeApp;if(!app||!app._goScreen||app._goScreen.__brzSp)return false;const orig=app._goScreen;
+ const wrapped=function(index,skip){const prev=app._screenIndex;const photo=document.querySelector('#long .special-stays-photo'),img=photo&&photo.querySelector('img');
+  if(!ok()||!photo||!img||!((prev===14&&index===15)||(prev===15&&index===14)))return orig.call(this,index,skip);
+  document.querySelectorAll('.brz-special-overlay').forEach(n=>n.remove());document.documentElement.removeAttribute('data-brz-sp-hide');
+  const rad=getComputedStyle(photo).borderTopLeftRadius||'22px',src=img.currentSrc||img.src;const F={left:'0px',top:'0px',width:innerWidth+'px',height:innerHeight+'px',borderRadius:'0px'};
+  const H=document.documentElement;const hide=()=>H.setAttribute('data-brz-sp-hide','');const show=()=>H.removeAttribute('data-brz-sp-hide');
+  if(index===15){const r=photo.getBoundingClientRect();const o=make(r,rad,src);hide();
+   const res=orig.call(this,index,skip);
+   o.animate([box(r,rad),F],{duration:750,easing:E,fill:'forwards'});
+   setTimeout(()=>{if(app._screenIndex===15)app._screenActions.faq?.();},560);
+   o.animate([{opacity:1},{opacity:0}],{delay:700,duration:600,easing:'ease',fill:'forwards'}).finished.then(()=>{o.remove();show();},()=>{o.remove();show();});
+   return res;}
+  /* назад: экран затягивается фото, затем оно сжимается на своё место */
+  const sec=document.getElementById('long');const target=sec.getBoundingClientRect().top+scrollY+(sec.offsetHeight-innerHeight)/2;
+  const pr=photo.getBoundingClientRect();const r={left:pr.left,top:pr.top+scrollY-target,width:pr.width,height:pr.height};
+  const o=make({left:0,top:0,width:innerWidth,height:innerHeight},'0px',src);o.style.opacity='0';
+  o.animate([{opacity:0},{opacity:1}],{duration:380,easing:'ease',fill:'forwards'}).finished.then(()=>hide(),()=>{});
+  const res=orig.call(this,index,skip);
+  setTimeout(()=>{if(app._screenIndex!==14){o.remove();show();return;}hide();
+   photo.getAnimations().forEach(x=>x.finish());photo.querySelectorAll('*').forEach(el=>el.getAnimations().forEach(x=>x.finish()));
+   o.animate([F,box(r,rad)],{duration:750,easing:E,fill:'forwards'}).finished.then(()=>{show();o.remove();},()=>{show();o.remove();});},430);
+  return res;};
+ wrapped.__brzSp=1;app._goScreen=wrapped;return true;};
+if(!hook()){let n=0;const t=setInterval(()=>{if(hook()||++n>60)clearInterval(t);},250);}
+})();
+</script>
 </body>
 </html>
