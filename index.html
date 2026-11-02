@@ -382,8 +382,8 @@ html body .mb-cnt button{width:32px!important;height:32px!important;border-color
 </style>
 <script>
 /* desktop: календарь над строкой поиска с зазором 40px (как в Figma), но не выше 80px от верха */
-(function(){const place=()=>{if(innerWidth<=900)return;document.querySelectorAll('.cal-pop:not(.apt-calendar-centered)').forEach(el=>{if(!el.matches(':popover-open'))return;const a=el.parentElement.getBoundingClientRect();const hd=document.querySelector('#top header');const hb=hd?hd.getBoundingClientRect().bottom:72;const room=a.top-hb-24,h=el.offsetHeight,sc=h>room?Math.max(.82,room/h):1;let top;if(el.__brzGap==null){top=Math.round(hb+Math.max(8,(a.top-hb-h*sc)/2));el.__brzGap=a.top-top;}else top=Math.round(a.top-el.__brzGap);el.style.setProperty('--brz-cal-top',top+'px');if(sc<1){el.style.setProperty('scale',String(sc.toFixed(3)));el.style.setProperty('transform-origin','50% 0');}else el.style.removeProperty('scale');});const sr=document.querySelector('#search');document.querySelectorAll('.pop-up.res:not(.footer-dialog)').forEach(el=>{if(!sr||el.matches(':popover-open'))return;const want=sr.getBoundingClientRect().top-40;const hd=document.querySelector('#top header');const lim=(hd?hd.getBoundingClientRect().bottom:0)+16;el.style.setProperty('translate','none','important');el.style.setProperty('top','auto','important');let r=el.getBoundingClientRect();if(!r.height)return;const sc=r.width/el.offsetWidth||1;el.style.setProperty('max-height',Math.round((innerHeight-16-lim)/sc)+'px','important');const need=el.scrollHeight*sc;const tgt=Math.min(innerHeight-16,Math.max(want,lim+need));r=el.getBoundingClientRect();const d=(tgt-r.bottom)/sc;if(Math.abs(d)<1)return;const cb=parseFloat(getComputedStyle(el).bottom)||0;el.style.setProperty('bottom',Math.round(cb-d)+'px','important');});};
-new MutationObserver(()=>requestAnimationFrame(place)).observe(document.documentElement,{childList:true,subtree:true});addEventListener('resize',()=>{document.querySelectorAll('.cal-pop').forEach(el=>el.__brzGap=null);place();});addEventListener('scroll',()=>requestAnimationFrame(place),{passive:true});})();
+(function(){const place=()=>{if(innerWidth<=900)return;document.querySelectorAll('.cal-pop:not(.apt-calendar-centered)').forEach(el=>{if(!el.matches(':popover-open'))return;const a=el.parentElement.getBoundingClientRect();const hd=document.querySelector('#top header');const hb=hd?hd.getBoundingClientRect().bottom:72;const room=a.top-hb-24,h=el.offsetHeight,sc=h>room?Math.max(.82,room/h):1;let top;if(el.__brzTop==null){top=Math.round(hb+Math.max(8,(a.top-hb-h*sc)/2));el.__brzTop=top;}else top=el.__brzTop;el.style.setProperty('--brz-cal-top',top+'px');if(sc<1){el.style.setProperty('scale',String(sc.toFixed(3)));el.style.setProperty('transform-origin','50% 0');}else el.style.removeProperty('scale');});const sr=document.querySelector('#search');document.querySelectorAll('.pop-up.res:not(.footer-dialog)').forEach(el=>{if(!sr||el.matches(':popover-open'))return;const want=sr.getBoundingClientRect().top-40;const hd=document.querySelector('#top header');const lim=(hd?hd.getBoundingClientRect().bottom:0)+16;el.style.setProperty('translate','none','important');el.style.setProperty('top','auto','important');let r=el.getBoundingClientRect();if(!r.height)return;const sc=r.width/el.offsetWidth||1;el.style.setProperty('max-height',Math.round((innerHeight-16-lim)/sc)+'px','important');const need=el.scrollHeight*sc;const tgt=Math.min(innerHeight-16,Math.max(want,lim+need));r=el.getBoundingClientRect();const d=(tgt-r.bottom)/sc;if(Math.abs(d)<1)return;const cb=parseFloat(getComputedStyle(el).bottom)||0;el.style.setProperty('bottom',Math.round(cb-d)+'px','important');});};
+new MutationObserver(()=>requestAnimationFrame(place)).observe(document.documentElement,{childList:true,subtree:true});addEventListener('resize',()=>{document.querySelectorAll('.cal-pop').forEach(el=>el.__brzTop=null);place();});addEventListener('scroll',()=>requestAnimationFrame(place),{passive:true});})();
 </script>
 <style id="brz-mobile-hero-fig">
 /* Мобилка: первый экран и меню по Figma (Главная 425:3624, Меню 425:4138) */
@@ -4010,7 +4010,7 @@ const place=()=>{requestAnimationFrame(place);
  if(at!=='reviews'||innerWidth<=900){if(H.hasAttribute('data-brz-rv'))H.removeAttribute('data-brz-rv');return;}
  if(!H.hasAttribute('data-brz-rv'))H.setAttribute('data-brz-rv','');
  const rf=document.querySelector('#reviews .rv-search');if(!rf)return;const a=rf.getBoundingClientRect();
- document.querySelectorAll('.footer-dialog').forEach(d=>{if(!d.offsetWidth)return;const k=kind(d);
+ document.querySelectorAll('.footer-dialog').forEach(d=>{if(!d.offsetWidth){d.__brzXY=null;return;}const k=kind(d);if(d.__brzXY&&d.__brzXY.w===d.offsetWidth&&d.__brzXY.h===d.offsetHeight)return;d.__brzXY={w:d.offsetWidth,h:d.offsetHeight};
   /* позиция без учёта transform/translate (offset*), чтобы не было обратной связи и дрожания на 1px */
   const W=d.offsetWidth,Hh=d.offsetHeight;let x,y;
   if(k!=='gu'){x=innerWidth/2-W/2;y=Math.max(16,Math.min(a.top-16-Hh,(innerHeight-Hh)/2));}
@@ -4058,7 +4058,7 @@ hook();setInterval(hook,1500);addEventListener('resize',set,{passive:true});docu
 @keyframes brzPopIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
 @keyframes brzFadeIn{from{opacity:0}to{opacity:1}}
 @media(min-width:901px) and (prefers-reduced-motion:no-preference){
-html:not(#z1):not(#z2):not(#z3) body .pop-up{animation:brzPopIn .45s cubic-bezier(.22,1,.36,1) both!important;transform-origin:50% 50%}
+html:not(#z1):not(#z2):not(#z3) body .pop-up{animation:brzPopIn .45s cubic-bezier(.22,1,.36,1) backwards!important;transform-origin:50% 50%}
 }
 @media(prefers-reduced-motion:no-preference){
 html:not(#z1):not(#z2):not(#z3) body dialog.ocean-dialog:not(.ocean-lightbox)[open]{animation:brzPopIn .45s cubic-bezier(.22,1,.36,1) both!important}
@@ -4140,7 +4140,7 @@ html[data-brz-rv]:not(#z1):not(#z2) .footer-dialog:not(.cal-pop):not(.res){left:
 <script id="brz-hero-pop-close">
 /* уход с первого экрана закрывает окна брони первого экрана (календарь, гости, выдачу) */
 (()=>{const hook=()=>{const app=window.__breezeApp;if(!app||!app._goScreen||app._goScreen.__brzHc)return false;const orig=app._goScreen;
- const w=function(index,skip){try{const st=app.state||{};if(index!==app._screenIndex&&st.footerForm&&(st.calOpen||st.guestsOpen||st.res))app.setState({calOpen:false,guestsOpen:false,res:null});}catch(e){}return orig.call(this,index,skip);};
+ const w=function(index,skip){try{const st=app.state||{};}catch(e){}return orig.call(this,index,skip);};
  Object.assign(w,orig);w.__brzHc=1;app._goScreen=w;return true;};
 if(!hook()){let n=0;const t=setInterval(()=>{if(hook()||++n>60)clearInterval(t);},250);}
 })();
@@ -4211,6 +4211,23 @@ html body .cal-pop.apt-calendar-centered>div:last-of-type>div{justify-content:ce
 html body .cal-pop.apt-calendar-centered>div:last-of-type>div>button{flex:1 1 0!important;min-width:0!important;width:auto!important;margin:0!important;justify-content:center}
 }
 @media(max-width:900px) and (max-height:700px){html body .cal-pop.apt-calendar-centered>div[style*="gap: 48px"] button{height:36px!important}}
+</style>
+<script id="brz-pop-scroll-fade">
+/* 2.11: открытое окно (календарь, гости, выдача) остаётся на своём экране: при прокрутке уезжает вместе со страницей и плавно гаснет */
+(()=>{const tick=()=>{requestAnimationFrame(tick);
+ document.querySelectorAll('.pop-up').forEach(el=>{if(!el.offsetWidth){el.__y0=null;return;}
+  if(getComputedStyle(el).position!=='fixed'){return;}
+  if(el.__y0==null)el.__y0=scrollY;const sh=scrollY-el.__y0;
+  const tf=Math.abs(sh)<1?'':'translateY('+(-sh).toFixed(1)+'px)';if(el.style.transform!==tf)el.style.transform=tf;
+  const o=Math.max(0,1-Math.abs(sh)/(innerHeight*.45));const f=o>=.999?'':'opacity('+o.toFixed(3)+')';if(el.style.filter!==f)el.style.filter=f;
+  const pe=o<.15?'none':'';if(el.style.pointerEvents!==pe)el.style.pointerEvents=pe;});};
+requestAnimationFrame(tick);})();
+</script>
+<style id="brz-ocean-footer-faint">
+html:not(#z1):not(#z2):not(#z3) body .ocean-site-footer .footer-bottom{border-top-color:rgba(255,255,255,.05)!important}
+html:not(#z1):not(#z2):not(#z3) body .ocean-site-footer .footer-bottom,html:not(#z1):not(#z2):not(#z3) body .ocean-site-footer .footer-bottom *{color:rgba(169,182,191,.38)!important}
+html:not(#z1):not(#z2):not(#z3) body .ocean-site-footer .footer-bottom a:hover{color:rgba(169,182,191,.8)!important}
+html:not(#z1):not(#z2):not(#z3) body .ocean-site-footer .footer-brand .footer-muted{color:rgba(169,182,191,.38)!important}
 </style>
 </body>
 </html>
