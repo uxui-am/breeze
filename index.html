@@ -3922,7 +3922,7 @@ const upd=()=>{raf=0;const bar=document.querySelector('#top .hero-bar'),fab=docu
  const L=Math.min(...kids.map(k=>k.offsetLeft)),R=Math.max(...kids.map(k=>k.offsetLeft+k.offsetWidth));
  const dx=over?0:Math.round(bar.clientWidth/2-(L+R)/2);
  const T=Math.min(...kids.map(k=>k.offsetTop)),B=Math.max(...kids.map(k=>k.offsetTop+k.offsetHeight));
- bar.style.setProperty('--brz-bar-dx',dx+'px');bar.style.setProperty('--brz-bar-dy',Math.round(bar.clientHeight/2-(T+B)/2)+'px');};
+ bar.style.setProperty('--brz-bar-dx',dx+'px');bar.style.setProperty('--brz-bar-dy',Math.round((bar.clientHeight-(parseFloat(getComputedStyle(bar).paddingBottom)||0))/2-(T+B)/2)+'px');};
 const later=()=>{if(!raf)raf=requestAnimationFrame(upd);};
 addEventListener('scroll',later,{passive:true});addEventListener('resize',later);mq.addEventListener('change',later);
 const start=()=>{if(!document.querySelector('#top .hero-bar'))return setTimeout(start,200);later();setTimeout(later,800);};start();})();
@@ -4306,6 +4306,14 @@ html:not(#z1):not(#z2):not(#z3) body .brz-reset-all:hover .brz-ra-l{text-decorat
 html:not(#z1):not(#z2):not(#z3) body .brz-reset-all[data-t=glass]{color:rgba(255,255,255,.9)!important}
 html:not(#z1):not(#z2):not(#z3) body .brz-reset-all[data-t=dark]{color:rgba(255,255,255,.75)!important}
 html:not(#z1):not(#z2):not(#z3) body .brz-reset-all[data-t=light]{color:rgba(18,32,43,.75)!important}
+</style>
+<style id="brz-hero-lvh">
+/* 2.11: iPhone Safari — под нижней панелью браузера был виден светлый следующий блок. Первый экран тянется до 100lvh,
+   а нижняя полоса с рейтингами продолжается под панель; содержимое полосы остаётся над панелью */
+@media(max-width:900px){@supports (height:100lvh){
+html:not(#z1):not(#z2):not(#z3) body #top.hero{height:100lvh!important}
+html:not(#z1):not(#z2):not(#z3) body #top .hero-bar{height:calc(80px + 100lvh - 100svh)!important;padding-bottom:calc(100lvh - 100svh)!important;box-sizing:border-box!important}
+}}
 </style>
 </body>
 </html>
