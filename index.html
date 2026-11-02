@@ -4312,7 +4312,15 @@ html:not(#z1):not(#z2):not(#z3) body .brz-reset-all[data-t=light]{color:rgba(18,
 @media(max-width:900px){@supports (height:100lvh){
 html:not(#z1):not(#z2):not(#z3) body #top.hero{height:calc(100lvh + 64px)!important}
 html:not(#z1):not(#z2):not(#z3) body #top .hero-bar{height:calc(80px + 100lvh - 100svh + 64px)!important;padding-bottom:calc(100lvh - 100svh + 64px)!important;box-sizing:border-box!important}
+html:not(#z1):not(#z2):not(#z3) body #top.hero{transition:height .35s cubic-bezier(.22,1,.36,1)}
+html:not(#z1):not(#z2):not(#z3) body #top .hero-bar{transition:height .35s cubic-bezier(.22,1,.36,1),padding-bottom .35s cubic-bezier(.22,1,.36,1)}
+/* при прокрутке — обычная высота экрана и полосы, как было изначально */
+html.brz-hs:not(#z1):not(#z2):not(#z3) body #top.hero{height:100svh!important}
+html.brz-hs:not(#z1):not(#z2):not(#z3) body #top .hero-bar{height:80px!important;padding-bottom:0!important}
 }}
 </style>
+<script id="brz-hero-lvh-js">
+(()=>{const mq=matchMedia('(max-width:900px)');let on=null,t=0;const upd=()=>{const v=mq.matches&&scrollY>6;if(v===on)return;on=v;document.documentElement.classList.toggle('brz-hs',v);clearTimeout(t);t=setTimeout(()=>dispatchEvent(new Event('scroll')),380);};addEventListener('scroll',upd,{passive:true});addEventListener('resize',upd);upd();})();
+</script>
 </body>
 </html>
