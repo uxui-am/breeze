@@ -3523,7 +3523,7 @@ if(new URLSearchParams(location.search).has('figma-native-host'))(async()=>{cons
 <script>
 /* Мобильное меню: бургер в первом экране главной */
 (function(){
-  const links=[['#apartments'],['#area'],['#reviews'],['#faq'],['#long']];
+  const links=[['#apartments'],['#area'],['#reviews'],['#long'],['#faq']];
   const lbl={ '#reviews':['Отзывы','Reviews','Opiniones'] };
   let menu;
   const langIdx=()=>{const l=((window.__breezeApp||{}).state||{}).lang||'ru';return l==='en'?1:l==='es'?2:0;};
@@ -4174,6 +4174,11 @@ html body .m-menu .m-menu-langs button[aria-current]{background:#e3ebeb;font-wei
 html:not(#z1):not(#z2):not(#z3) body .m-menu-cta{flex-direction:column!important;align-items:stretch!important;gap:16px!important}
 html:not(#z1):not(#z2):not(#z3) body .m-menu-book{width:100%!important;justify-content:center!important}
 html:not(#z1):not(#z2):not(#z3) body .m-menu-wa{align-self:center!important}
+/* бургер: одинаковые расстояния между строкой (язык/крестик), пунктами меню, «Забронировать» и WhatsApp; пункты плотнее */
+html:not(#z1):not(#z2):not(#z3) body .m-menu{justify-content:space-between!important}
+html:not(#z1):not(#z2):not(#z3) body .m-menu nav{margin:0!important;gap:20px!important}
+html:not(#z1):not(#z2):not(#z3) body .m-menu-cta{display:contents!important}
+html:not(#z1):not(#z2):not(#z3) body .m-menu-book{margin:0 8px!important;width:auto!important;align-self:stretch}
 html body .m-menu-book .ar,html body .mb-go .ar,html body .m-book .ar{width:16px;height:16px;flex:none}
 @media(max-width:900px){
 html:not(#z1):not(#z2):not(#z3) body .breeze-footer .footer-bottom{flex-direction:column!important;align-items:center!important;gap:6px!important;text-align:center}
