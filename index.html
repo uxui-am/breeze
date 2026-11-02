@@ -4212,6 +4212,9 @@ html body .cal-pop.apt-calendar-centered>div:last-of-type>div>button{flex:1 1 0!
 }
 @media(max-width:900px) and (max-height:700px){html body .cal-pop.apt-calendar-centered>div[style*="gap: 48px"] button{height:36px!important}}
 </style>
+<style id="brz-pop-scroll-fade-css">/* затемнение за окном гаснет вместе с окном */
+.pop-up::backdrop,.footer-dialog::backdrop{opacity:var(--brz-fade,1);pointer-events:var(--brz-bd-pe,auto)}
+</style>
 <script id="brz-pop-scroll-fade">
 /* 2.11: открытое окно (календарь, гости, выдача) остаётся на своём экране: при прокрутке уезжает вместе со страницей и плавно гаснет */
 (()=>{const tick=()=>{requestAnimationFrame(tick);
@@ -4220,7 +4223,7 @@ html body .cal-pop.apt-calendar-centered>div:last-of-type>div>button{flex:1 1 0!
   if(el.__y0==null)el.__y0=scrollY;const sh=scrollY-el.__y0;
   const tf=Math.abs(sh)<1?'':'translateY('+(-sh).toFixed(1)+'px)';if(el.style.transform!==tf)el.style.transform=tf;
   const o=Math.max(0,1-Math.abs(sh)/(innerHeight*.45));const f=o>=.999?'':'opacity('+o.toFixed(3)+')';if(el.style.filter!==f)el.style.filter=f;
-  const pe=o<.15?'none':'';if(el.style.pointerEvents!==pe)el.style.pointerEvents=pe;});};
+  const pe=o<.15?'none':'';if(el.style.pointerEvents!==pe)el.style.pointerEvents=pe;const fv=o.toFixed(3);if(el.style.getPropertyValue('--brz-fade')!==fv){el.style.setProperty('--brz-fade',fv);el.style.setProperty('--brz-bd-pe',o<.15?'none':'auto');}});};
 requestAnimationFrame(tick);})();
 </script>
 <style id="brz-ocean-footer-faint">
