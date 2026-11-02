@@ -4188,5 +4188,9 @@ html:not(#z1):not(#z2):not(#z3) body .mb-sheet .mb-cal-nav{margin-top:56px!impor
 html:not(#z1):not(#z2):not(#z3) body .mb-sheet .mb-x{top:18px!important}
 }
 </style>
+<style id="brz-no-dbl-zoom">
+/* мобильный: быстрые нажатия на кнопки (счётчик гостей, даты) не увеличивают экран двойным тапом */
+button,a,[role=button],.mb-sheet,.mb-sheet *,.pop-up,.pop-up *,.m-menu,.m-menu *{touch-action:manipulation}
+</style>
 </body>
 </html>
