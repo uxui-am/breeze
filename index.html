@@ -4322,5 +4322,21 @@ html.brz-hs:not(#z1):not(#z2):not(#z3) body #top .hero-bar{height:80px!important
 <script id="brz-hero-lvh-js">
 (()=>{const mq=matchMedia('(max-width:900px)');let on=null,t=0;const upd=()=>{const v=mq.matches&&scrollY>6;if(v===on)return;on=v;document.documentElement.classList.toggle('brz-hs',v);clearTimeout(t);t=setTimeout(()=>dispatchEvent(new Event('scroll')),380);};addEventListener('scroll',upd,{passive:true});addEventListener('resize',upd);upd();})();
 </script>
+<script id="brz-apt-card-reveal">
+/* 2.11: мобильный — карточки апартаментов: сначала проявляется фото, затем снизу наплывает плашка с названием, ценой и кнопками */
+(()=>{if(!matchMedia('(max-width:900px)').matches||matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window))return;
+const E='cubic-bezier(.22,1,.36,1)',seen=new WeakSet();
+const prep=()=>{document.querySelectorAll('#apartments .card.apt').forEach(card=>{if(seen.has(card))return;const r=card.getBoundingClientRect();if(r.top<innerHeight*.9)return;seen.add(card);
+ const img=card.querySelector('.apt-img'),panel=card.querySelector('.apt-panel'),chip=card.querySelector('.apt-gallery-button');
+ const mk=(el,frames,o)=>{if(!el)return null;const a=el.animate(frames,Object.assign({fill:'both',easing:E},o));a.pause();a.currentTime=0;return a;};
+ const aImg=mk(img,[{opacity:0,transform:'scale(1.06)'},{opacity:1,transform:'scale(1)'}],{duration:800});
+ const aChip=mk(chip,[{filter:'opacity(0)'},{filter:'opacity(1)'}],{duration:400,delay:300});
+ const aPanel=mk(panel,[{filter:'opacity(0)',translate:'0 32px'},{filter:'opacity(1)',translate:'0 0'}],{duration:700});
+ const done=a=>a&&a.finished.then(()=>a.cancel(),()=>{});
+ const io1=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io1.disconnect();[aImg,aChip].forEach(a=>{if(a){a.play();done(a);}});}},{threshold:.12});io1.observe(card);
+ if(panel){const io2=new IntersectionObserver(es=>{if(es.some(e=>e.intersectionRatio>=.55)){io2.disconnect();setTimeout(()=>{if(aPanel){aPanel.play();done(aPanel);}},aImg&&aImg.playState==='running'?380:120);}},{threshold:[.55]});io2.observe(panel);}
+});};
+if(document.readyState==='complete')setTimeout(prep,600);else addEventListener('load',()=>setTimeout(prep,600));})();
+</script>
 </body>
 </html>
