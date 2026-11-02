@@ -4139,7 +4139,7 @@ if(!hook()){let n=0;const t=setInterval(()=>{if(hook()||++n>60)clearInterval(t);
 <style id="brz-field-clear-fixed">
 /* крестик «сбросить» не сдвигает текст поля: стоит у правого края поля, появляется плавно */
 @media(min-width:901px){
-html:not(#z1):not(#z2):not(#z3) body :is(#top #search>.field,#reviews .rv-field,footer .footer-field)>.field-clear{position:absolute!important;right:14px!important;left:auto!important;top:50%!important;translate:0 -50%!important;margin:0!important;animation:brzFadeIn .25s ease both}
+html:not(#z1):not(#z2):not(#z3) body :is(#top #search>.field,#reviews .rv-field,footer .footer-field)>.field-clear{position:absolute!important;right:auto!important;left:calc(50% + var(--brz-pw,200px)/2 - 34px)!important;top:50%!important;translate:0 -50%!important;margin:0!important;animation:brzFadeIn .25s ease both}
 }
 </style>
 </body>
