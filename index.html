@@ -4184,6 +4184,8 @@ html body .breeze-footer .footer-reg{font-size:14px;line-height:22px}
 /* мобильный: выдача по центру экрана; при поиске в «Забронировать» крутится спиннер вместо стрелки; в шторке больше места над месяцами */
 html:not(#z1):not(#z2):not(#z3) body .pop-up.res:not(.footer-dialog):popover-open,html:not(#z1):not(#z2):not(#z3) body .pop-up.res:not(.footer-dialog){top:50%!important;bottom:auto!important;translate:0 -50%!important;max-height:calc(100dvh - 32px)!important;overflow-y:auto!important}
 html body .m-book:has(.brz-spin) .ar{display:none}
+html:not(#z1):not(#z2):not(#z3) body .pop-up.res{box-shadow:0 0 0 100vmax rgba(8,24,35,.55),0 10px 30px rgba(18,32,43,.22)!important}
+html body .pop-up.res::backdrop{background:transparent}
 html:not(#z1):not(#z2):not(#z3) body .mb-sheet .mb-cal-nav{margin-top:56px!important}
 html:not(#z1):not(#z2):not(#z3) body .mb-sheet .mb-x{top:18px!important}
 }
