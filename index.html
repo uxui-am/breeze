@@ -3889,7 +3889,7 @@ html body #top h1{padding-left:40px!important;padding-right:40px!important;margi
    При прокрутке (WhatsApp уже не над панелью) рейтинги плавно встают ровно по центру панели; при возврате — обратно. */
 @media(max-width:900px){
 html:not(#z1):not(#z2):not(#z3) body #top .hero-bar{align-items:center!important;padding-top:0!important;padding-bottom:0!important}
-html:not(#z1):not(#z2):not(#z3) body #top .hero-bar>*{transition:transform .5s cubic-bezier(.22,1,.36,1);transform:translate(var(--brz-bar-dx,0px),var(--brz-bar-dy,0px))}
+html:not(#z1):not(#z2):not(#z3) body #top .hero-bar>*{transition:transform .38s cubic-bezier(.22,1,.36,1);transform:translate(var(--brz-bar-dx,0px),var(--brz-bar-dy,0px))}
 html:not(#z1):not(#z2):not(#z3) body #top .m-book{width:calc(100vw - 94px)!important;max-width:420px!important;min-width:0!important;justify-content:center!important;height:56px!important;font-size:15px!important}
 }
 </style>
@@ -3899,7 +3899,7 @@ const upd=()=>{raf=0;const bar=document.querySelector('#top .hero-bar'),fab=docu
  if(!mq.matches){bar.style.removeProperty('--brz-bar-dx');return;}
  const kids=[...bar.children].filter(c=>c.getBoundingClientRect().width>0);if(!kids.length)return;
  const br=bar.getBoundingClientRect(),fr=fab?fab.getBoundingClientRect():null;
- const over=fr&&fr.width>0&&getComputedStyle(fab).display!=='none'&&fr.top<br.bottom&&fr.bottom>br.top;
+ const over=scrollY<6&&fr&&fr.width>0&&getComputedStyle(fab).display!=='none'&&fr.top<br.bottom&&fr.bottom>br.top;/* 2.11: к центру сразу с началом прокрутки */
  /* позиции без учёта сдвига: offsetLeft не зависит от transform */
  const L=Math.min(...kids.map(k=>k.offsetLeft)),R=Math.max(...kids.map(k=>k.offsetLeft+k.offsetWidth));
  const dx=over?0:Math.round(bar.clientWidth/2-(L+R)/2);
