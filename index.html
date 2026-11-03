@@ -4331,6 +4331,15 @@ html.brz-hs:not(#z1):not(#z2):not(#z3) body #top .hero-bar{height:80px!important
 <script id="brz-hero-lvh-js">
 (()=>{const mq=matchMedia('(max-width:900px)');let on=null,t=0;const upd=()=>{const v=mq.matches&&scrollY>6;if(v===on)return;on=v;document.documentElement.classList.toggle('brz-hs',v);clearTimeout(t);t=setTimeout(()=>dispatchEvent(new Event('scroll')),380);};addEventListener('scroll',upd,{passive:true});addEventListener('resize',upd);upd();})();
 </script>
+<script id="brz-vh-debug">
+/* 3.11: диагностика высоты экрана, только по ссылке ?vh=1 */
+(()=>{if(!/[?&]vh=1/.test(location.search))return;const box=document.createElement('div');box.style.cssText='position:fixed;top:60px;left:8px;right:8px;z-index:99999;background:#fff;color:#000;font:13px/1.4 monospace;padding:8px;border-radius:8px;white-space:pre';
+const pr=h=>{const d=document.createElement('div');d.style.cssText='position:fixed;top:0;left:0;width:1px;visibility:hidden;height:'+h;document.body.appendChild(d);const v=d.getBoundingClientRect().height;d.remove();return Math.round(v)};
+const sb=()=>{const d=document.createElement('div');d.style.cssText='position:fixed;bottom:0;height:env(safe-area-inset-bottom);width:1px';document.body.appendChild(d);const v=d.offsetHeight;d.remove();return v};
+const upd=()=>{const b=document.querySelector('#top .hero-bar'),r=b&&b.getBoundingClientRect(),i=b&&b.querySelector('*'),ir=i&&i.getBoundingClientRect();
+box.textContent='UA '+navigator.userAgent.slice(0,60)+'\ninnerH '+innerHeight+'  vv '+(visualViewport?Math.round(visualViewport.height):'-')+'  scr '+screen.height+'\nsvh '+pr('100svh')+'  dvh '+pr('100dvh')+'  lvh '+pr('100lvh')+'  safeB '+sb()+'\nbar top '+(r?Math.round(r.top):'-')+'  ratings bottom '+(ir?Math.round(ir.bottom):'-')+'\nscrollY '+Math.round(scrollY)};
+document.body.appendChild(box);upd();addEventListener('resize',upd);addEventListener('scroll',upd,{passive:true});setInterval(upd,500);})();
+</script>
 <style id="brz-apt-card-reveal-css">
 @property --brz-po{syntax:'<number>';inherits:false;initial-value:1}
 @media(max-width:900px){html:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6) body #apartments .card.apt .apt-panel,html:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6) body #apartments .card.apt .apt-gallery-button{opacity:var(--brz-po)!important}}
