@@ -4355,6 +4355,42 @@ html:not(#z1):not(#z2):not(#z3):not(#z4) body .m-menu{padding-bottom:env(safe-ar
 html:not(#z1):not(#z2):not(#z3):not(#z4) body .m-menu::after{content:'';display:block;height:0;flex:none}
 }
 </style>
+<style id="brz-m-gallery">
+/* 3.11: мобильная галерея — заголовок и крестик сверху, стрелки по краям фото, миниатюры рядком внизу; всё в один экран */
+@media(max-width:900px){
+html:not(#g1):not(#g2):not(#g3):not(#g4):not(#g5):not(#g6) body .brz-strip{height:100dvh!important;padding:20px 16px calc(24px + env(safe-area-inset-bottom,0px))!important;gap:16px!important;display:flex;flex-direction:column!important}
+html:not(#g1):not(#g2):not(#g3):not(#g4):not(#g5):not(#g6) body #ocean-lightbox.brz-strip{height:100dvh!important}
+html:not(#g1):not(#g2):not(#g3):not(#g4):not(#g5):not(#g6) body .brz-strip .strip-bar{order:-1;display:flex!important;align-items:center!important;justify-content:space-between!important;height:48px;animation:none!important}
+html:not(#g1):not(#g2):not(#g3):not(#g4):not(#g5):not(#g6) body .brz-strip .strip-title{margin:0!important;font-size:20px!important;overflow:hidden;text-overflow:ellipsis}
+html:not(#g1):not(#g2):not(#g3):not(#g4):not(#g5):not(#g6) body .brz-strip .strip-btns{display:contents!important}
+html:not(#g1):not(#g2):not(#g3):not(#g4):not(#g5):not(#g6) body .brz-strip .strip-btns button:last-child{width:44px!important;height:44px!important;flex:none}
+html:not(#g1):not(#g2):not(#g3):not(#g4):not(#g5):not(#g6) body .brz-strip .strip-btns button:not(:last-child){position:absolute!important;top:calc(50% - 6px)!important;transform:translateY(-50%)!important;width:48px!important;height:48px!important;background:rgba(255,255,255,.92)!important;color:#12202b!important;box-shadow:0 4px 16px rgba(0,0,0,.15)!important;z-index:3}
+html:not(#g1):not(#g2):not(#g3):not(#g4):not(#g5):not(#g6) body .brz-strip .strip-btns button:first-child{left:26px!important}
+html:not(#g1):not(#g2):not(#g3):not(#g4):not(#g5):not(#g6) body .brz-strip .strip-btns button:nth-child(2){right:26px!important}
+html:not(#g1):not(#g2):not(#g3):not(#g4):not(#g5):not(#g6) body .brz-strip .strip-view{flex:1 1 auto!important;min-height:0!important;border-radius:24px!important}
+html:not(#g1):not(#g2):not(#g3):not(#g4):not(#g5):not(#g6) body .brz-strip .strip-track img{width:100cqw!important;max-width:none!important;height:100%!important;border-radius:24px!important}
+html:not(#g1):not(#g2):not(#g3):not(#g4):not(#g5):not(#g6) body .brz-strip .brz-thumbs{order:1;flex:none;display:flex;gap:8px;justify-content:center;overflow-x:auto;scrollbar-width:none;padding:3px}
+html:not(#g1):not(#g2):not(#g3):not(#g4):not(#g5):not(#g6) body .brz-strip .brz-thumbs::-webkit-scrollbar{display:none}
+html:not(#g1):not(#g2):not(#g3):not(#g4):not(#g5):not(#g6) body .brz-strip .brz-thumbs img{flex:none;width:56px;height:56px;border-radius:12px;object-fit:cover;opacity:.55;cursor:pointer;transition:opacity .25s;outline:2px solid transparent;outline-offset:2px}
+html:not(#g1):not(#g2):not(#g3):not(#g4):not(#g5):not(#g6) body .brz-strip .brz-thumbs img.on{opacity:1;outline-color:#12202b}
+}
+.brz-thumbs{display:none}
+@media(max-width:900px){.brz-strip .brz-thumbs{display:flex}}
+</style>
+<script id="brz-m-gallery-js">
+(()=>{const mq=matchMedia('(max-width:900px)');
+const sync=box=>{const tr=box.querySelector('.strip-track');if(!tr)return;const imgs=[...tr.querySelectorAll('img')];let th=box.querySelector(':scope > .brz-thumbs');
+ const key=imgs.map(i=>i.currentSrc||i.src).join('|');
+ if(!th){th=document.createElement('div');th.className='brz-thumbs';box.appendChild(th);}
+ if(th.dataset.k!==key){th.dataset.k=key;th.innerHTML='';imgs.forEach((im,k)=>{const t=document.createElement('img');t.src=im.getAttribute('src')||im.src;t.alt='';t.decoding='async';t.addEventListener('click',e=>{e.stopPropagation();const v=box.querySelector('.strip-view'),tg=v&&v.querySelector('.strip-track').children[k];if(tg)tg.click();setTimeout(()=>{const v2=box.querySelector('.strip-view'),t2=v2&&v2.querySelector('.strip-track').children[k];if(v2&&t2&&Math.abs(v2.scrollLeft-t2.offsetLeft)>4)v2.scrollTo({left:t2.offsetLeft,behavior:'auto'});mark(box);},120);});th.appendChild(t);});}
+ mark(box);};
+const mark=box=>{const v=box.querySelector('.strip-view'),th=box.querySelector(':scope > .brz-thumbs');if(!v||!th)return;const tr=v.querySelector('.strip-track');let k=0;if(tr){const ch=[...tr.children];let best=1e9;ch.forEach((c,j)=>{const d=Math.abs(c.offsetLeft-v.scrollLeft);if(d<best){best=d;k=j;}});}
+ [...th.children].forEach((t,j)=>t.classList.toggle('on',j===k));const on=th.children[k];on&&on.scrollIntoView&&th.scrollWidth>th.clientWidth&&th.scrollTo({left:on.offsetLeft-th.clientWidth/2+28,behavior:'smooth'});};
+const all=()=>{if(!mq.matches)return;document.querySelectorAll('.brz-strip').forEach(box=>{const open=box.matches(':popover-open')||box.hasAttribute('open');if(open)sync(box);});};
+document.addEventListener('scroll',e=>{const v=e.target&&e.target.closest&&e.target.closest('.strip-view');if(v)mark(v.closest('.brz-strip'));},true);
+new MutationObserver(()=>{clearTimeout(all.t);all.t=setTimeout(all,60);}).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['open','style','src']});
+document.addEventListener('toggle',()=>setTimeout(all,30),true);addEventListener('resize',all);})();
+</script>
 <style id="brz-apt-card-reveal-css">
 @property --brz-po{syntax:'<number>';inherits:false;initial-value:1}
 @media(max-width:900px){html:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6) body #apartments .card.apt .apt-panel,html:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6) body #apartments .card.apt .apt-gallery-button{opacity:var(--brz-po)!important}}
