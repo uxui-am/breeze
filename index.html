@@ -4348,6 +4348,13 @@ html:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6) body #apartments .apt
 html:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6) body #apartments .apt-panel div:has(> span > svg) > span{gap:6px!important;white-space:nowrap!important;font-size:13px!important}
 }
 </style>
+<style id="brz-menu-even-bottom">
+/* 3.11: мобильное меню — отступ под кнопкой WhatsApp такой же, как между остальными блоками */
+@media(max-width:900px){
+html:not(#z1):not(#z2):not(#z3):not(#z4) body .m-menu{padding-bottom:env(safe-area-inset-bottom,0px)!important}
+html:not(#z1):not(#z2):not(#z3):not(#z4) body .m-menu::after{content:'';display:block;height:0;flex:none}
+}
+</style>
 <style id="brz-apt-card-reveal-css">
 @property --brz-po{syntax:'<number>';inherits:false;initial-value:1}
 @media(max-width:900px){html:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6) body #apartments .card.apt .apt-panel,html:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6) body #apartments .card.apt .apt-gallery-button{opacity:var(--brz-po)!important}}
